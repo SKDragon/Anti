@@ -55,6 +55,11 @@ public class Player
 		return this.dim;
 	}
 
+	public Image getIcon()
+	{
+		return this.icon;
+	}
+	
 	public void resetLoc()
 	{
 		this.location = new Point(140, 365);
