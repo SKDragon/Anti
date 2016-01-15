@@ -326,7 +326,9 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 			Field.moveChar(0, 0, true);
 		}
 
-		 System.out.println(field);
+		//String th = field.toString();
+		// System.out.println(th);
+		System.out.println(field);
 
 		// Arrays
 		if (false)
@@ -589,6 +591,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 		public void run()
 		{
 			field = new Field(1);
+			field.manageField(1);
 		}
 	}
 

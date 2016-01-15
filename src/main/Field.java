@@ -70,13 +70,13 @@ public class Field
 		timeStart = System.currentTimeMillis();
 
 		// Begins the game, first level
-		this.manageField(1);
+		//this.manageField(1);
 	}
 
 	/**
 	 * Runs while the game is still going
 	 */
-	private void manageField(int level)
+	public void manageField(int level)
 	{
 		// Creates and starts enemy spawning
 		 //Thread enemySpawner = new Thread(new EnemyManager(level));
@@ -103,7 +103,7 @@ public class Field
 				else
 					gameOver = true;
 			}
-			System.out.println("ha");
+			//System.out.println("ha");
 
 			// Checks for character projectiles hitting enemies
 			isEnemyCollision();
