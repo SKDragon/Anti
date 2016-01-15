@@ -328,7 +328,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 
 		//String th = field.toString();
 		// System.out.println(th);
-		System.out.println(field);
+		//System.out.println(field);
 
 		// Arrays
 		if (false)
