@@ -1,6 +1,6 @@
 package main;
 
-public class Field2
+public class Field
 {
 
 }
