@@ -350,7 +350,6 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 				.getImage();
 		gameScreenBG = new ImageIcon(
 				"Pictures/Game Backgrounds/GameScreenBG.png").getImage();
-		//player = new ImageIcon("Pictures/Player Images/Player.png").getImage();
 	}
 
 	// MainMenu Render
@@ -386,7 +385,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 
 		if (charProjectiles != null && charProjectiles.size() > 0)
 		{
-			//System.out.println("main " + charProjectiles.size());
+			// System.out.println("main " + charProjectiles.size());
 			for (Projectile charPro : charProjectiles)
 			{
 				// Image p = charProjectiles.get(i).getImage();
@@ -394,7 +393,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 				int x = (int) pp.getX();
 				int y = (int) pp.getY();
 				// g.drawImage(p, x, y, null);
-			//	System.out.println(charPro.getLocation().getY());
+				// System.out.println(charPro.getLocation().getY());
 				g.fillRect(x, y, 10, 10);
 			}
 		}

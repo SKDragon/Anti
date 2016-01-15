@@ -1,8 +1,11 @@
 package characters;
 
+import java.awt.Image;
 import java.awt.Point;
 
-import projectiles.*;
+import javax.swing.ImageIcon;
+
+import projectiles.LinearPro;
 
 /**
  * Windows Defender character, regular fire patterns, average speed
@@ -12,7 +15,8 @@ import projectiles.*;
 public class WindowsDefender extends Player
 {
 	// Character image for WinDef
-	// final static Image WIN_DEF null;
+	final static Image WIN_DEF = new ImageIcon("Pictures/Player/Player.png")
+			.getImage();
 
 	// Projectile Speed
 	final static int PRO_SPEED = -30;
@@ -24,7 +28,7 @@ public class WindowsDefender extends Player
 	public WindowsDefender()
 	{
 		this.location = new Point(290, 700);
-		// this.image = WIN_DEF;
+		this.icon = WIN_DEF;
 		this.dim = 20;
 		this.moveSpeed = MOVE_SPEED;
 	}

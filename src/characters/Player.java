@@ -13,7 +13,7 @@ import projectiles.*;
 public class Player
 {
 	// Image to be used when displaying the character
-	protected Image Icon;
+	protected Image icon;
 
 	// Location of the player
 	protected Point location;
