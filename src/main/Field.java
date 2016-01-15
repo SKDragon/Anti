@@ -49,28 +49,23 @@ public class Field
 	 */
 	public Field(int charChoice)
 	{
-		System.out.println("this exists");
 		// Creates the player according to the player's choice of character
 		if (charChoice == 1)
 			player = new WindowsDefender();
 		if (charChoice == 2)
 			player = new ACGFree();
 
-		System.out.println(player);
 		playerPro = new ArrayList<Projectile>();
 		enemyPro = new ArrayList<Projectile>();
 		enemies = new ArrayList<Enemy>();
-		System.out.println(enemies);
 
 		// Creates references to the player variables
 		playerLoc = player.getLoc();
 		playerMove = player.getMoveSpeed();
 		playerDim = player.getDimensions();
 
+		// Set timing for firing, movement
 		timeStart = System.currentTimeMillis();
-
-		// Begins the game, first level
-		//this.manageField(1);
 	}
 
 	/**
@@ -79,8 +74,8 @@ public class Field
 	public void manageField(int level)
 	{
 		// Creates and starts enemy spawning
-		 //Thread enemySpawner = new Thread(new EnemyManager(level));
-		 //enemySpawner.start();
+		Thread enemySpawner = new Thread(new EnemyManager(level));
+		enemySpawner.start();
 
 		// Creates and starts score based on how many seconds survived
 		Thread timeScore = new Thread(new SecondsScore());
@@ -103,7 +98,7 @@ public class Field
 				else
 					gameOver = true;
 			}
-			//System.out.println("ha");
+			// System.out.println("ha");
 
 			// Checks for character projectiles hitting enemies
 			isEnemyCollision();
@@ -130,61 +125,66 @@ public class Field
 		double playerY = playerLoc.getY();
 
 		// Loops through enemies to check for collisions
-		for (Enemy checking : enemies)
+		synchronized (enemies)
 		{
-			// Checks the odd enemies to see if any new projectiles have been
-			// spawned
-			if (checking.getType() == 3 || checking.getType() == 4)
+			for (Enemy checking : enemies)
 			{
-				ArrayList<Projectile> tempAdd = ((OddEnemy) checking)
-						.getFired();
-				if (tempAdd != null)
-					enemyPro.addAll(tempAdd);
-			}
+				// Checks the odd enemies to see if any new projectiles have
+				// been
+				// spawned
+				if (checking.getType() == 3 || checking.getType() == 4)
+				{
+					ArrayList<Projectile> tempAdd = ((OddEnemy) checking)
+							.getFired();
+					if (tempAdd != null)
+						enemyPro.addAll(tempAdd);
+				}
 
-			// References to X and Y to use in reducing checking
-			double checkX = checking.getLocation().getX();
-			double checkY = checking.getLocation().getY();
+				// References to X and Y to use in reducing checking
+				double checkX = checking.getLocation().getX();
+				double checkY = checking.getLocation().getY();
 
-			// If the enemy is too far away, ignore it
-			if (Math.abs(playerY - checkY) < 70
-					&& Math.abs(playerX - checkX) < 70)
-			{
-				// Creating references to dimensions of the player and
-				// projectile for collision check
-				int playerDim = player.getDimensions();
-				int checkDim = checking.getDimensions();
+				// If the enemy is too far away, ignore it
+				if (Math.abs(playerY - checkY) < 70
+						&& Math.abs(playerX - checkX) < 70)
+				{
+					// Creating references to dimensions of the player and
+					// projectile for collision check
+					int playerDim = player.getDimensions();
+					int checkDim = checking.getDimensions();
 
-				if ((playerX - checkX <= checkDim
-						|| checkX - playerX <= playerDim)
-						&& (playerY - checkY < checkDim
-						|| checkY - playerY < playerDim))
-					return true;
+					if ((playerX - checkX <= checkDim
+							|| checkX - playerX <= playerDim)
+							&& (playerY - checkY < checkDim
+							|| checkY - playerY < playerDim))
+						return true;
+				}
 			}
 		}
 
-		// Loops through projectiles to see if any collisions have occurred
-		for (Projectile checking : enemyPro)
+		synchronized (enemyPro)
 		{
-			// References to X and Y to use in reducing projectiles to check
-			double checkX = checking.getLocation().getX();
-			double checkY = checking.getLocation().getY();
-
-			// If projectile is too far away to even be close to hitting, then
-			// don't bother checking it
-			if (Math.abs(playerY - checkY) < 70
-					&& Math.abs(playerX - checkX) < 70)
+			// Loops through projectiles to see if any collisions have occurred
+			for (Projectile checking : enemyPro)
 			{
-				// Creating references to dimensions of the player and
-				// projectile for collision check
-				int playerDim = player.getDimensions();
-				int checkDim = checking.getDimensions();
+				// References to X and Y to use in reducing projectiles to check
+				double checkX = checking.getLocation().getX();
+				double checkY = checking.getLocation().getY();
 
-				if ((playerX - checkX <= checkDim
-						|| checkX - playerX <= playerDim)
-						&& (playerY - checkY < checkDim
-						|| checkY - playerY < playerDim))
-					return true;
+				// If projectile is too far away to even be close to hitting,
+				// then don't bother checking it
+				if (Math.abs(playerY - checkY) < 70
+						&& Math.abs(playerX - checkX) < 70)
+				{
+					// Creating references to dimensions of the player and
+					// projectile for collision check
+					int playerDim = player.getDimensions();
+					int checkDim = checking.getDimensions();
+
+					if ((playerX - checkX <= checkDim || checkX - playerX <= playerDim)
+							&& (playerY - checkY < checkDim || checkY - playerY < playerDim))
+						return true;
+				}
 			}
 		}
 
@@ -199,28 +199,35 @@ public class Field
 	{
 		// Loops through enemy ArrayList, determines if they were hit with any
 		// player projectiles
-		for (Enemy checking : enemies)
+		synchronized (enemies)
 		{
-			double checkX = checking.getLocation().getX();
-			double checkY = checking.getLocation().getY();
-
-			for (Projectile charPro : playerPro)
+			synchronized (playerPro)
 			{
-				double proX = charPro.getLocation().getX();
-				double proY = charPro.getLocation().getY();
-
-				// If the projectile is very far away, do not bother checking it
-				if (Math.abs(checkX) - proX < 20
-						&& Math.abs(checkY - proY) < 20)
+				for (Enemy checking : enemies)
 				{
-					int checkDim = checking.getDimensions();
-					int proDim = charPro.getDimensions();
+					double checkX = checking.getLocation().getX();
+					double checkY = checking.getLocation().getY();
 
-					// If collision occurred, get rid of the enemy
-					if ((checkX - proX < proDim || proX - checkX < checkDim)
-							&& (checkY - proY < proDim
-							|| proY - checkY < checkDim))
-						enemies.remove(checking);
+					for (Projectile charPro : playerPro)
+					{
+						double proX = charPro.getLocation().getX();
+						double proY = charPro.getLocation().getY();
+
+						// If the projectile is very far away, do not bother
+						// checking it
+						if (Math.abs(checkX) - proX < 20
+								&& Math.abs(checkY - proY) < 20)
+						{
+							int checkDim = checking.getDimensions();
+							int proDim = charPro.getDimensions();
+
+							// If collision occurred, get rid of the enemy
+							if ((checkX - proX < proDim || proX - checkX < checkDim)
+									&& (checkY - proY < proDim
+									|| proY - checkY < checkDim))
+								enemies.remove(checking);
+						}
+					}
 				}
 			}
 		}
@@ -280,8 +287,10 @@ public class Field
 	 */
 	public ArrayList<Projectile> getCharProjectiles()
 	{
-		System.out.println("ffdfd");
-		return playerPro;
+		synchronized (playerPro)
+		{
+			return playerPro;
+		}
 	}
 
 	/**
@@ -360,8 +369,12 @@ public class Field
 				// Determines if any enemies must be spawned, if so then adds
 				// them to the list of enemies on screen to be managed
 				ArrayList<Enemy> tempAdd = this.level.checkSpawn();
-				if (tempAdd != null)
-					enemies.addAll(tempAdd);
+
+				synchronized (enemies)
+				{
+					if (tempAdd != null)
+						enemies.addAll(tempAdd);
+				}
 
 				// Moves enemies and projectiles on screen
 				moveOnScreen();
@@ -404,31 +417,66 @@ public class Field
 		 */
 		private synchronized void moveOnScreen()
 		{
-			// Loops through all enemies and then move them
-			for (Enemy enemy : enemies)
-				enemy.moveEnemy();
-
-			// Loops through all enemy projectiles and moves them
-			for (Projectile proj : enemyPro)
-				proj.movePro();
-
-			// Loops through all player projectiles and moves them
-			for (Projectile playerPro : playerPro)
+			synchronized (enemies)
 			{
-				playerPro.movePro();
-				System.out.println(playerPro.getLocation().getX() + playerPro.getLocation().getY());
+				// Loops through all enemies and then move them
+				for (Enemy enemy : enemies)
+					enemy.moveEnemy();
+			}
+
+			synchronized (enemyPro)
+			{
+				// Loops through all enemy projectiles and moves them
+				for (Projectile proj : enemyPro)
+					proj.movePro();
+			}
+
+			synchronized (playerPro)
+			{
+				// Loops through all player projectiles and moves them
+				for (Projectile playerPro : playerPro)
+					playerPro.movePro();
 			}
 
 			// Loops through things again to check if any objects have gone
 			// off-screen
-			for (int enemy = 0; enemy < enemies.size(); enemy++)
+			synchronized (enemies)
 			{
-				Point checkLoc = enemies.get(enemy).getLocation();
-				if (checkLoc.getX() > 600 || checkLoc.getX() < 0
-						|| checkLoc.getY() > 800 || checkLoc.getY() < 0)
+				for (int enemy = 0; enemy < enemies.size(); enemy++)
 				{
-					enemies.remove(enemy);
-					enemy--;
+					Point checkLoc = enemies.get(enemy).getLocation();
+					if (checkLoc.getX() > 600 || checkLoc.getX() < 0
+							|| checkLoc.getY() > 800 || checkLoc.getY() < 0)
+					{
+						enemies.remove(enemy);
+						enemy--;
+					}
+				}
+			}
+			synchronized (enemyPro)
+			{
+				for (int enemyBullet = 0; enemyBullet < enemyPro.size(); enemyBullet++)
+				{
+					Point checkLoc = enemyPro.get(enemyBullet).getLocation();
+					if (checkLoc.getX() > 600 || checkLoc.getX() < 0
+							|| checkLoc.getY() > 800 || checkLoc.getY() < 0)
+					{
+						enemies.remove(enemyBullet);
+						enemyBullet--;
+					}
+				}
+			}
+			synchronized (playerPro)
+			{
+				for (int charPro = 0; charPro < playerPro.size(); charPro++)
+				{
+					Point checkLoc = playerPro.get(charPro).getLocation();
+					if (checkLoc.getX() > 600 || checkLoc.getX() < 0
+							|| checkLoc.getY() > 800 || checkLoc.getY() < 0)
+					{
+						playerPro.remove(charPro);
+						charPro--;
+					}
 				}
 			}
 		}

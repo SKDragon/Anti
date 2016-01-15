@@ -13,11 +13,11 @@ public class WindowsDefender extends Player
 {
 	// Character image for WinDef
 	// final static Image WIN_DEF null;
-	
+
 	// Projectile Speed
 	final static int PRO_SPEED = -30;
 	final static int MOVE_SPEED = 10;
-	
+
 	/**
 	 * Constructor for WindowsDefender character
 	 */
@@ -28,13 +28,15 @@ public class WindowsDefender extends Player
 		this.dim = 20;
 		this.moveSpeed = MOVE_SPEED;
 	}
-	
+
 	/**
 	 * Creates a projectile at the location of the player
 	 * @return returns the new projectile
 	 */
 	public LinearPro firePro()
 	{
-		return new LinearPro(this.location, null, 10, 0, PRO_SPEED);
+
+		return new LinearPro(new Point((int) this.location.getX() + 5,
+				(int) this.location.getY()), null, 50, 0, PRO_SPEED);
 	}
 }

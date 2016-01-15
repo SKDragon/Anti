@@ -326,16 +326,13 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 			Field.moveChar(0, 0, true);
 		}
 
-		//String th = field.toString();
+		// String th = field.toString();
 		// System.out.println(th);
-		//System.out.println(field);
+		// System.out.println(field);
 
 		// Arrays
-		if (false)
-		{
+		if (field.started)
 			charProjectiles = field.getCharProjectiles();
-			System.out.println("Got proj");
-		}
 	}
 
 	void borderLoad()
@@ -387,16 +384,17 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 
 		// Paint arrays
 
-		if (charProjectiles != null)
+		if (charProjectiles != null && charProjectiles.size() > 0)
 		{
-			System.out.println("main " + charProjectiles.size());
-			for (int i = 0; i <= charProjectiles.size(); i++)
+			//System.out.println("main " + charProjectiles.size());
+			for (Projectile charPro : charProjectiles)
 			{
-				Image p = charProjectiles.get(i).getImage();
-				Point pp = charProjectiles.get(i).getLocation();
+				// Image p = charProjectiles.get(i).getImage();
+				Point pp = charPro.getLocation();
 				int x = (int) pp.getX();
 				int y = (int) pp.getY();
 				// g.drawImage(p, x, y, null);
+			//	System.out.println(charPro.getLocation().getY());
 				g.fillRect(x, y, 10, 10);
 			}
 		}
