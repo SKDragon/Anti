@@ -350,7 +350,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 				.getImage();
 		gameScreenBG = new ImageIcon(
 				"Pictures/Game Backgrounds/GameScreenBG.png").getImage();
-		player = new ImageIcon("Pictures/Player Images/Player.png").getImage();
+		//player = new ImageIcon("Pictures/Player Images/Player.png").getImage();
 	}
 
 	// MainMenu Render
