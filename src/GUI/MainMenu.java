@@ -46,7 +46,8 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 	private boolean SHOOT_Pressed = false;
 	private boolean BOMB_Pressed = false;
 	private static Field field;
-
+	
+	
 	// Stuff
 	ArrayList<Projectile> charProjectiles;
 
@@ -375,8 +376,9 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 		// PLayer
 		Point playerLoc = field.playerLoc;
 		int dim = field.playerDim;
-		g.setColor(Color.PINK);
-		g.drawRect((int) playerLoc.getX(), (int) playerLoc.getY(), dim, dim);
+		//g.setColor(Color.PINK);
+		//g.drawRect((int) playerLoc.getX(), (int) playerLoc.getY(), dim, dim);
+		
 
 		// testing
 		// g.fillRect(x, y, 100, 100);
