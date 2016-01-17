@@ -74,7 +74,7 @@ public class Field
 	public void manageField(int level)
 	{
 		// Creates and starts enemy spawning
-		Thread enemySpawner = new Thread(new EnemyManager(level));
+		Thread enemySpawner = new Thread(new FieldManager(level));
 		enemySpawner.start();
 
 		// Creates and starts score based on how many seconds survived
@@ -317,27 +317,66 @@ public class Field
 		return player;
 	}
 
+	private class EnemyManager
+	{
+		private Enemy toManage;
+
+		protected EnemyManager(Enemy toManage)
+		{
+			this.toManage = toManage;
+		}
+
+		public void run()
+		{
+			synchronized (toManage)
+			{
+				while (toManage != null)
+
+				{
+					toManage.moveEnemy();
+
+					if (toManage.getType() == 2 && !toManage.firedPro())
+					{
+						Projectile bullet = toManage.firePro();
+						if (bullet != null)
+						{
+							enemyPro.add(bullet);
+							Thread manageBullet = new Thread(
+									new ProjectileManager(bullet));
+							manageBullet.start();
+						}
+					}
+				}
+			}
+		}
+	}
+
 	private class ProjectileManager implements Runnable
 	{
-		Projectile toManage;
+		private Projectile toManage;
 
-		private ProjectileManager(Projectile pro)
+		protected ProjectileManager(Projectile pro)
 		{
 			this.toManage = pro;
 		}
 
 		public void run()
 		{
-			toManage.movePro();
+			synchronized (toManage)
+			{
+				while (this.toManage != null)
+				{
+					toManage.movePro();
 
-			try
-			{
-				Thread.sleep(30);
-			}
-			catch (InterruptedException e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+					try
+					{
+						Thread.sleep(30);
+					}
+					catch (InterruptedException e)
+					{
+						System.out.println("Pro manage sleep");
+					}
+				}
 			}
 		}
 	}
@@ -369,7 +408,7 @@ public class Field
 	 * @author Iain/Gavin
 	 * @version 10/1/16
 	 */
-	private class EnemyManager implements Runnable
+	private class FieldManager implements Runnable
 	{
 		Level level;
 
@@ -377,7 +416,7 @@ public class Field
 		 * Constructor, uses level object to determine spawning
 		 * @param level the level to load
 		 */
-		public EnemyManager(int level)
+		public FieldManager(int level)
 		{
 			this.level = new LevelOne();
 		}
@@ -445,23 +484,23 @@ public class Field
 		 */
 		private synchronized void moveOnScreen()
 		{
-			synchronized (enemies)
-			{
-				// Loops through all enemies and then move them
-				for (Enemy enemy : enemies)
-				{
-					enemy.moveEnemy();
-					System.out.println(enemy.getLocation().getX() + " "
-							+ enemy.getLocation().getX());
-				}
-			}
-
-			synchronized (enemyPro)
-			{
-				// Loops through all enemy projectiles and moves them
-				for (Projectile proj : enemyPro)
-					proj.movePro();
-			}
+//			synchronized (enemies)
+//			{
+//				// Loops through all enemies and then move them
+//				for (Enemy enemy : enemies)
+//				{
+//					enemy.moveEnemy();
+//					System.out.println(enemy.getLocation().getX() + " "
+//							+ enemy.getLocation().getX());
+//				}
+//			}
+//
+//			synchronized (enemyPro)
+//			{
+//				// Loops through all enemy projectiles and moves them
+//				for (Projectile proj : enemyPro)
+//					proj.movePro();
+//			}
 
 			synchronized (playerPro)
 			{

@@ -82,4 +82,14 @@ public class Enemy
 	{
 		return this.spawnTime;
 	}
+
+	public boolean firedPro()
+	{
+		return false;
+	}
+	
+	public Projectile firePro()
+	{
+		return null;
+	}
 }

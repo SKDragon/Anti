@@ -15,6 +15,8 @@ public class ProEnemy extends Enemy
 {
 	// Type of enemy
 	private static final int TYPE = 2;
+	private long spawnAt;
+	private boolean fired = false;
 
 	/**
 	 * Basic Constructor
@@ -30,8 +32,8 @@ public class ProEnemy extends Enemy
 	 * @param proj the projectile to fire
 	 * @param timing time after spawn to fire projectile
 	 */
-	public ProEnemy(Image icon, int health, int xChange, int yChange,
-			int xIn, int yIn, Point location, int dim, long spawn, Projectile proj,
+	public ProEnemy(Image icon, int health, int xChange, int yChange, int xIn,
+			int yIn, Point location, int dim, long spawn, Projectile proj,
 			int timing)
 	{
 		// this.icon = image
@@ -46,5 +48,21 @@ public class ProEnemy extends Enemy
 		this.spawnTime = spawn;
 		this.fire = proj;
 		this.timeFire = timing;
+		this.spawnAt = System.currentTimeMillis();
+	}
+
+	public Projectile firePro()
+	{
+		if (timeFire >= System.currentTimeMillis() - this.spawnAt)
+		{
+			this.fired = true;
+			return this.fire;
+		}
+		return null;
+	}
+	
+	public boolean firedPro()
+	{
+		return this.fired;
 	}
 }
