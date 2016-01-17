@@ -473,11 +473,11 @@ public class Field
 		private Projectile toManage;
 		private long delay = 0;
 
-		protected ProjectileManager(Enemy firedBy, Projectile pro)
-		{
-			this.firedBy = firedBy;
-			this.toManage = pro;
-		}
+//		protected ProjectileManager(Enemy firedBy, Projectile pro)
+//		{
+//			this.firedBy = firedBy;
+//			this.toManage = pro;
+//		}
 
 		protected ProjectileManager(Enemy firedBy, Projectile pro, long delay)
 		{
