@@ -266,6 +266,7 @@ public class Field
 				proFired = true;
 			}
 			timeElapsed = System.currentTimeMillis();
+			System.out.println(playerLoc.getX() + " " +playerLoc.getY());
 		}
 	}
 

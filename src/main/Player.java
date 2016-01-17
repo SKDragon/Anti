@@ -68,7 +68,7 @@ public class Player
 	 */
 	public int getMoveSpeed()
 	{
-		return this.moveSpeed;
+		return this.MOVE_SPEED;
 	}
 
 	public int getDimensions()
