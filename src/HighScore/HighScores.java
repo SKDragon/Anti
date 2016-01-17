@@ -1,99 +1,60 @@
 package HighScore;
-
-import java.io.FileInputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.Scanner;
+import java.util.StringTokenizer;
 
-/**
- * 
- * @author Gawain Leung
- *
- */
 public class HighScores {
 
 	private ArrayList<Score> scores;
-	private final String highScoresFile = "HighScores/HighScores.txt";
-
-	ObjectOutputStream output = null;
-	ObjectInputStream input = null;
+	String file = "HighScores.txt";
+	String lineBreak = "//";
 
 	public HighScores() {
 		scores = new ArrayList<Score>();
 	}
 
-	public void loadScoreFile() {
+	void addScore(String name, int score) {
+		scores.add(new Score(name, score));
+	}
+
+	void loadScoreFile() {
 		try {
-			input = new ObjectInputStream(new FileInputStream(highScoresFile));
-			scores = (ArrayList<Score>) input.readObject();
-		} catch (FileNotFoundException e) {
-			System.out.println("FileNotFoundException: " + e.getMessage());
-		} catch (IOException e) {
-			System.out.println("IOException: " + e.getMessage());
-		} catch (ClassNotFoundException e) {
-			System.out.println("ClassNotFoundException: " + e.getMessage());
-		} finally {
-			try {
-				if (output != null) {
-					output.flush();
-					output.close();
+			Scanner reader = new Scanner(new File(file));
+			String nextLine = "";
+			
+			while (reader.hasNextLine()) {
+				nextLine = reader.nextLine();
+				StringTokenizer st = new StringTokenizer(nextLine, lineBreak);
+				while (st.hasMoreElements()) {
+					System.out.println("Name"+ st.nextElement());
+					System.out.println("Score"+ st.nextElement());
 				}
-			} catch (IOException e) {
-				System.out.println("[Laad] IO Error: " + e.getMessage());
 			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+
 	}
 
-	public void updateScoreFile() {
+	void updateScoreFile() {
 		try {
-			output = new ObjectOutputStream(new FileOutputStream(highScoresFile));
-			output.writeObject(scores);
+			PrintWriter fileOut = new PrintWriter(new File(file));
+			for (Score s : scores) {
+				String all = s.getName() + lineBreak + Integer.toString(s.getScore());
+				// String scr = Integer.toString(s.getScore());
+				// String nm = s.getName();
+				fileOut.println(all);
+			}
+			fileOut.close();
 		} catch (FileNotFoundException e) {
-			System.out.println("[Update] FNF Error: " + e.getMessage() + ",the program will try and make a new file");
-		} catch (IOException e) {
-			System.out.println("[Update] IO Error: " + e.getMessage());
-		} finally {
-			try {
-				if (output != null) {
-					output.flush();
-					output.close();
-				}
-			} catch (IOException e) {
-				System.out.println("[Update] Error: " + e.getMessage());
-			}
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-	}
 
-	public ArrayList<Score> getScores() {
-		loadScoreFile();
-		sort();
-		return scores;
-	}
-
-	private void sort() {
-		ScoreComparator comparator = new ScoreComparator();
-		Collections.sort(scores, comparator);
-	}
-
-	public class ScoreComparator implements Comparator<Score> {
-		public int compare(Score score1, Score score2) {
-
-			long sc1 = score1.getScore();
-			long sc2 = score2.getScore();
-
-			if (sc1 > sc2) {
-				return -1; // -1 means first score is bigger then second score
-			} else if (sc1 < sc2) {
-				return +1; // +1 means that score is lower
-			} else {
-				return 0; // 0 means score is equal
-			}
-		}
 	}
 
 }

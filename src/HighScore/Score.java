@@ -1,5 +1,6 @@
 package HighScore;
 
+
 import java.io.Serializable;
 
 /**
@@ -10,14 +11,14 @@ import java.io.Serializable;
 public class Score implements Serializable{
 
 	String name;
-	long score;
+	int score;
 
-	public Score(String name, long score) {
+	public Score(String name, int score) {
 		this.name = name;
 		this.score = score;
 	}
 
-	private String getName() {
+	String getName() {
 		return name;
 	}
 
@@ -25,11 +26,11 @@ public class Score implements Serializable{
 		this.name = name;
 	}
 
-	protected long getScore() {
+	protected int getScore() {
 		return score;
 	}
 
-	private void setScore(long score) {
+	private void setScore(int score) {
 		this.score = score;
 	}
 	
