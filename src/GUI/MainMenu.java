@@ -56,7 +56,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 	private boolean gameOver = false;
 
 	// HighScores
-	//private HighScores hs = new HighScores();
+	private HighScores hs = new HighScores();
 
 	// Stuff
 	ArrayList<Projectile> charProjectiles;
