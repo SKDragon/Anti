@@ -25,10 +25,10 @@ public class MovingEnemy extends Enemy
 	 * @param dim dimensions of the enemy
 	 * @param the time to spawn the enemy
 	 */
-	public MovingEnemy(/*Image icon,*/ int health, int xChange, int yChange,
+	public MovingEnemy(Image icon, int health, int xChange, int yChange,
 			int xIn, int yIn, Point location, int dim, long spawn)
 	{
-		// this.icon = image
+		this.icon = icon;
 		this.enemyType = TYPE;
 		this.health = health;
 		this.xChange = xChange;

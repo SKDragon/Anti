@@ -3,6 +3,8 @@ package main;
 import java.awt.Point;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
+
 import levels.*;
 import projectiles.*;
 import characters.*;
@@ -20,7 +22,8 @@ public class Field
 	private boolean playerAlive = true;
 	private static boolean gameOver = false;
 	private static boolean levelWon;
-	public static boolean started = false;
+	public static boolean proFired = false;
+	public static boolean enemySpawned = false;
 
 	// Player object information
 	private static Player player;
@@ -37,11 +40,11 @@ public class Field
 	private static long timeElapsed = System.currentTimeMillis();
 
 	// All player projectiles
-	private static ArrayList<Projectile> playerPro;
+	private static ArrayList<Projectile> playerPro = new ArrayList<Projectile>();
 
 	// ArrayList of all enemy projectiles, enemies
-	private static ArrayList<Projectile> enemyPro;
-	private static ArrayList<Enemy> enemies;
+	private static ArrayList<Projectile> enemyPro = new ArrayList<Projectile>();
+	private static ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 
 	/**
 	 * Constructor, only needs player's choice of character
@@ -54,10 +57,6 @@ public class Field
 			player = new WindowsDefender();
 		if (charChoice == 2)
 			player = new ACGFree();
-
-		playerPro = new ArrayList<Projectile>();
-		enemyPro = new ArrayList<Projectile>();
-		enemies = new ArrayList<Enemy>();
 
 		// Creates references to the player variables
 		playerLoc = player.getLoc();
@@ -277,7 +276,7 @@ public class Field
 			if (firing)
 			{
 				playerPro.add(player.firePro());
-				started = true;
+				proFired = true;
 			}
 			timeElapsed = System.currentTimeMillis();
 		}
@@ -446,13 +445,16 @@ public class Field
 
 		public void run()
 		{
-			Enemy thing = new MovingEnemy(1, 0, 0, 0, 0, new Point(10, 9), 10,
-					1000);
+			Enemy thing = new MovingEnemy(new ImageIcon(
+					"Pictures/Enemies/50x50/enemy_1.png").getImage(), 1, 0, 0, 0, 0,
+					new Point(10, 9), 50, 1000);
+			
 			synchronized (enemies)
 			{
 				enemies.add(thing);
 				Thread manageEnemy = new Thread(new EnemyManager(thing));
 				manageEnemy.start();
+				enemySpawned = true;
 			}
 
 			// Manages enemies while ones still need to spawn
