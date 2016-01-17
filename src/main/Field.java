@@ -332,7 +332,7 @@ public class Field
 						{
 							enemyPro.add(bullet);
 							Thread manageBullet = new Thread(
-									new ProjectileManager(bullet));
+									new ProjectileManager(this.toManage, bullet));
 							manageBullet.start();
 						}
 					}
@@ -351,30 +351,49 @@ public class Field
 
 	private class ProjectileManager implements Runnable
 	{
+		private Enemy firedBy;
 		private Projectile toManage;
+		private long delay = 0;
 
-		protected ProjectileManager(Projectile pro)
+		protected ProjectileManager(Enemy firedBy, Projectile pro)
 		{
+			this.firedBy = firedBy;
 			this.toManage = pro;
+		}
+
+		protected ProjectileManager(Enemy firedBy, Projectile pro, long delay)
+		{
+			this.firedBy = firedBy;
+			this.toManage = pro;
+			this.delay = delay;
 		}
 
 		public void run()
 		{
-			synchronized (toManage)
+			try
 			{
-				while (this.toManage != null)
+				Thread.sleep(this.delay);
+			}
+			catch (InterruptedException e1)
+			{
+				System.out.println("pro delay error");
+			}
+
+			while (this.toManage != null)
+			{
+				synchronized (toManage)
 				{
 					toManage.movePro();
-
-					try
-					{
-						Thread.sleep(30);
-					}
-					catch (InterruptedException e)
-					{
-						System.out.println("Pro manage sleep");
-					}
 				}
+				try
+				{
+					Thread.sleep(30);
+				}
+				catch (InterruptedException e)
+				{
+					System.out.println("Pro manage sleep");
+				}
+
 			}
 		}
 	}
