@@ -15,6 +15,7 @@ public class Projectile
 	// The coordinates of the projectile
 	// Point is public to save a get/set method, faster processing
 	protected Point location;
+	protected boolean gone;
 
 	// Changes in position to be used in calculating position changes
 	protected int xChange;
@@ -84,9 +85,19 @@ public class Projectile
 	{
 		this.location = newLoc;
 	}
-	
+
 	public int getType()
 	{
 		return this.proType;
+	}
+
+	public void hit()
+	{
+		this.gone = true;
+	}
+
+	public boolean isGone()
+	{
+		return this.gone;
 	}
 }

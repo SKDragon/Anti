@@ -362,7 +362,9 @@ public class Field
 				// Moves character projectiles
 				moveCharPro();
 
-				System.out.println();
+//				System.out.println(enemies.size());
+//				System.out.println(playerPro.size());
+//				System.out.println(enemyPro.size());
 				try
 				{
 					Thread.sleep(30);
@@ -470,6 +472,21 @@ public class Field
 				{
 					System.out.println("enemy manage sleep");
 				}
+
+				// Checks to see if the enemy has gone off-screen
+				synchronized (toManage)
+				{
+					Point currentLoc = toManage.getLocation();
+					if (currentLoc.getX() > 600 || currentLoc.getX() < 0
+							|| currentLoc.getY() > 800 || currentLoc.getY() < 0)
+					{
+						synchronized (enemies)
+						{
+							enemies.remove(toManage);
+						}
+						toManage.destroyed();
+					}
+				}
 			}
 		}
 	}
@@ -508,7 +525,7 @@ public class Field
 					(int) firedBy.getLocation().getY()));
 			enemyPro.add(toManage);
 			enemyProFired = true;
-			while (this.toManage != null)
+			while (!this.toManage.isGone())
 			{
 				synchronized (toManage)
 				{
@@ -522,6 +539,21 @@ public class Field
 				catch (InterruptedException e)
 				{
 					System.out.println("Pro manage sleep");
+				}
+				
+				// Checks to see if the projectile has gone off-screen
+				synchronized (toManage)
+				{
+					Point currentLoc = toManage.getLocation();
+					if (currentLoc.getX() > 600 || currentLoc.getX() < 0
+							|| currentLoc.getY() > 800 || currentLoc.getY() < 0)
+					{
+						synchronized (enemyPro)
+						{
+							enemyPro.remove(toManage);
+						}
+						toManage.hit();
+					}
 				}
 			}
 		}
