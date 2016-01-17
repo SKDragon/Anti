@@ -264,7 +264,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 			g.drawImage(gameScreenBG, gameBG_X2, gameBG_Y2, this);
 		}
 
-		// PLayer
+		// Player
 		Point playerLoc = field.playerLoc;
 		int dim = field.playerDim;
 		g.setColor(Color.PINK);

@@ -96,6 +96,8 @@ public class Field
 				}
 				else
 					gameOver = true;
+
+				playerAlive = true;
 			}
 
 			// Checks for character projectiles hitting enemies
@@ -127,17 +129,6 @@ public class Field
 		{
 			for (Enemy checking : enemies)
 			{
-				// Checks the odd enemies to see if any new projectiles have
-				// been
-				// spawned
-				if (checking.getType() == 3 || checking.getType() == 4)
-				{
-					ArrayList<Projectile> tempAdd = ((OddEnemy) checking)
-							.getFired();
-					if (tempAdd != null)
-						enemyPro.addAll(tempAdd);
-				}
-
 				// References to X and Y to use in reducing checking
 				double checkX = checking.getLocation().getX();
 				double checkY = checking.getLocation().getY();
@@ -234,7 +225,7 @@ public class Field
 										enemies.remove(checking);
 										checking.destroyed();
 										enemy--;
-										System.out.println("boom");
+										score += 100;
 									}
 								}
 							}
@@ -412,15 +403,18 @@ public class Field
 	{
 		public void run()
 		{
-			try
+			while (!gameOver)
 			{
-				Thread.sleep(1000);
+				try
+				{
+					Thread.sleep(1000);
+				}
+				catch (InterruptedException e)
+				{
+					System.out.println("How could u screw up a sleep u turd");
+				}
+				score += 10;
 			}
-			catch (InterruptedException e)
-			{
-				System.out.println("How could u screw up a sleep u turd");
-			}
-			score += 10;
 		}
 	}
 
@@ -446,9 +440,10 @@ public class Field
 		public void run()
 		{
 			Enemy thing = new MovingEnemy(new ImageIcon(
-					"Pictures/Enemies/50x50/enemy_1.png").getImage(), 1, 1, 0, 0, 0,
+					"Pictures/Enemies/50x50/enemy_1.png").getImage(), 1, 1, 0,
+					0, 0,
 					new Point(10, 9), 50, 1000);
-			
+
 			synchronized (enemies)
 			{
 				enemies.add(thing);

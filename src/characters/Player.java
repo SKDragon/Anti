@@ -68,6 +68,6 @@ public class Player
 	
 	public void resetLoc()
 	{
-		this.location = new Point(140, 365);
+		this.location = new Point(290, 700);
 	}
 }
