@@ -31,7 +31,7 @@ import enemies.Enemy;
  */
 public class MainMenu extends JPanel implements MouseListener, KeyListener {
 	// Global Variables
-	private Image mainMenuBG, gameScreenBG, instructionsBG;
+	private Image mainMenuBG, gameScreenBG, instructionsBG, gameOverBG;
 	private Border raisedBevel, loweredBevel, compound, blackline;
 	private GridBagConstraints GB = new GridBagConstraints();
 
@@ -54,11 +54,9 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 	private static Image playerIcon;
 	private static Image playerProIcon;
 
-	// Game State Variables
-	private boolean gameOver = false;
-
 	// HighScores
 	private HighScores hs = new HighScores();
+	String playerScore;
 
 	// Stuff
 	ArrayList<Projectile> charProjectiles;
@@ -79,7 +77,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 	private boolean repaintThreadState = false;
 
 	protected enum STATE {
-		MAIN_MENU, GAME, INSTRUCTIONS, HIGHSCORES
+		MAIN_MENU, GAME, INSTRUCTIONS, HIGHSCORES, GAMEOVER
 	};
 
 	protected STATE State = STATE.MAIN_MENU;
@@ -104,6 +102,8 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 	}
 
 	private synchronized void update() {
+		// GameOver Update
+
 		// Background
 		gameBG_Y1 += gameBG_move;
 		if (gameBG_Y1 >= -1200) {
@@ -233,6 +233,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 			charProjectiles = field.getCharProjectiles();
 		if (field.enemySpawned)
 			enemies = field.getEnemies();
+
 	}
 
 	void borderLoad() {
@@ -246,6 +247,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 		mainMenuBG = new ImageIcon("Pictures/Menu Backgrounds/MainMenuBG.png").getImage();
 		instructionsBG = new ImageIcon("Pictures/Menu Backgrounds/InstructionsBGEdited.png").getImage();
 		gameScreenBG = new ImageIcon("Pictures/Game Backgrounds/GameScreenBG.png").getImage();
+		gameOverBG = new ImageIcon("Pictures/Menu Backgrounds/GameOverBG.png").getImage();
 	}
 
 	// Instructions Render
@@ -257,11 +259,22 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 	// HighScores Render
 	public void renderHighScoresScreen(Graphics g) {
 		super.paintComponent(g);
-		//g.drawImage(instructionsBG, 0, 0, this);
+		// g.drawImage(instructionsBG, 0, 0, this);
 	}
 
-	
-	
+	// GameOver Render
+	public void renderGameOVerScreen(Graphics g) {
+		super.paintComponent(g);
+		setSize(1000, 800);
+		g.drawImage(gameOverBG, 0, 0, this);
+
+		playerScore = Integer.toString(field.getScore());
+		g.setColor(Color.MAGENTA);
+		System.out.println(playerScore);
+		g.drawString(playerScore, 0, 0);
+
+	}
+
 	// MainMenu Render
 	public void renderMainMenu(Graphics g) {
 		super.paintComponent(g);
@@ -342,9 +355,10 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 			renderGameScreen(g);
 		} else if (State == STATE.INSTRUCTIONS) {
 			renderInstructionsScreen(g);
-		}
-		else if (State == STATE.HIGHSCORES){
+		} else if (State == STATE.HIGHSCORES) {
 			renderHighScoresScreen(g);
+		} else if (State == STATE.GAMEOVER) {
+			renderGameOVerScreen(g);
 		}
 		// repaint();
 	}
@@ -370,7 +384,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 			else if (mx >= 35 && mx <= 532 && my >= 604 && my <= 644) {
 				State = STATE.HIGHSCORES;
 				repaint();
-				
+
 			}
 		} else if (State == STATE.INSTRUCTIONS) {
 			if (mx > 24 && mx < 127 && my > 730 && my < 779) {
@@ -479,7 +493,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 
 	class repaintThread implements Runnable {
 		public void run() {
-			while (!gameOver) {
+			while (!Field.gameOver) {
 				update();
 				repaint();
 				try {
@@ -489,7 +503,8 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 			}
 
 			// Call for gameOver Screen
-
+			State = STATE.GAMEOVER;
+			repaint();
 		}
 	}
 
