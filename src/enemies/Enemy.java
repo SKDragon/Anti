@@ -2,7 +2,6 @@ package enemies;
 
 import java.awt.Image;
 import java.awt.Point;
-import java.util.ArrayList;
 
 import projectiles.*;
 
@@ -36,7 +35,7 @@ public class Enemy
 
 	// Projectile information
 	protected Projectile fire;
-	protected int timeFire;
+	protected long timeFire;
 
 	/**
 	 * Moves the enemy

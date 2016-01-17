@@ -66,7 +66,7 @@ public class Field
 	public void manageField(int level)
 	{
 		// Creates and starts enemy spawning
-		Thread enemySpawner = new Thread(new FieldManager(level));
+		Thread enemySpawner = new Thread(new FieldManager());
 		enemySpawner.start();
 
 		// Creates and starts score based on how many seconds survived
@@ -324,8 +324,6 @@ public class Field
 				synchronized (toManage)
 				{
 					toManage.moveEnemy();
-					// System.out.println(toManage.getLocation().getX()
-					// + toManage.getLocation().getX());
 
 					if (toManage.getType() == 2 && !toManage.firedPro())
 					{
@@ -334,7 +332,7 @@ public class Field
 						{
 							enemyPro.add(bullet);
 							Thread manageBullet = new Thread(
-									new ProjectileManager(bullet));
+									new ProjectileManager(this.toManage, bullet));
 							manageBullet.start();
 						}
 					}
@@ -353,30 +351,49 @@ public class Field
 
 	private class ProjectileManager implements Runnable
 	{
+		private Enemy firedBy;
 		private Projectile toManage;
+		private long delay = 0;
 
-		protected ProjectileManager(Projectile pro)
+		protected ProjectileManager(Enemy firedBy, Projectile pro)
 		{
+			this.firedBy = firedBy;
 			this.toManage = pro;
+		}
+
+		protected ProjectileManager(Enemy firedBy, Projectile pro, long delay)
+		{
+			this.firedBy = firedBy;
+			this.toManage = pro;
+			this.delay = delay;
 		}
 
 		public void run()
 		{
-			synchronized (toManage)
+			try
 			{
-				while (this.toManage != null)
+				Thread.sleep(this.delay);
+			}
+			catch (InterruptedException e1)
+			{
+				System.out.println("pro delay error");
+			}
+
+			while (this.toManage != null)
+			{
+				synchronized (toManage)
 				{
 					toManage.movePro();
-
-					try
-					{
-						Thread.sleep(30);
-					}
-					catch (InterruptedException e)
-					{
-						System.out.println("Pro manage sleep");
-					}
 				}
+				try
+				{
+					Thread.sleep(30);
+				}
+				catch (InterruptedException e)
+				{
+					System.out.println("Pro manage sleep");
+				}
+
 			}
 		}
 	}
@@ -413,23 +430,22 @@ public class Field
 	 */
 	private class FieldManager implements Runnable
 	{
-		Level level;
-
-		/**
-		 * Constructor, uses level object to determine spawning
-		 * @param level the level to load
-		 */
-		public FieldManager(int level)
-		{
-			this.level = new LevelOne();
-		}
-
 		public void run()
 		{
-			Enemy thing = new MovingEnemy(new ImageIcon(
-					"Pictures/Enemies/50x50/enemy_1.png").getImage(), 1, 1, 0,
-					0, 0, new Point(10, 9), 50, 1000);
-
+			Enemy thing = new ProEnemy(
+					new ImageIcon("Pictures/Enemies/50x50/enemy_1.png")
+							.getImage(),
+					1,
+					1,
+					0,
+					0,
+					0,
+					new Point(10, 9),
+					50,
+					1000,
+					new LinearPro(new Point(2, 2), new ImageIcon(
+							"Pictures/Projectiles/Projectile_2.png"), 10, 1, 1),
+					3000);
 			synchronized (enemies)
 			{
 				enemies.add(thing);

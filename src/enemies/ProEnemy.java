@@ -34,9 +34,9 @@ public class ProEnemy extends Enemy
 	 */
 	public ProEnemy(Image icon, int health, int xChange, int yChange, int xIn,
 			int yIn, Point location, int dim, long spawn, Projectile proj,
-			int timing)
+			long timing)
 	{
-		// this.icon = image
+		this.icon = icon;
 		this.enemyType = TYPE;
 		this.health = health;
 		this.xChange = xChange;
@@ -56,6 +56,7 @@ public class ProEnemy extends Enemy
 		if (timeFire >= System.currentTimeMillis() - this.spawnAt)
 		{
 			this.fired = true;
+			System.out.println("fired");
 			return this.fire;
 		}
 		return null;
