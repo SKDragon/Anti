@@ -200,31 +200,44 @@ public class Field
 		// player projectiles
 		synchronized (enemies)
 		{
-			synchronized (playerPro)
+			for (int enemy = 0; enemy < enemies.size(); enemy++)
 			{
-				for (Enemy checking : enemies)
+				Enemy checking = enemies.get(enemy);
+				synchronized (checking)
 				{
 					double checkX = checking.getLocation().getX();
 					double checkY = checking.getLocation().getY();
 
-					for (Projectile charPro : playerPro)
+					synchronized (playerPro)
 					{
-						double proX = charPro.getLocation().getX();
-						double proY = charPro.getLocation().getY();
-
-						// If the projectile is very far away, do not bother
-						// checking it
-						if (Math.abs(checkX) - proX < 20
-								&& Math.abs(checkY - proY) < 20)
+						for (Projectile charPro : playerPro)
 						{
-							int checkDim = checking.getDimensions();
-							int proDim = charPro.getDimensions();
+							synchronized (charPro)
+							{
+								double proX = charPro.getLocation().getX();
+								double proY = charPro.getLocation().getY();
 
-							// If collision occurred, get rid of the enemy
-							if ((checkX - proX < proDim || proX - checkX < checkDim)
-									&& (checkY - proY < proDim
-									|| proY - checkY < checkDim))
-								enemies.remove(checking);
+								// If the projectile is very far away, do not
+								// bother checking it
+								if (Math.abs(checkX) - proX < 20
+										&& Math.abs(checkY - proY) < 20)
+								{
+									int checkDim = checking.getDimensions();
+									int proDim = charPro.getDimensions();
+
+									// If collision occurred, get rid of the
+									// enemy
+									if ((checkX - proX < proDim || proX
+											- checkX < checkDim)
+											&& (checkY - proY < proDim || proY
+													- checkY < checkDim))
+									{
+										enemies.remove(checking);
+										enemy--;
+										System.out.println("boom");
+									}
+								}
+							}
 						}
 					}
 				}
@@ -333,8 +346,8 @@ public class Field
 				synchronized (toManage)
 				{
 					toManage.moveEnemy();
-					System.out.println(toManage.getLocation().getX()
-							+ toManage.getLocation().getX());
+					// System.out.println(toManage.getLocation().getX()
+					// + toManage.getLocation().getX());
 
 					if (toManage.getType() == 2 && !toManage.firedPro())
 					{
