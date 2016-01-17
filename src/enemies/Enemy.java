@@ -22,7 +22,6 @@ public class Enemy
 
 	// Icon image
 	protected Image icon;
-	protected long spawnTime;
 
 	// Type of enemy: 1=moving, 2=onePro, 3=odd, 4=boss
 	protected int enemyType;
@@ -55,6 +54,11 @@ public class Enemy
 	public Projectile firePro()
 	{
 		return null;
+	}
+
+	public void hit()
+	{
+		this.health -= 10;
 	}
 
 	public void destroyed()
@@ -98,13 +102,19 @@ public class Enemy
 	{
 		return this.icon;
 	}
-	
+
 	public long getDelay()
 	{
 		return this.fireDelay;
 	}
+
 	public boolean proFired()
 	{
 		return true;
+	}
+
+	public int getHealth()
+	{
+		return this.health;
 	}
 }

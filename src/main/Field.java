@@ -153,8 +153,7 @@ public class Field
 					double checkY = checking.getLocation().getY();
 
 					// If projectile is too far away to even be close to
-					// hitting,
-					// then don't bother checking it
+					// hitting, then don't bother checking it
 					if (Math.abs(playerY - checkY) < 70
 							&& Math.abs(playerX - checkX) < 70)
 					{
@@ -218,10 +217,14 @@ public class Field
 											&& (checkY - proY < proDim || proY
 													- checkY < checkDim))
 									{
-										enemies.remove(checking);
-										checking.destroyed();
-										enemy--;
-										score += 100;
+										checking.hit();
+										if (checking.getHealth() <= 0)
+										{
+											enemies.remove(checking);
+											checking.destroyed();
+											enemy--;
+											score += 100;
+										}
 									}
 								}
 							}
@@ -329,12 +332,12 @@ public class Field
 		{
 			Enemy thing = new ProEnemy(new ImageIcon(
 					"Pictures/Enemies/50x50/enemy_1.png").getImage(), 1, 1, 0,
-					0, 0, new Point(10, 9), 40, 1000, new LinearPro(new Point(
+					0, 0, new Point(10, 9), 40, new LinearPro(new Point(
 							2,
 							2),
 							new ImageIcon(
 									"Pictures/Projectiles/Projectile_2.png")
-									.getImage(), 7, 1, 5), 3000);
+									.getImage(), 10, 1, 5), 3000);
 			synchronized (enemies)
 			{
 				enemies.add(thing);
@@ -344,8 +347,9 @@ public class Field
 			}
 
 			Enemy thing2 = new MovingEnemy(new ImageIcon(
-					"Pictures/Enemies/50x50/enemy_1.png").getImage(), 3, 3, 0,
-					0, 0, new Point(100, 90), 40, 1000);
+					"Pictures/Enemies/50x50/enemy_1.png").getImage(), 100, 0,
+					0,
+					0, 0, new Point(100, 90), 40);
 
 			synchronized (enemies)
 			{
@@ -362,9 +366,9 @@ public class Field
 				// Moves character projectiles
 				moveCharPro();
 
-//				System.out.println(enemies.size());
-//				System.out.println(playerPro.size());
-//				System.out.println(enemyPro.size());
+				// System.out.println(enemies.size());
+				// System.out.println(playerPro.size());
+				// System.out.println(enemyPro.size());
 				try
 				{
 					Thread.sleep(30);
@@ -404,34 +408,6 @@ public class Field
 					}
 				}
 			}
-
-			// synchronized (enemies)
-			// {
-			// for (int enemy = 0; enemy < enemies.size(); enemy++)
-			// {
-			// Point checkLoc = enemies.get(enemy).getLocation();
-			// if (checkLoc.getX() > 600 || checkLoc.getX() < 0
-			// || checkLoc.getY() > 800 || checkLoc.getY() < 0)
-			// {
-			// enemies.remove(enemy);
-			// enemy--;
-			// }
-			// }
-			// }
-			// synchronized (enemyPro)
-			// {
-			// for (int enemyBullet = 0; enemyBullet < enemyPro.size();
-			// enemyBullet++)
-			// {
-			// Point checkLoc = enemyPro.get(enemyBullet).getLocation();
-			// if (checkLoc.getX() > 600 || checkLoc.getX() < 0
-			// || checkLoc.getY() > 800 || checkLoc.getY() < 0)
-			// {
-			// enemies.remove(enemyBullet);
-			// enemyBullet--;
-			// }
-			// }
-			// }
 		}
 	}
 
@@ -521,38 +497,44 @@ public class Field
 				System.out.println("pro delay error");
 			}
 
-			toManage.setLocation(new Point((int) firedBy.getLocation().getX(),
-					(int) firedBy.getLocation().getY()));
-			enemyPro.add(toManage);
-			enemyProFired = true;
-			while (!this.toManage.isGone())
+			if (!firedBy.isDestroyed())
 			{
-				synchronized (toManage)
-				{
-					toManage.movePro();
-				}
 
-				try
+				toManage.setLocation(new Point((int) firedBy.getLocation()
+						.getX(),
+						(int) firedBy.getLocation().getY()));
+				enemyPro.add(toManage);
+				enemyProFired = true;
+				while (!this.toManage.isGone())
 				{
-					Thread.sleep(30);
-				}
-				catch (InterruptedException e)
-				{
-					System.out.println("Pro manage sleep");
-				}
-				
-				// Checks to see if the projectile has gone off-screen
-				synchronized (toManage)
-				{
-					Point currentLoc = toManage.getLocation();
-					if (currentLoc.getX() > 600 || currentLoc.getX() < 0
-							|| currentLoc.getY() > 800 || currentLoc.getY() < 0)
+					synchronized (toManage)
 					{
-						synchronized (enemyPro)
+						toManage.movePro();
+					}
+
+					try
+					{
+						Thread.sleep(30);
+					}
+					catch (InterruptedException e)
+					{
+						System.out.println("Pro manage sleep");
+					}
+
+					// Checks to see if the projectile has gone off-screen
+					synchronized (toManage)
+					{
+						Point currentLoc = toManage.getLocation();
+						if (currentLoc.getX() > 600 || currentLoc.getX() < 0
+								|| currentLoc.getY() > 800
+								|| currentLoc.getY() < 0)
 						{
-							enemyPro.remove(toManage);
+							synchronized (enemyPro)
+							{
+								enemyPro.remove(toManage);
+							}
+							toManage.hit();
 						}
-						toManage.hit();
 					}
 				}
 			}

@@ -34,7 +34,7 @@ public class OddEnemy extends Enemy
 	 * @param spawn time to spawn the enemy
 	 */
 	public OddEnemy(Image icon, int health, int xChange, int yChange,
-			int xIn, int yIn, Point location, int dim, long spawn,
+			int xIn, int yIn, Point location, int dim,
 			ArrayList<Projectile> bullets, ArrayList<Integer> timing)
 	{
 		// this.icon = image
@@ -46,7 +46,6 @@ public class OddEnemy extends Enemy
 		this.yIn = yIn;
 		this.location = location;
 		this.dim = dim;
-		this.spawnTime = spawn;
 		this.bullets = bullets;
 		this.timing = timing;
 	}

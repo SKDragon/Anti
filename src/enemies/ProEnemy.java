@@ -32,7 +32,7 @@ public class ProEnemy extends Enemy
 	 * @param timing time after spawn to fire projectile
 	 */
 	public ProEnemy(Image icon, int health, int xChange, int yChange, int xIn,
-			int yIn, Point location, int dim, long spawn, Projectile proj,
+			int yIn, Point location, int dim, Projectile proj,
 			long timing)
 	{
 		this.icon = icon;
@@ -44,7 +44,6 @@ public class ProEnemy extends Enemy
 		this.yIn = yIn;
 		this.location = location;
 		this.dim = dim;
-		this.spawnTime = spawn;
 		this.fire = proj;
 		this.fireDelay = timing;
 	}
