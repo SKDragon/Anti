@@ -44,6 +44,6 @@ public class WindowsDefender extends Player
 	{
 
 		return new LinearPro(new Point((int) this.location.getX() + 5,
-				(int) this.location.getY()), null, 50, 0, PRO_SPEED);
+				(int) this.location.getY() - 10), null, 50, 0, PRO_SPEED);
 	}
 }
