@@ -317,7 +317,7 @@ public class Field
 		return player;
 	}
 
-	private class EnemyManager
+	private class EnemyManager implements Runnable
 	{
 		private Enemy toManage;
 
@@ -328,12 +328,13 @@ public class Field
 
 		public void run()
 		{
-			synchronized (toManage)
+			while (toManage != null)
 			{
-				while (toManage != null)
-
+				synchronized (toManage)
 				{
 					toManage.moveEnemy();
+					System.out.println(toManage.getLocation().getX()
+							+ toManage.getLocation().getX());
 
 					if (toManage.getType() == 2 && !toManage.firedPro())
 					{
@@ -346,6 +347,14 @@ public class Field
 							manageBullet.start();
 						}
 					}
+				}
+				try
+				{
+					Thread.sleep(30);
+				}
+				catch (InterruptedException e)
+				{
+					System.out.println("enemy manage sleep");
 				}
 			}
 		}
@@ -423,8 +432,14 @@ public class Field
 
 		public void run()
 		{
-			// enemies.add(new MovingEnemy(1, 2, 2, 1, 1, new Point(10, 9), 10,
-			// 1000));
+			Enemy thing = new MovingEnemy(1, 0, 0, 0, 0, new Point(10, 9), 10,
+					1000);
+			synchronized (enemies)
+			{
+				enemies.add(thing);
+				Thread manageEnemy = new Thread(new EnemyManager(thing));
+				manageEnemy.start();
+			}
 
 			// Manages enemies while ones still need to spawn
 			// while (this.level.getEnemies().size() > 0 && !gameOver)
@@ -484,23 +499,23 @@ public class Field
 		 */
 		private synchronized void moveOnScreen()
 		{
-//			synchronized (enemies)
-//			{
-//				// Loops through all enemies and then move them
-//				for (Enemy enemy : enemies)
-//				{
-//					enemy.moveEnemy();
-//					System.out.println(enemy.getLocation().getX() + " "
-//							+ enemy.getLocation().getX());
-//				}
-//			}
-//
-//			synchronized (enemyPro)
-//			{
-//				// Loops through all enemy projectiles and moves them
-//				for (Projectile proj : enemyPro)
-//					proj.movePro();
-//			}
+			// synchronized (enemies)
+			// {
+			// // Loops through all enemies and then move them
+			// for (Enemy enemy : enemies)
+			// {
+			// enemy.moveEnemy();
+			// System.out.println(enemy.getLocation().getX() + " "
+			// + enemy.getLocation().getX());
+			// }
+			// }
+			//
+			// synchronized (enemyPro)
+			// {
+			// // Loops through all enemy projectiles and moves them
+			// for (Projectile proj : enemyPro)
+			// proj.movePro();
+			// }
 
 			synchronized (playerPro)
 			{
