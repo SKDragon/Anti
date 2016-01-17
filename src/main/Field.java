@@ -264,8 +264,6 @@ public class Field
 			{
 				playerPro.add(player.firePro());
 				started = true;
-				System.out.println("Fire");
-				System.out.println(playerPro.size());
 			}
 			timeElapsed = System.currentTimeMillis();
 		}
@@ -356,7 +354,6 @@ public class Field
 		 */
 		public EnemyManager(int level)
 		{
-			// this.level = levels.get(level);
 			this.level = new LevelOne();
 		}
 
@@ -420,7 +417,11 @@ public class Field
 			{
 				// Loops through all enemies and then move them
 				for (Enemy enemy : enemies)
+				{
 					enemy.moveEnemy();
+					System.out.println(enemy.getLocation().getX() + " "
+							+ enemy.getLocation().getX());
+				}
 			}
 
 			synchronized (enemyPro)

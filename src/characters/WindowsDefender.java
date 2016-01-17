@@ -23,6 +23,7 @@ public class WindowsDefender extends Player
 	// Projectile Speed
 	final static int PRO_SPEED = -30;
 	final static int MOVE_SPEED = 10;
+	private int barrel = 1;
 
 	/**
 	 * Constructor for WindowsDefender character
@@ -42,8 +43,12 @@ public class WindowsDefender extends Player
 	 */
 	public LinearPro firePro()
 	{
-
-		return new LinearPro(new Point((int) this.location.getX() + 5,
-				(int) this.location.getY() - 10), null, 50, 0, PRO_SPEED);
+		barrel *= -1;
+		if (barrel == 1)
+			return new LinearPro(new Point((int) this.location.getX() + 5,
+					(int) this.location.getY() - 10), null, 50, 0, PRO_SPEED);
+		else
+			return new LinearPro(new Point((int) this.location.getX() + 35,
+					(int) this.location.getY() - 10), null, 50, 0, PRO_SPEED);
 	}
 }
