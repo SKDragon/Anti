@@ -46,9 +46,9 @@ public class WindowsDefender extends Player
 		barrel *= -1;
 		if (barrel == 1)
 			return new LinearPro(new Point((int) this.location.getX() + 5,
-					(int) this.location.getY() - 10), null, 50, 0, PRO_SPEED);
+					(int) this.location.getY() - 5), null, 50, 0, PRO_SPEED);
 		else
 			return new LinearPro(new Point((int) this.location.getX() + 35,
-					(int) this.location.getY() - 10), null, 50, 0, PRO_SPEED);
+					(int) this.location.getY() - 5), null, 50, 0, PRO_SPEED);
 	}
 }

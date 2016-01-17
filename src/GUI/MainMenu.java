@@ -28,12 +28,13 @@ import projectiles.Projectile;
  * @author Gavin L
  * @version January 11, 2016
  */
-public class MainMenu extends JPanel implements MouseListener, KeyListener {
+public class MainMenu extends JPanel implements MouseListener, KeyListener
+{
 	// Global Variables
 	private Image mainMenuBG, gameScreenBG;
 	private Border raisedBevel, loweredBevel, compound, blackline;
 	private GridBagConstraints GB = new GridBagConstraints();
-	
+
 	// GameScreen Background Variables
 	private int gameBG_X1 = 0;
 	private int gameBG_Y1 = -200;
@@ -52,7 +53,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 	private static Field field;
 	private static Image playerIcon;
 	private static Image playerProIcon;
-	
+
 	// Game State Variables
 	private boolean gameOver = false;
 
@@ -82,7 +83,8 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 
 	protected STATE State = STATE.MAIN_MENU;
 
-	MainMenu() {
+	MainMenu()
+	{
 		super(new GridBagLayout());
 		setPreferredSize(new Dimension(1000, 800));
 		setFocusable(true);
@@ -92,24 +94,31 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 		loadImages();
 	}
 
-	public void repaint() {
+	public void repaint()
+	{
 		super.repaint();
 	}
 
-	public void addNotify() {
+	public void addNotify()
+	{
 		super.addNotify();
 		requestFocus();
 	}
 
-	private synchronized void update() {
+	private synchronized void update()
+	{
 		// Background
 		gameBG_Y1 += gameBG_move;
-		if (gameBG_Y1 >= -1200) {
+		if (gameBG_Y1 >= -1200)
+		{
 			gameBG_Y2 += gameBG_move;
 		}
-		if (gameBG_Y2 == -200) {
+		if (gameBG_Y2 == -200)
+		{
 			gameBG_Y1 = -1200;
-		} else if (gameBG_Y1 == -200) {
+		}
+		else if (gameBG_Y1 == -200)
+		{
 			gameBG_Y2 = -1200;
 		}
 		//
@@ -119,97 +128,129 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 		// //////////////////////////////////////////////////////////////////////////
 		// 8 Cardinal Directions with SHOOT
 		// ONLY UP
-		if (UP_Pressed && !DOWN_Pressed && !LEFT_Pressed && !RIGHT_Pressed) {
+		if (UP_Pressed && !DOWN_Pressed && !LEFT_Pressed && !RIGHT_Pressed)
+		{
 			// Adds SHOOT
-			if (SHOOT_Pressed) {
+			if (SHOOT_Pressed)
+			{
 				// System.out.println("UP and SHOOT");
 				Field.moveChar(0, 1, true);
-			} else {
+			}
+			else
+			{
 				// System.out.println("UP");
 				Field.moveChar(0, 1, false);
 			}
 
 		}
 		// UP and RIGHT
-		if (UP_Pressed && !DOWN_Pressed && !LEFT_Pressed && RIGHT_Pressed) {
+		if (UP_Pressed && !DOWN_Pressed && !LEFT_Pressed && RIGHT_Pressed)
+		{
 			// Adds SHOOT
-			if (SHOOT_Pressed) {
+			if (SHOOT_Pressed)
+			{
 				// System.out.println("UP and RIGHT and SHOOT");
 				Field.moveChar(1, 4, true);
-			} else {
+			}
+			else
+			{
 				// System.out.println("UP and RIGHT");
 				Field.moveChar(1, 4, false);
 
 			}
 		}
 		// ONLY RIGHT
-		if (RIGHT_Pressed && !DOWN_Pressed && !UP_Pressed && !LEFT_Pressed) {
+		if (RIGHT_Pressed && !DOWN_Pressed && !UP_Pressed && !LEFT_Pressed)
+		{
 			// Adds SHOOT
-			if (SHOOT_Pressed) {
+			if (SHOOT_Pressed)
+			{
 				// System.out.println("RIGHT and SHOOT");
 				Field.moveChar(0, 4, true);
-			} else {
+			}
+			else
+			{
 				// System.out.println("RIGHT");
 				Field.moveChar(0, 4, false);
 			}
 		}
 		// DOWN and RIGHT
-		if (DOWN_Pressed && !LEFT_Pressed && !UP_Pressed && RIGHT_Pressed) {
+		if (DOWN_Pressed && !LEFT_Pressed && !UP_Pressed && RIGHT_Pressed)
+		{
 
 			// Adds SHOOT
-			if (SHOOT_Pressed) {
+			if (SHOOT_Pressed)
+			{
 				// System.out.println("DOWN and RIGHT and SHOOT");
 				Field.moveChar(2, 4, true);
-			} else {
+			}
+			else
+			{
 				Field.moveChar(2, 4, false);
 				// System.out.println("DOWN and RIGHT");
 
 			}
 		}
 		// ONLY DOWN
-		if (DOWN_Pressed && !LEFT_Pressed && !UP_Pressed && !RIGHT_Pressed) {
+		if (DOWN_Pressed && !LEFT_Pressed && !UP_Pressed && !RIGHT_Pressed)
+		{
 
 			// Adds SHOOT
-			if (SHOOT_Pressed) {
+			if (SHOOT_Pressed)
+			{
 				// System.out.println("DOWN and SHOOT");
 				Field.moveChar(2, 0, true);
-			} else {
+			}
+			else
+			{
 				// System.out.println("DOWN");
 				Field.moveChar(2, 0, false);
 
 			}
 		}
 		// DOWN and LEFT
-		if (DOWN_Pressed && LEFT_Pressed && !UP_Pressed && !RIGHT_Pressed) {
+		if (DOWN_Pressed && LEFT_Pressed && !UP_Pressed && !RIGHT_Pressed)
+		{
 
 			// Adds SHOOT
-			if (SHOOT_Pressed) {
+			if (SHOOT_Pressed)
+			{
 				// System.out.println("DOWN and LEFT and SHOOT");
 				Field.moveChar(2, 3, true);
-			} else {
+			}
+			else
+			{
 				// System.out.println("DOWN and LEFT");
 				Field.moveChar(2, 3, false);
 
 			}
 		}
 		// ONLY LEFT
-		if (LEFT_Pressed && !DOWN_Pressed && !UP_Pressed && !RIGHT_Pressed) {
+		if (LEFT_Pressed && !DOWN_Pressed && !UP_Pressed && !RIGHT_Pressed)
+		{
 			// Adds SHOOT
-			if (SHOOT_Pressed) {
+			if (SHOOT_Pressed)
+			{
 				// System.out.println("LEFT and SHOOT");
 				Field.moveChar(0, 3, true);
-			} else {
+			}
+			else
+			{
 				// System.out.println("LEFT");
 				Field.moveChar(0, 3, false);
 			}
 		}
 		// UP and LEFT
-		if (UP_Pressed && !DOWN_Pressed && LEFT_Pressed && !RIGHT_Pressed) {
+		if (UP_Pressed && !DOWN_Pressed && LEFT_Pressed && !RIGHT_Pressed)
+		{
 			// Adds SHOOT
-			if (SHOOT_Pressed) {
+			if (SHOOT_Pressed)
+			{
 				// System.out.println("UP and LEFT and SHOOT");
 				Field.moveChar(1, 3, true);
-			} else {
+			}
+			else
+			{
 				// System.out.println("UP and LEFT");
 				Field.moveChar(1, 3, false);
 			}
@@ -217,7 +258,9 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 		//
 		// //////////////////////////////////////////////////////////////////////////
 		// Just SHOOT or BOMB
-		if (!UP_Pressed && SHOOT_Pressed && !DOWN_Pressed && !LEFT_Pressed && !RIGHT_Pressed) {
+		if (!UP_Pressed && SHOOT_Pressed && !DOWN_Pressed && !LEFT_Pressed
+				&& !RIGHT_Pressed)
+		{
 			// .println("SHOOT");
 			Field.moveChar(0, 0, true);
 		}
@@ -231,32 +274,40 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 			charProjectiles = field.getCharProjectiles();
 	}
 
-	void borderLoad() {
+	void borderLoad()
+	{
 		blackline = BorderFactory.createLineBorder(Color.black);
 		raisedBevel = BorderFactory.createRaisedBevelBorder();
 		loweredBevel = BorderFactory.createLoweredBevelBorder();
-		compound = BorderFactory.createCompoundBorder(raisedBevel, loweredBevel);
+		compound = BorderFactory
+				.createCompoundBorder(raisedBevel, loweredBevel);
 	}
 
-	void loadImages() {
-		mainMenuBG = new ImageIcon("Pictures/Menu Backgrounds/MainMenuBG.png").getImage();
-		gameScreenBG = new ImageIcon("Pictures/Game Backgrounds/GameScreenBG.png").getImage();
+	void loadImages()
+	{
+		mainMenuBG = new ImageIcon("Pictures/Menu Backgrounds/MainMenuBG.png")
+				.getImage();
+		gameScreenBG = new ImageIcon(
+				"Pictures/Game Backgrounds/GameScreenBG.png").getImage();
 	}
 
 	// MainMenu Render
-	public void renderMainMenu(Graphics g) {
+	public void renderMainMenu(Graphics g)
+	{
 		super.paintComponent(g);
 		g.drawImage(mainMenuBG, 0, 0, this);
 	}
 
 	// GameScreen Render
-	public void renderGameScreen(Graphics g) {
+	public void renderGameScreen(Graphics g)
+	{
 		super.paintComponent(g);
 		setSize(600, 800);
 		setBorder(compound);
 		addKeyListener(this);
 		g.drawImage(gameScreenBG, gameBG_X1, gameBG_Y1, this);
-		if ((gameBG_Y1 >= -1200 && gameBG_Y1 <= 800)) {
+		if ((gameBG_Y1 >= -1200 && gameBG_Y1 <= 800))
+		{
 			g.drawImage(gameScreenBG, gameBG_X2, gameBG_Y2, this);
 		}
 
@@ -266,34 +317,48 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 		g.setColor(Color.PINK);
 		// g.drawRect((int) playerLoc.getX(), (int) playerLoc.getY(), dim, dim);
 
-		g.drawImage(playerIcon, (int) playerLoc.getX(), (int) playerLoc.getY(), null);
+		g.drawImage(playerIcon, (int) playerLoc.getX(), (int) playerLoc.getY(),
+				null);
 
 		// testing
 		// g.fillRect(x, y, 100, 100);
 
 		// Paint arrays
 
-		if (charProjectiles != null && charProjectiles.size() > 0) {
+		if (charProjectiles != null && charProjectiles.size() > 0)
+		{
 			// System.out.println("main " + charProjectiles.size());
-			for (Projectile charPro : charProjectiles) {
-				Point pp = charPro.getLocation();
-				int x = (int) pp.getX();
-				int y = (int) pp.getY();
-				 g.drawImage(playerProIcon, x, y, null);
-				// System.out.println(charPro.getLocation().getY());
-				//g.fillRect(x, y, 10, 10);
+			synchronized (charProjectiles)
+			{
+				for (Projectile charPro : charProjectiles)
+				{
+					synchronized (charPro)
+					{
+						Point pp = charPro.getLocation();
+						int x = (int) pp.getX();
+						int y = (int) pp.getY();
+						g.drawImage(playerProIcon, x, y, null);
+						// System.out.println(charPro.getLocation().getY());
+						// g.fillRect(x, y, 10, 10);
+					}
+				}
 			}
 		}
 	}
 
 	// Main Graphics Render
-	protected void paintComponent(Graphics g) {
+	protected void paintComponent(Graphics g)
+	{
 		super.paintComponent(g);
 
-		if (State == STATE.MAIN_MENU) {
+		if (State == STATE.MAIN_MENU)
+		{
 			renderMainMenu(g);
-		} else if (State == STATE.GAME) {
-			if (!repaintThreadState) {
+		}
+		else if (State == STATE.GAME)
+		{
+			if (!repaintThreadState)
+			{
 
 				Thread fieldManage = new Thread(new FieldManager());
 				fieldManage.start();
@@ -309,47 +374,56 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 	}
 
 	// Mouse Events
-	public void mouseClicked(MouseEvent event) {
+	public void mouseClicked(MouseEvent event)
+	{
 		int mx = event.getX();
 		int my = event.getY();
 
 		// Play
-		if (mx >= 40 && mx <= 329 && my >= 385 && my <= 426) {
+		if (mx >= 40 && mx <= 329 && my >= 385 && my <= 426)
+		{
 			State = STATE.GAME;
 			repaint();
 		}
 		// Instructions
-		else if (mx >= 32 && mx <= 598 && my >= 473 && my <= 560) {
+		else if (mx >= 32 && mx <= 598 && my >= 473 && my <= 560)
+		{
 
 		}
 		// Highscores
-		else if (mx >= 35 && mx <= 532 && my >= 604 && my <= 644) {
+		else if (mx >= 35 && mx <= 532 && my >= 604 && my <= 644)
+		{
 
 		}
 
 	}
 
-	public void mouseEntered(MouseEvent event) {
+	public void mouseEntered(MouseEvent event)
+	{
 		// TODO Auto-generated method stub
 
 	}
 
-	public void mouseExited(MouseEvent event) {
+	public void mouseExited(MouseEvent event)
+	{
 		// TODO Auto-generated method stub
 
 	}
 
-	public void mousePressed(MouseEvent event) {
+	public void mousePressed(MouseEvent event)
+	{
 		// TODO Auto-generated method stub
 
 	}
 
-	public void mouseReleased(MouseEvent event) {
+	public void mouseReleased(MouseEvent event)
+	{
 		// TODO Auto-generated method stub
 
 	}
 
-	public void keyPressed(KeyEvent event) {
+	public void keyPressed(KeyEvent event)
+	{
 		// Up = 38
 		// Left = 37
 		// Down = 40
@@ -360,23 +434,28 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 		int key = event.getKeyCode();
 
 		// UP
-		if (key == 38) {
+		if (key == 38)
+		{
 			UP_Pressed = true;
 		}
 		// LEFT
-		if (key == 37) {
+		if (key == 37)
+		{
 			LEFT_Pressed = true;
 		}
 		// DOWN
-		if (key == 40) {
+		if (key == 40)
+		{
 			DOWN_Pressed = true;
 		}
 		// RIGHT
-		if (key == 39) {
+		if (key == 39)
+		{
 			RIGHT_Pressed = true;
 		}
 		// SHOOT
-		if (key == 90) {
+		if (key == 90)
+		{
 			SHOOT_Pressed = true;
 		}
 
@@ -387,7 +466,8 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 	}
 
 	@Override
-	public void keyReleased(KeyEvent event) {
+	public void keyReleased(KeyEvent event)
+	{
 		int key = event.getKeyCode();
 
 		// Up = 38
@@ -398,51 +478,65 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 		// X = 88
 
 		// UP
-		if (key == 38) {
+		if (key == 38)
+		{
 			UP_Pressed = false;
 		}
 		// SHOOT
-		if (key == 90) {
+		if (key == 90)
+		{
 			SHOOT_Pressed = false;
 		}
 		// LEFT
-		if (key == 37) {
+		if (key == 37)
+		{
 			LEFT_Pressed = false;
 		}
 		// DOWN
-		if (key == 40) {
+		if (key == 40)
+		{
 			DOWN_Pressed = false;
 		}
 		// RIGHT
-		if (key == 39) {
+		if (key == 39)
+		{
 			RIGHT_Pressed = false;
 		}
 
 		// repaint();
 	}
 
-	public void keyTyped(KeyEvent event) {
+	public void keyTyped(KeyEvent event)
+	{
 		// TODO Auto-generated method stub
 	}
 
-	class repaintThread implements Runnable {
-		public void run() {
-			while (!gameOver) {
+	class repaintThread implements Runnable
+	{
+		public void run()
+		{
+			while (!gameOver)
+			{
 				update();
 				repaint();
-				try {
+				try
+				{
 					Thread.sleep(30);
-				} catch (InterruptedException ex) {
+				}
+				catch (InterruptedException ex)
+				{
 				}
 			}
-			
+
 			// Call for gameOver Screen
-			
+
 		}
 	}
 
-	class FieldManager implements Runnable {
-		public void run() {
+	class FieldManager implements Runnable
+	{
+		public void run()
+		{
 			field = new Field(1);
 			playerIcon = field.getPlayer().getIcon();
 			playerProIcon = field.getPlayer().getProIcon();

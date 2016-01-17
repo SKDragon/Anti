@@ -364,12 +364,15 @@ public class Field
 			{
 				// Determines if any enemies must be spawned, if so then adds
 				// them to the list of enemies on screen to be managed
-				ArrayList<Enemy> tempAdd = this.level.checkSpawn();
+				ArrayList<Enemy> toSpawn = this.level.checkSpawn();
 
 				synchronized (enemies)
 				{
-					if (tempAdd != null)
-						enemies.addAll(tempAdd);
+					if (toSpawn.size() > 0)
+					{
+						enemies.addAll(toSpawn);
+						System.out.println("Enemy Spawned");
+					}
 				}
 
 				// Moves enemies and projectiles on screen
@@ -386,25 +389,25 @@ public class Field
 			}
 
 			// Manages enemies while nothing else needs to spawn
-			while (!gameOver)
-			{
-				if (enemies.size() == 0)
-				{
-					gameOver = true;
-					levelWon = true;
-					break;
-				}
-				moveOnScreen();
-
-				try
-				{
-					Thread.sleep(30);
-				}
-				catch (InterruptedException e)
-				{
-					System.out.println("Error in enemy manager");
-				}
-			}
+			// while (!gameOver)
+			// {
+			// if (enemies.size() == 0)
+			// {
+			// gameOver = true;
+			// levelWon = true;
+			// break;
+			// }
+			// moveOnScreen();
+			//
+			// try
+			// {
+			// Thread.sleep(30);
+			// }
+			// catch (InterruptedException e)
+			// {
+			// System.out.println("Error in enemy manager");
+			// }
+			// }
 		}
 
 		/**
