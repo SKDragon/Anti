@@ -98,7 +98,6 @@ public class Field
 				else
 					gameOver = true;
 			}
-			// System.out.println("ha");
 
 			// Checks for character projectiles hitting enemies
 			isEnemyCollision();

@@ -14,6 +14,7 @@ public class Player
 {
 	// Image to be used when displaying the character
 	protected Image icon;
+	protected Image proIcon;
 
 	// Location of the player
 	protected Point location;
@@ -58,6 +59,11 @@ public class Player
 	public Image getIcon()
 	{
 		return this.icon;
+	}
+	
+	public Image getProIcon()
+	{
+		return this.proIcon;
 	}
 	
 	public void resetLoc()

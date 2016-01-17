@@ -15,8 +15,10 @@ import projectiles.LinearPro;
 public class WindowsDefender extends Player
 {
 	// Character image for WinDef
-	final static Image WIN_DEF = new ImageIcon("Pictures/Player/Player.png")
-			.getImage();
+	private final static Image WIN_DEF = new ImageIcon(
+			"Pictures/Player/Player.png").getImage();
+	private final static Image WIN_DEF_PRO = new ImageIcon(
+			"Pictures/Projectiles/Projectile_1.png").getImage();
 
 	// Projectile Speed
 	final static int PRO_SPEED = -30;
@@ -29,7 +31,8 @@ public class WindowsDefender extends Player
 	{
 		this.location = new Point(290, 700);
 		this.icon = WIN_DEF;
-		this.dim = 20;
+		this.proIcon = WIN_DEF_PRO;
+		this.dim = 50;
 		this.moveSpeed = MOVE_SPEED;
 	}
 

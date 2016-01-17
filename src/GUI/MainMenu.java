@@ -51,6 +51,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 	//
 	private static Field field;
 	private static Image playerIcon;
+	private static Image playerProIcon;
 	
 	// Game State Variables
 	private boolean gameOver = false;
@@ -275,11 +276,10 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 		if (charProjectiles != null && charProjectiles.size() > 0) {
 			// System.out.println("main " + charProjectiles.size());
 			for (Projectile charPro : charProjectiles) {
-				Image p = charPro.getImage();
 				Point pp = charPro.getLocation();
 				int x = (int) pp.getX();
 				int y = (int) pp.getY();
-				 g.drawImage(p, x, y, null);
+				 g.drawImage(playerProIcon, x, y, null);
 				// System.out.println(charPro.getLocation().getY());
 				//g.fillRect(x, y, 10, 10);
 			}
@@ -445,6 +445,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 		public void run() {
 			field = new Field(1);
 			playerIcon = field.getPlayer().getIcon();
+			playerProIcon = field.getPlayer().getProIcon();
 			field.manageField(1);
 		}
 	}
