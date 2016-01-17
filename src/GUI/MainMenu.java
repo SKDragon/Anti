@@ -343,20 +343,27 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 		int mx = event.getX();
 		int my = event.getY();
 
-		// Play
-		if (mx >= 40 && mx <= 329 && my >= 385 && my <= 426) {
-			State = STATE.GAME;
-			repaint();
-		}
-		// Instructions
-		else if (mx >= 32 && mx <= 598 && my >= 473 && my <= 560) {
-			State = STATE.INSTRUCTIONS;
-			repaint();
-			
-		}
-		// Highscores
-		else if (mx >= 35 && mx <= 532 && my >= 604 && my <= 644) {
+		if (State == STATE.MAIN_MENU) {
+			// Play
+			if (mx >= 40 && mx <= 329 && my >= 385 && my <= 426) {
+				State = STATE.GAME;
+				repaint();
+			}
+			// Instructions
+			else if (mx >= 32 && mx <= 598 && my >= 473 && my <= 560) {
+				State = STATE.INSTRUCTIONS;
+				repaint();
 
+			}
+			// Highscores
+			else if (mx >= 35 && mx <= 532 && my >= 604 && my <= 644) {
+
+			}
+		} else if (State == STATE.INSTRUCTIONS) {
+			if (mx>0&&mx<10&&my>0&&my<10){
+				State = STATE.MAIN_MENU;
+				repaint();
+			}
 		}
 
 	}
