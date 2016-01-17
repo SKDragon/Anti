@@ -62,6 +62,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 	private boolean DOWN_Pressed = false;
 	private boolean RIGHT_Pressed = false;
 	private boolean SHOOT_Pressed = false;
+	private boolean ENTER_Pressed = false;
 
 	//
 	private static Field field;
@@ -69,6 +70,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 	private static Image playerProIcon;
 
 	// HighScores
+	private JTextField nameField;
 	private HighScores hs = new HighScores();
 	String playerScore;
 
@@ -116,8 +118,11 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 		requestFocus();
 	}
 
+	private synchronized void gameOverUpdate() {
+		
+	}
+
 	private synchronized void update() {
-		// GameOver Update
 
 		// Background
 		gameBG_Y1 += gameBG_move;
@@ -297,13 +302,14 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 		g.drawString(playerScore, 345, 235);
 
 		// Name Field
-		JTextField field = new JTextField();
-		field.setFont(new Font("Arial", Font.BOLD, 100));
-		field.setForeground(Color.MAGENTA);
-		field.setBackground(Color.GRAY);
-		field.setHorizontalAlignment(JTextField.CENTER);
-		field.setDocument(new JTextFieldLimit(3));
-		//field.set
+		nameField = new JTextField();
+		nameField.setFont(new Font("Arial", Font.BOLD, 100));
+		nameField.setForeground(Color.MAGENTA);
+		nameField.setBackground(Color.GRAY);
+		nameField.setHorizontalAlignment(JTextField.CENTER);
+		nameField.setDocument(new JTextFieldLimit(3));
+
+		// Alignments
 		GB.ipady = 100;
 		GB.weightx = 0.1;
 		GB.gridx = 0;
@@ -312,9 +318,13 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 		GB.gridheight = 2;
 		GB.fill = GridBagConstraints.HORIZONTAL;
 		GB.insets = new Insets(280, 235, 0, 200);
-		add(field, GB);
+		add(nameField, GB);
 		// hs.addScore("this", field.getScore());
 		// g.drawString("500", 100, 200);
+
+		// if (ENTER_Pressed) {
+		//
+		// }
 	}
 
 	// MainMenu Render
@@ -447,6 +457,17 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 				repaint();
 			}
 		}
+		else if (State == STATE.GAMEOVER){
+			if (mx>0&&mx<10&&my>0&&my<10){
+//				if (nameField.getText().length()>0) {
+//					hs.addScore(nameField.getText(), field.getScore());
+//					hs.updateScoreFile();
+//					State = STATE.MAIN_MENU;
+//					System.out.println("here");
+//					repaint();
+//				}
+			}
+		}
 
 	}
 
@@ -471,75 +492,82 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 	}
 
 	public void keyPressed(KeyEvent event) {
-		// Up = 38
-		// Left = 37
-		// Down = 40
-		// Right = 39
-		// Z = 90
-		// X = 88
 
 		int key = event.getKeyCode();
+		if (State == STATE.GAME) {
+			// Up = 38
+			// Left = 37
+			// Down = 40
+			// Right = 39
+			// Z = 90
+			// X = 88
 
-		// UP
-		if (key == 38) {
-			UP_Pressed = true;
-		}
-		// LEFT
-		if (key == 37) {
-			LEFT_Pressed = true;
-		}
-		// DOWN
-		if (key == 40) {
-			DOWN_Pressed = true;
-		}
-		// RIGHT
-		if (key == 39) {
-			RIGHT_Pressed = true;
-		}
-		// SHOOT
-		if (key == 90) {
-			SHOOT_Pressed = true;
-		}
+//			if (key == KeyEvent.VK_SPACE) {
+//				Field.gameOver = true;
+//			}
 
-		// }
-		//
-		// //////////////////////////////////////////////////////////////////////////
-		// repaint();
+			// UP
+			if (key == 38) {
+				UP_Pressed = true;
+			}
+			// LEFT
+			if (key == 37) {
+				LEFT_Pressed = true;
+			}
+			// DOWN
+			if (key == 40) {
+				DOWN_Pressed = true;
+			}
+			// RIGHT
+			if (key == 39) {
+				RIGHT_Pressed = true;
+			}
+			// SHOOT
+			if (key == 90) {
+				SHOOT_Pressed = true;
+			}
+		} else if (State == STATE.GAMEOVER) {
+			if (key == 13) {
+				ENTER_Pressed = true;
+			}
+		}
 	}
 
-	@Override
 	public void keyReleased(KeyEvent event) {
 		int key = event.getKeyCode();
 
-		// Up = 38
-		// Left = 37
-		// Down = 40
-		// Right = 39
-		// Z = 90
-		// X = 88
+		if (State == STATE.GAME) {
+			// Up = 38
+			// Left = 37
+			// Down = 40
+			// Right = 39
+			// Z = 90
+			// X = 88
 
-		// UP
-		if (key == 38) {
-			UP_Pressed = false;
+			// UP
+			if (key == 38) {
+				UP_Pressed = false;
+			}
+			// SHOOT
+			if (key == 90) {
+				SHOOT_Pressed = false;
+			}
+			// LEFT
+			if (key == 37) {
+				LEFT_Pressed = false;
+			}
+			// DOWN
+			if (key == 40) {
+				DOWN_Pressed = false;
+			}
+			// RIGHT
+			if (key == 39) {
+				RIGHT_Pressed = false;
+			}
+		} else if (State == STATE.GAMEOVER) {
+			if (key == 13)
+				ENTER_Pressed = false;
 		}
-		// SHOOT
-		if (key == 90) {
-			SHOOT_Pressed = false;
-		}
-		// LEFT
-		if (key == 37) {
-			LEFT_Pressed = false;
-		}
-		// DOWN
-		if (key == 40) {
-			DOWN_Pressed = false;
-		}
-		// RIGHT
-		if (key == 39) {
-			RIGHT_Pressed = false;
-		}
-
-		// repaint();
 	}
 
 	public void keyTyped(KeyEvent event) {
@@ -571,23 +599,24 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 			field.manageField(1);
 		}
 	}
-	
+
 	public class JTextFieldLimit extends PlainDocument {
-		  private int limit;
+		private int limit;
 
-		  JTextFieldLimit(int limit) {
-		   super();
-		   this.limit = limit;
-		   }
-
-		  public void insertString( int offset, String  str, AttributeSet attr ) throws BadLocationException {
-		    if (str == null) return;
-
-		    if ((getLength() + str.length()) <= limit) {
-		      super.insertString(offset, str.toUpperCase(), attr);
-		    }
-		  }
+		JTextFieldLimit(int limit) {
+			super();
+			this.limit = limit;
 		}
+
+		public void insertString(int offset, String str, AttributeSet attr) throws BadLocationException {
+			if (str == null)
+				return;
+
+			if ((getLength() + str.length()) <= limit) {
+				super.insertString(offset, str.toUpperCase(), attr);
+			}
+		}
+	}
 
 	// @Override
 	// public void keyPressed(KeyEvent e)
