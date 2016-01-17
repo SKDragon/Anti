@@ -3,7 +3,9 @@ package GUI;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics;
+import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
@@ -12,6 +14,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -58,6 +63,8 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 	// HighScores
 	private HighScores hs = new HighScores();
 	String playerScore;
+	
+	Font font;
 
 	// Stuff
 	ArrayList<Projectile> charProjectiles;
@@ -91,6 +98,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 		addKeyListener(this);
 		borderLoad();
 		loadImages();
+		//loadFonts();
 	}
 
 	public void repaint() {
@@ -251,6 +259,17 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 		gameOverBG = new ImageIcon("Pictures/Menu Backgrounds/GameOverBG.png").getImage();
 	}
 
+	void loadFonts() {
+		InputStream is = getClass().getResourceAsStream("Fonts/Alien_Resurrection.ttf");
+		 try {
+			font = Font.createFont(Font.TRUETYPE_FONT, is);
+		} catch (FontFormatException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		font = font.deriveFont(25);
+	}
+
 	// Instructions Render
 	public void renderInstructionsScreen(Graphics g) {
 		super.paintComponent(g);
@@ -271,10 +290,10 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 
 		playerScore = Integer.toString(field.getScore());
 		g.setColor(Color.MAGENTA);
-		g.setFont(new Font("Arial",Font.BOLD, 50));
+		g.setFont(font);
 		g.drawString(playerScore, 345, 235);
 
-		//g.drawString("500", 100, 200);
+		// g.drawString("500", 100, 200);
 	}
 
 	// MainMenu Render
