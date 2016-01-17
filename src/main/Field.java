@@ -84,17 +84,7 @@ public class Field
 
 			// If the player was hit
 			if (!playerAlive)
-			{
-				if (lives > 0)
-				{
-					lives--;
-					player.resetLoc();
-				}
-				else
-					gameOver = true;
-
-				playerAlive = true;
-			}
+				gameOver = true;
 
 			// Checks for character projectiles hitting enemies
 			isEnemyCollision();
@@ -107,6 +97,7 @@ public class Field
 			{
 			}
 		}
+		System.out.println("game over");
 	}
 
 	/**
@@ -138,11 +129,14 @@ public class Field
 					int playerDim = player.getDimensions();
 					int checkDim = checking.getDimensions();
 
-					if ((playerX - checkX <= checkDim
-							|| checkX - playerX <= playerDim)
-							&& (playerY - checkY < checkDim
-							|| checkY - playerY < playerDim))
+					if ((Math.abs(playerX - checkX) <= checkDim
+							|| Math.abs(checkX - playerX) <= playerDim)
+							&& (Math.abs(playerY - checkY) < checkDim
+							|| Math.abs(checkY - playerY) < playerDim))
+					{
+						System.out.println("boom");
 						return true;
+					}
 				}
 			}
 		}
@@ -266,7 +260,6 @@ public class Field
 				proFired = true;
 			}
 			timeElapsed = System.currentTimeMillis();
-			System.out.println(playerLoc.getX() + " " +playerLoc.getY());
 		}
 	}
 
@@ -451,7 +444,7 @@ public class Field
 
 			// Manages enemies while ones still need to spawn
 			// while (this.level.getEnemies().size() > 0 && !gameOver)
-			while (true)
+			while (!gameOver)
 			{
 				// Determines if any enemies must be spawned, if so then adds
 				// them to the list of enemies on screen to be managed
