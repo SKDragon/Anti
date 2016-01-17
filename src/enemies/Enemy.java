@@ -19,6 +19,7 @@ public class Enemy
 	protected int yChange;
 	protected int xIn;
 	protected int yIn;
+	protected boolean destroyed;
 
 	// Icon image
 	protected Image icon;
@@ -87,9 +88,19 @@ public class Enemy
 	{
 		return false;
 	}
-	
+
 	public Projectile firePro()
 	{
 		return null;
+	}
+
+	public void destroyed()
+	{
+		this.destroyed = true;
+	}
+
+	public boolean isDestroyed()
+	{
+		return this.destroyed;
 	}
 }

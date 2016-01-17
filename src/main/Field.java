@@ -233,6 +233,7 @@ public class Field
 													- checkY < checkDim))
 									{
 										enemies.remove(checking);
+										checking.destroyed();
 										enemy--;
 										System.out.println("boom");
 									}
@@ -341,7 +342,7 @@ public class Field
 
 		public void run()
 		{
-			while (toManage != null)
+			while (!toManage.isDestroyed())
 			{
 				synchronized (toManage)
 				{

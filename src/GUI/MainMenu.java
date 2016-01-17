@@ -18,9 +18,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
-import HighScore.HighScores;
 import main.Field;
 import projectiles.Projectile;
+import HighScore.HighScores;
+import enemies.Enemy;
 
 /**
  * MainMenu class
@@ -62,6 +63,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 
 	// Stuff
 	ArrayList<Projectile> charProjectiles;
+	ArrayList<Enemy> enemies;
 
 	// private long moveTimeDelay = System.currentTimeMillis();
 	// private long fireTimeDelay = System.currentTimeMillis();
