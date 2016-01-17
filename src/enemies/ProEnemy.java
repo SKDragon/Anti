@@ -51,6 +51,12 @@ public class ProEnemy extends Enemy
 
 	public Projectile firePro()
 	{
+		this.fired = true;
 		return this.fire;
+	}
+
+	public boolean proFired()
+	{
+		return this.fired;
 	}
 }

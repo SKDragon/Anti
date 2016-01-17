@@ -7,10 +7,8 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
-import projectiles.LinearPro;
-import projectiles.Projectile;
-import enemies.Enemy;
-import enemies.ProEnemy;
+import projectiles.*;
+import enemies.*;
 
 /**
  * Field class containing everything on the game screen
@@ -117,26 +115,26 @@ public class Field
 		{
 			for (Enemy checking : enemies)
 			{
-				// References to X and Y to use in reducing checking
-				double checkX = checking.getLocation().getX();
-				double checkY = checking.getLocation().getY();
-
-				// If the enemy is too far away, ignore it
-				if (Math.abs(playerY - checkY) < 70
-						&& Math.abs(playerX - checkX) < 70)
+				synchronized (checking)
 				{
-					// Creating references to dimensions of the player and
-					// projectile for collision check
-					int playerDim = player.getDimensions();
-					int checkDim = checking.getDimensions();
+					// References to X and Y to use in reducing checking
+					double checkX = checking.getLocation().getX();
+					double checkY = checking.getLocation().getY();
 
-					if ((Math.abs(playerX - checkX) <= checkDim
-							|| Math.abs(checkX - playerX) <= playerDim)
-							&& (Math.abs(playerY - checkY) < checkDim
-							|| Math.abs(checkY - playerY) < playerDim))
+					// If the enemy is too far away, ignore it
+					if (Math.abs(playerY - checkY) < 70
+							&& Math.abs(playerX - checkX) < 70)
 					{
-						System.out.println("boom");
-						return true;
+						// Creating references to dimensions of the player and
+						// projectile for collision check
+						int playerDim = player.getDimensions();
+						int checkDim = checking.getDimensions();
+
+						if ((Math.abs(playerX - checkX) <= checkDim
+								|| Math.abs(checkX - playerX) <= playerDim)
+								&& (Math.abs(playerY - checkY) < checkDim
+								|| Math.abs(checkY - playerY) < playerDim))
+							return true;
 					}
 				}
 			}
@@ -147,23 +145,30 @@ public class Field
 			// Loops through projectiles to see if any collisions have occurred
 			for (Projectile checking : enemyPro)
 			{
-				// References to X and Y to use in reducing projectiles to check
-				double checkX = checking.getLocation().getX();
-				double checkY = checking.getLocation().getY();
-
-				// If projectile is too far away to even be close to hitting,
-				// then don't bother checking it
-				if (Math.abs(playerY - checkY) < 70
-						&& Math.abs(playerX - checkX) < 70)
+				synchronized (checking)
 				{
-					// Creating references to dimensions of the player and
-					// projectile for collision check
-					int playerDim = player.getDimensions();
-					int checkDim = checking.getDimensions();
+					// References to X and Y to use in reducing projectiles to
+					// check
+					double checkX = checking.getLocation().getX();
+					double checkY = checking.getLocation().getY();
 
-					if ((playerX - checkX <= checkDim || checkX - playerX <= playerDim)
-							&& (playerY - checkY < checkDim || checkY - playerY < playerDim))
-						return true;
+					// If projectile is too far away to even be close to
+					// hitting,
+					// then don't bother checking it
+					if (Math.abs(playerY - checkY) < 70
+							&& Math.abs(playerX - checkX) < 70)
+					{
+						// Creating references to dimensions of the player and
+						// projectile for collision check
+						int playerDim = player.getDimensions();
+						int checkDim = checking.getDimensions();
+
+						if ((Math.abs(playerX - checkX) <= checkDim || Math
+								.abs(checkX - playerX) <= playerDim)
+								&& (Math.abs(playerY - checkY) < checkDim || Math
+										.abs(checkY - playerY) < playerDim))
+							return true;
+					}
 				}
 			}
 		}
@@ -322,22 +327,14 @@ public class Field
 	{
 		public void run()
 		{
-			Enemy thing = new ProEnemy(
-					new ImageIcon("Pictures/Enemies/50x50/enemy_1.png")
-							.getImage(),
-					1,
-					1,
-					0,
-					0,
-					0,
-					new Point(10, 9),
-					50,
-					1000,
-					new LinearPro(new Point(2, 2),
+			Enemy thing = new ProEnemy(new ImageIcon(
+					"Pictures/Enemies/50x50/enemy_1.png").getImage(), 1, 1, 0,
+					0, 0, new Point(10, 9), 40, 1000, new LinearPro(new Point(
+							2,
+							2),
 							new ImageIcon(
 									"Pictures/Projectiles/Projectile_2.png")
-									.getImage(), 10, 1, 1),
-					3000);
+									.getImage(), 7, 1, 5), 3000);
 			synchronized (enemies)
 			{
 				enemies.add(thing);
@@ -346,26 +343,26 @@ public class Field
 				enemySpawned = true;
 			}
 
+			Enemy thing2 = new MovingEnemy(new ImageIcon(
+					"Pictures/Enemies/50x50/enemy_1.png").getImage(), 3, 3, 0,
+					0, 0, new Point(100, 90), 40, 1000);
+
+			synchronized (enemies)
+			{
+				enemies.add(thing2);
+				Thread manageEnemy = new Thread(new EnemyManager(thing2));
+				manageEnemy.start();
+				enemySpawned = true;
+			}
+
 			// Manages enemies while ones still need to spawn
 			// while (this.level.getEnemies().size() > 0 && !gameOver)
 			while (!gameOver)
 			{
-				// Determines if any enemies must be spawned, if so then adds
-				// them to the list of enemies on screen to be managed
-				// ArrayList<Enemy> toSpawn = this.level.checkSpawn();
-				//
-				// synchronized (enemies)
-				// {
-				// if (toSpawn.size() > 0)
-				// {
-				// enemies.addAll(toSpawn);
-				// System.out.println("Enemy Spawned");
-				// }
-				// }
-
-				// Moves enemies and projectiles on screen
+				// Moves character projectiles
 				moveCharPro();
 
+				System.out.println();
 				try
 				{
 					Thread.sleep(30);
@@ -375,27 +372,6 @@ public class Field
 					System.out.println("Error in enemy manager");
 				}
 			}
-
-			// Manages enemies while nothing else needs to spawn
-			// while (!gameOver)
-			// {
-			// if (enemies.size() == 0)
-			// {
-			// gameOver = true;
-			// levelWon = true;
-			// break;
-			// }
-			// moveOnScreen();
-			//
-			// try
-			// {
-			// Thread.sleep(30);
-			// }
-			// catch (InterruptedException e)
-			// {
-			// System.out.println("Error in enemy manager");
-			// }
-			// }
 		}
 
 		/**
@@ -413,19 +389,33 @@ public class Field
 
 			// Loops through things again to check if any objects have gone
 			// off-screen
-			synchronized (enemies)
+			synchronized (playerPro)
 			{
-				for (int enemy = 0; enemy < enemies.size(); enemy++)
+				for (int charPro = 0; charPro < playerPro.size(); charPro++)
 				{
-					Point checkLoc = enemies.get(enemy).getLocation();
+					Point checkLoc = playerPro.get(charPro).getLocation();
 					if (checkLoc.getX() > 600 || checkLoc.getX() < 0
 							|| checkLoc.getY() > 800 || checkLoc.getY() < 0)
 					{
-						enemies.remove(enemy);
-						enemy--;
+						playerPro.remove(charPro);
+						charPro--;
 					}
 				}
 			}
+
+			// synchronized (enemies)
+			// {
+			// for (int enemy = 0; enemy < enemies.size(); enemy++)
+			// {
+			// Point checkLoc = enemies.get(enemy).getLocation();
+			// if (checkLoc.getX() > 600 || checkLoc.getX() < 0
+			// || checkLoc.getY() > 800 || checkLoc.getY() < 0)
+			// {
+			// enemies.remove(enemy);
+			// enemy--;
+			// }
+			// }
+			// }
 			// synchronized (enemyPro)
 			// {
 			// for (int enemyBullet = 0; enemyBullet < enemyPro.size();
@@ -440,19 +430,6 @@ public class Field
 			// }
 			// }
 			// }
-			synchronized (playerPro)
-			{
-				for (int charPro = 0; charPro < playerPro.size(); charPro++)
-				{
-					Point checkLoc = playerPro.get(charPro).getLocation();
-					if (checkLoc.getX() > 600 || checkLoc.getX() < 0
-							|| checkLoc.getY() > 800 || checkLoc.getY() < 0)
-					{
-						playerPro.remove(charPro);
-						charPro--;
-					}
-				}
-			}
 		}
 	}
 
@@ -475,11 +452,14 @@ public class Field
 
 					if (toManage.getType() == 2)
 					{
-						Projectile bullet = toManage.firePro();
-						Thread manageBullet = new Thread(
-								new ProjectileManager(this.toManage, bullet,
-										toManage.getDelay()));
-						manageBullet.start();
+						if (!toManage.proFired())
+						{
+							Projectile bullet = toManage.firePro();
+							Thread manageBullet = new Thread(
+									new ProjectileManager(this.toManage,
+											bullet, toManage.getDelay()));
+							manageBullet.start();
+						}
 					}
 				}
 				try

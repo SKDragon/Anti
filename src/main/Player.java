@@ -29,7 +29,7 @@ public class Player
 	protected Point location;
 
 	// Dimensions of the character icon
-	protected int dim = 50;
+	protected int dim = 10;
 
 	protected int moveSpeed;
 

@@ -103,4 +103,8 @@ public class Enemy
 	{
 		return this.fireDelay;
 	}
+	public boolean proFired()
+	{
+		return true;
+	}
 }
