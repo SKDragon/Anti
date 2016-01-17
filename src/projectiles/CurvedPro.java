@@ -1,7 +1,8 @@
 package projectiles;
 
-import java.awt.Image;
 import java.awt.Point;
+
+import javax.swing.ImageIcon;
 
 /**
  * Class for projectiles with a curved path
@@ -25,7 +26,7 @@ public class CurvedPro extends Projectile
 	 * @param xIn the increase in the change of x
 	 * @param yIn the increase in the change of y
 	 */
-	public CurvedPro(Point location, Image icon, int dim, int xChange,
+	public CurvedPro(Point location, ImageIcon icon, int dim, int xChange,
 			int yChange, int xIn, int yIn)
 	{
 		this.location = location;

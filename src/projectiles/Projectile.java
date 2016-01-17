@@ -1,7 +1,8 @@
 package projectiles;
 
-import java.awt.Image;
 import java.awt.Point;
+
+import javax.swing.ImageIcon;
 
 /**
  * Parent class for all Projectile objects
@@ -19,7 +20,7 @@ public class Projectile
 	protected int yChange;
 
 	// Image representing the projectile
-	protected Image icon;
+	protected ImageIcon icon;
 	protected int proType;
 
 	// Integer representing the hit box dimensions
@@ -37,7 +38,7 @@ public class Projectile
 	 * Gets the image for the projectile
 	 * @return image
 	 */
-	public Image getImage()
+	public ImageIcon getImage()
 	{
 		return this.icon;
 	}

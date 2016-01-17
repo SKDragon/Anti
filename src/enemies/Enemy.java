@@ -35,7 +35,7 @@ public class Enemy
 
 	// Projectile information
 	protected Projectile fire;
-	protected int timeFire;
+	protected long timeFire;
 
 	/**
 	 * Moves the enemy

@@ -66,7 +66,7 @@ public class Field
 	public void manageField(int level)
 	{
 		// Creates and starts enemy spawning
-		Thread enemySpawner = new Thread(new FieldManager(level));
+		Thread enemySpawner = new Thread(new FieldManager());
 		enemySpawner.start();
 
 		// Creates and starts score based on how many seconds survived
@@ -324,8 +324,6 @@ public class Field
 				synchronized (toManage)
 				{
 					toManage.moveEnemy();
-					// System.out.println(toManage.getLocation().getX()
-					// + toManage.getLocation().getX());
 
 					if (toManage.getType() == 2 && !toManage.firedPro())
 					{
@@ -413,23 +411,22 @@ public class Field
 	 */
 	private class FieldManager implements Runnable
 	{
-		Level level;
-
-		/**
-		 * Constructor, uses level object to determine spawning
-		 * @param level the level to load
-		 */
-		public FieldManager(int level)
-		{
-			this.level = new LevelOne();
-		}
-
 		public void run()
 		{
-			Enemy thing = new MovingEnemy(new ImageIcon(
-					"Pictures/Enemies/50x50/enemy_1.png").getImage(), 1, 1, 0,
-					0, 0, new Point(10, 9), 50, 1000);
-
+			Enemy thing = new ProEnemy(
+					new ImageIcon("Pictures/Enemies/50x50/enemy_1.png")
+							.getImage(),
+					1,
+					1,
+					0,
+					0,
+					0,
+					new Point(10, 9),
+					50,
+					1000,
+					new LinearPro(new Point(2, 2), new ImageIcon(
+							"Pictures/Projectiles/Projectile_2.png"), 10, 1, 1),
+					3000);
 			synchronized (enemies)
 			{
 				enemies.add(thing);
