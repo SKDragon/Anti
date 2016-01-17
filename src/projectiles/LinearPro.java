@@ -3,8 +3,6 @@ package projectiles;
 import java.awt.Image;
 import java.awt.Point;
 
-import javax.swing.ImageIcon;
-
 /**
  * Object class for a linear projectile
  * @author Iain/Gavin
