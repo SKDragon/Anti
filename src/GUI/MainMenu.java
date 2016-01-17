@@ -31,7 +31,7 @@ import enemies.Enemy;
  */
 public class MainMenu extends JPanel implements MouseListener, KeyListener {
 	// Global Variables
-	private Image mainMenuBG, gameScreenBG;
+	private Image mainMenuBG, gameScreenBG, instructionsBG;
 	private Border raisedBevel, loweredBevel, compound, blackline;
 	private GridBagConstraints GB = new GridBagConstraints();
 
@@ -244,7 +244,14 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 
 	void loadImages() {
 		mainMenuBG = new ImageIcon("Pictures/Menu Backgrounds/MainMenuBG.png").getImage();
+		instructionsBG = new ImageIcon("Pictures/Menu Backgrounds/InstructionsBGEdited.png").getImage();
 		gameScreenBG = new ImageIcon("Pictures/Game Backgrounds/GameScreenBG.png").getImage();
+	}
+
+	// MainMenu Render
+	public void renderInstructionsScreen(Graphics g) {
+		super.paintComponent(g);
+		g.drawImage(instructionsBG, 0, 0, this);
 	}
 
 	// MainMenu Render
@@ -307,11 +314,6 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 		}
 	}
 
-	// Instructions Render
-	public void renderInstructionsScreen(Graphics g) {
-		super.paintComponent(g);
-	}
-
 	// Main Graphics Render
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -348,7 +350,9 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 		}
 		// Instructions
 		else if (mx >= 32 && mx <= 598 && my >= 473 && my <= 560) {
-
+			State = STATE.INSTRUCTIONS;
+			repaint();
+			
 		}
 		// Highscores
 		else if (mx >= 35 && mx <= 532 && my >= 604 && my <= 644) {
