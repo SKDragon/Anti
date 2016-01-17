@@ -71,11 +71,11 @@ public class HighScores {
 	}
 
 	private void sort() {
-		ScoreVergelijken comparator = new ScoreVergelijken();
+		ScoreComparator comparator = new ScoreComparator();
 		Collections.sort(scores, comparator);
 	}
 
-	public class ScoreVergelijken implements Comparator<Score> {
+	public class ScoreComparator implements Comparator<Score> {
 		public int compare(Score score1, Score score2) {
 
 			long sc1 = score1.getScore();
