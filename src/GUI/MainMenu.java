@@ -79,7 +79,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 	private boolean repaintThreadState = false;
 
 	protected enum STATE {
-		MAIN_MENU, GAME, INSTRUCTIONS, EXIT
+		MAIN_MENU, GAME, INSTRUCTIONS, HIGHSCORES
 	};
 
 	protected STATE State = STATE.MAIN_MENU;
@@ -248,12 +248,20 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 		gameScreenBG = new ImageIcon("Pictures/Game Backgrounds/GameScreenBG.png").getImage();
 	}
 
-	// MainMenu Render
+	// Instructions Render
 	public void renderInstructionsScreen(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(instructionsBG, 0, 0, this);
 	}
 
+	// HighScores Render
+	public void renderHighScoresScreen(Graphics g) {
+		super.paintComponent(g);
+		//g.drawImage(instructionsBG, 0, 0, this);
+	}
+
+	
+	
 	// MainMenu Render
 	public void renderMainMenu(Graphics g) {
 		super.paintComponent(g);
@@ -335,6 +343,9 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 		} else if (State == STATE.INSTRUCTIONS) {
 			renderInstructionsScreen(g);
 		}
+		else if (State == STATE.HIGHSCORES){
+			renderHighScoresScreen(g);
+		}
 		// repaint();
 	}
 
@@ -357,10 +368,12 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 			}
 			// Highscores
 			else if (mx >= 35 && mx <= 532 && my >= 604 && my <= 644) {
-
+				State = STATE.HIGHSCORES;
+				repaint();
+				
 			}
 		} else if (State == STATE.INSTRUCTIONS) {
-			if (mx>0&&mx<10&&my>0&&my<10){
+			if (mx > 24 && mx < 127 && my > 730 && my < 779) {
 				State = STATE.MAIN_MENU;
 				repaint();
 			}
