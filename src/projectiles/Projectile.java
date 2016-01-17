@@ -3,8 +3,6 @@ package projectiles;
 import java.awt.Image;
 import java.awt.Point;
 
-import javax.swing.ImageIcon;
-
 /**
  * Parent class for all Projectile objects
  * @author Iain/Gavin
