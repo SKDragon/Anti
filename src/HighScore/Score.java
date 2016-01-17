@@ -2,6 +2,11 @@ package HighScore;
 
 import java.io.Serializable;
 
+/**
+ * 
+ * @author Gawain Leung
+ *
+ */
 public class Score implements Serializable{
 
 	String name;

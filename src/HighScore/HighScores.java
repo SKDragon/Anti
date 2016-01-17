@@ -10,6 +10,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+/**
+ * 
+ * @author Gawain Leung
+ *
+ */
 public class HighScores {
 
 	private ArrayList<Score> scores;
