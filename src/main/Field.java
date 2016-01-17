@@ -238,20 +238,20 @@ public class Field
 		{
 			if (direction == 1 && playerLoc.getY() > 10)
 				playerLoc.translate(0, -playerMove);
-			if (direction == 2 && playerLoc.getY() < 770)
+			if (direction == 2 && playerLoc.getY() < 740)
 				playerLoc.translate(0, playerMove);
 			if (direction == 3 && playerLoc.getX() > 10)
 				playerLoc.translate(-playerMove, 0);
-			if (direction == 4 && playerLoc.getX() < 570)
+			if (direction == 4 && playerLoc.getX() < 540)
 				playerLoc.translate(playerMove, 0);
 
 			if (direction2 == 1 && playerLoc.getY() > 10)
 				playerLoc.translate(0, -playerMove);
-			if (direction2 == 2 && playerLoc.getY() < 770)
+			if (direction2 == 2 && playerLoc.getY() < 740)
 				playerLoc.translate(0, playerMove);
 			if (direction2 == 3 && playerLoc.getX() > 10)
 				playerLoc.translate(-playerMove, 0);
-			if (direction2 == 4 && playerLoc.getX() < 570)
+			if (direction2 == 4 && playerLoc.getX() < 540)
 				playerLoc.translate(playerMove, 0);
 
 			if (firing)
