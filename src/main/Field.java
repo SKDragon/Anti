@@ -218,7 +218,7 @@ public class Field
 
 								// If the projectile is very far away, do not
 								// bother checking it
-								if (Math.abs(checkX) - proX < 20
+								if (Math.abs(checkX - proX) < 20
 										&& Math.abs(checkY - proY) < 20)
 								{
 									int checkDim = checking.getDimensions();
@@ -446,7 +446,7 @@ public class Field
 		public void run()
 		{
 			Enemy thing = new MovingEnemy(new ImageIcon(
-					"Pictures/Enemies/50x50/enemy_1.png").getImage(), 1, 0, 0, 0, 0,
+					"Pictures/Enemies/50x50/enemy_1.png").getImage(), 1, 1, 0, 0, 0,
 					new Point(10, 9), 50, 1000);
 			
 			synchronized (enemies)
