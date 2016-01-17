@@ -56,7 +56,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 	private boolean gameOver = false;
 
 	// HighScores
-	private HighScores hs = new HighScores();
+	//private HighScores hs = new HighScores();
 
 	// Stuff
 	ArrayList<Projectile> charProjectiles;
@@ -275,13 +275,13 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 		if (charProjectiles != null && charProjectiles.size() > 0) {
 			// System.out.println("main " + charProjectiles.size());
 			for (Projectile charPro : charProjectiles) {
-				// Image p = charProjectiles.get(i).getImage();
+				Image p = charPro.getImage();
 				Point pp = charPro.getLocation();
 				int x = (int) pp.getX();
 				int y = (int) pp.getY();
-				// g.drawImage(p, x, y, null);
+				 g.drawImage(p, x, y, null);
 				// System.out.println(charPro.getLocation().getY());
-				g.fillRect(x, y, 10, 10);
+				//g.fillRect(x, y, 10, 10);
 			}
 		}
 	}
