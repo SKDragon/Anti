@@ -15,7 +15,6 @@ public class ProEnemy extends Enemy
 {
 	// Type of enemy
 	private static final int TYPE = 2;
-	private long spawnAt;
 	private boolean fired = false;
 
 	/**
@@ -47,23 +46,11 @@ public class ProEnemy extends Enemy
 		this.dim = dim;
 		this.spawnTime = spawn;
 		this.fire = proj;
-		this.timeFire = timing;
-		this.spawnAt = System.currentTimeMillis();
+		this.fireDelay = timing;
 	}
 
 	public Projectile firePro()
 	{
-		if (timeFire >= System.currentTimeMillis() - this.spawnAt)
-		{
-			this.fired = true;
-			System.out.println("fired");
-			return this.fire;
-		}
-		return null;
-	}
-	
-	public boolean firedPro()
-	{
-		return this.fired;
+		return this.fire;
 	}
 }

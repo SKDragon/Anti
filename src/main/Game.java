@@ -1,7 +1,6 @@
 package main;
 
 import java.util.ArrayList;
-import levels.*;
 
 /**
  * Game object class, run from the GUI upon game start
@@ -10,9 +9,6 @@ import levels.*;
  */
 public class Game
 {
-	// ArrayList of different levels
-	ArrayList<Level> levels = null;
-
 	/**
 	 * Launches the game
 	 */

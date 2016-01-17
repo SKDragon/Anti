@@ -1,5 +1,6 @@
 package projectiles;
 
+import java.awt.Image;
 import java.awt.Point;
 
 import javax.swing.ImageIcon;
@@ -24,7 +25,7 @@ public class LinearPro extends Projectile
 	 * @param xChange the change in x coordinates per movement
 	 * @param yChange the change in y coordinates per movement
 	 */
-	public LinearPro(Point location, ImageIcon icon, int dim, int xChange,
+	public LinearPro(Point location, Image icon, int dim, int xChange,
 			int yChange)
 	{
 		this.location = location;
@@ -43,7 +44,7 @@ public class LinearPro extends Projectile
 	 * @param yChange the change in y coordinates per movement
 	 * @param speed the additions to make the speed
 	 */
-	public LinearPro(Point location, ImageIcon icon, int dim, int xChange,
+	public LinearPro(Point location, Image icon, int dim, int xChange,
 			int yChange, int speed, int timeAfter)
 	{
 		this.location = location;

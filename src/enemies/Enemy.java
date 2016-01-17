@@ -35,7 +35,7 @@ public class Enemy
 
 	// Projectile information
 	protected Projectile fire;
-	protected long timeFire;
+	protected long fireDelay;
 
 	/**
 	 * Moves the enemy
@@ -89,15 +89,6 @@ public class Enemy
 		return this.enemyType;
 	}
 
-	/**
-	 * Gets the time to spawn the enemies
-	 * @return spawnTime
-	 */
-	public long getSpawn()
-	{
-		return this.spawnTime;
-	}
-
 	public boolean isDestroyed()
 	{
 		return this.destroyed;
@@ -106,5 +97,10 @@ public class Enemy
 	public Image getIcon()
 	{
 		return this.icon;
+	}
+	
+	public long getDelay()
+	{
+		return this.fireDelay;
 	}
 }

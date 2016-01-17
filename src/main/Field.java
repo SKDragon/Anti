@@ -1,13 +1,16 @@
 package main;
 
+import java.awt.Image;
 import java.awt.Point;
+import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
-import levels.*;
-import projectiles.*;
-import enemies.*;
+import projectiles.LinearPro;
+import projectiles.Projectile;
+import enemies.Enemy;
+import enemies.ProEnemy;
 
 /**
  * Field class containing everything on the game screen
@@ -22,6 +25,7 @@ public class Field
 	public static boolean gameOver = false;
 	public static boolean proFired = false;
 	public static boolean enemySpawned = false;
+	public static boolean enemyProFired = false;
 
 	// Player object information
 	private static Player player;
@@ -308,120 +312,6 @@ public class Field
 		return player;
 	}
 
-	private class EnemyManager implements Runnable
-	{
-		private Enemy toManage;
-
-		protected EnemyManager(Enemy toManage)
-		{
-			this.toManage = toManage;
-		}
-
-		public void run()
-		{
-			while (!toManage.isDestroyed())
-			{
-				synchronized (toManage)
-				{
-					toManage.moveEnemy();
-
-					if (toManage.getType() == 2 && !toManage.firedPro())
-					{
-						Projectile bullet = toManage.firePro();
-						if (bullet != null)
-						{
-							enemyPro.add(bullet);
-							Thread manageBullet = new Thread(
-									new ProjectileManager(this.toManage, bullet));
-							manageBullet.start();
-						}
-					}
-				}
-				try
-				{
-					Thread.sleep(30);
-				}
-				catch (InterruptedException e)
-				{
-					System.out.println("enemy manage sleep");
-				}
-			}
-		}
-	}
-
-	private class ProjectileManager implements Runnable
-	{
-		private Enemy firedBy;
-		private Projectile toManage;
-		private long delay = 0;
-
-		protected ProjectileManager(Enemy firedBy, Projectile pro)
-		{
-			this.firedBy = firedBy;
-			this.toManage = pro;
-		}
-
-		protected ProjectileManager(Enemy firedBy, Projectile pro, long delay)
-		{
-			this.firedBy = firedBy;
-			this.toManage = pro;
-			this.delay = delay;
-		}
-
-		public void run()
-		{
-			try
-			{
-				Thread.sleep(this.delay);
-			}
-			catch (InterruptedException e1)
-			{
-				System.out.println("pro delay error");
-			}
-
-			while (this.toManage != null)
-			{
-				synchronized (toManage)
-				{
-					toManage.movePro();
-				}
-				try
-				{
-					Thread.sleep(30);
-				}
-				catch (InterruptedException e)
-				{
-					System.out.println("Pro manage sleep");
-				}
-
-			}
-		}
-	}
-
-	/**
-	 * Simple extra thread that just adds to score based on survival time
-	 * @author Iain/Gavin
-	 * @version 10/1/16
-	 */
-	private class SecondsScore implements Runnable
-	{
-		public void run()
-		{
-			while (!gameOver)
-			{
-				try
-				{
-					Thread.sleep(1000);
-				}
-				catch (InterruptedException e)
-				{
-					System.out.println("How could u screw up a sleep u turd");
-				}
-				score += 10;
-			}
-		}
-	}
-
 	/**
 	 * Based on time passed, spawns enemies according to a pre-coded level
 	 * script
@@ -443,8 +333,10 @@ public class Field
 					new Point(10, 9),
 					50,
 					1000,
-					new LinearPro(new Point(2, 2), new ImageIcon(
-							"Pictures/Projectiles/Projectile_2.png"), 10, 1, 1),
+					new LinearPro(new Point(2, 2),
+							new ImageIcon(
+									"Pictures/Projectiles/Projectile_2.png")
+									.getImage(), 10, 1, 1),
 					3000);
 			synchronized (enemies)
 			{
@@ -534,19 +426,20 @@ public class Field
 					}
 				}
 			}
-			synchronized (enemyPro)
-			{
-				for (int enemyBullet = 0; enemyBullet < enemyPro.size(); enemyBullet++)
-				{
-					Point checkLoc = enemyPro.get(enemyBullet).getLocation();
-					if (checkLoc.getX() > 600 || checkLoc.getX() < 0
-							|| checkLoc.getY() > 800 || checkLoc.getY() < 0)
-					{
-						enemies.remove(enemyBullet);
-						enemyBullet--;
-					}
-				}
-			}
+			// synchronized (enemyPro)
+			// {
+			// for (int enemyBullet = 0; enemyBullet < enemyPro.size();
+			// enemyBullet++)
+			// {
+			// Point checkLoc = enemyPro.get(enemyBullet).getLocation();
+			// if (checkLoc.getX() > 600 || checkLoc.getX() < 0
+			// || checkLoc.getY() > 800 || checkLoc.getY() < 0)
+			// {
+			// enemies.remove(enemyBullet);
+			// enemyBullet--;
+			// }
+			// }
+			// }
 			synchronized (playerPro)
 			{
 				for (int charPro = 0; charPro < playerPro.size(); charPro++)
@@ -562,4 +455,120 @@ public class Field
 			}
 		}
 	}
+
+	private class EnemyManager implements Runnable
+	{
+		private Enemy toManage;
+
+		protected EnemyManager(Enemy toManage)
+		{
+			this.toManage = toManage;
+		}
+
+		public void run()
+		{
+			while (!toManage.isDestroyed())
+			{
+				synchronized (toManage)
+				{
+					toManage.moveEnemy();
+
+					if (toManage.getType() == 2)
+					{
+						Projectile bullet = toManage.firePro();
+						Thread manageBullet = new Thread(
+								new ProjectileManager(this.toManage, bullet,
+										toManage.getDelay()));
+						manageBullet.start();
+					}
+				}
+				try
+				{
+					Thread.sleep(30);
+				}
+				catch (InterruptedException e)
+				{
+					System.out.println("enemy manage sleep");
+				}
+			}
+		}
+	}
+
+	private class ProjectileManager implements Runnable
+	{
+		private Enemy firedBy;
+		private Projectile toManage;
+		private long delay = 0;
+
+		protected ProjectileManager(Enemy firedBy, Projectile pro)
+		{
+			this.firedBy = firedBy;
+			this.toManage = pro;
+		}
+
+		protected ProjectileManager(Enemy firedBy, Projectile pro, long delay)
+		{
+			this.firedBy = firedBy;
+			this.toManage = pro;
+			this.delay = delay;
+		}
+
+		public void run()
+		{
+			try
+			{
+				Thread.sleep(this.delay);
+			}
+			catch (InterruptedException e)
+			{
+				System.out.println("pro delay error");
+			}
+
+			toManage.setLocation(new Point((int) firedBy.getLocation().getX(),
+					(int) firedBy.getLocation().getY()));
+			enemyPro.add(toManage);
+			enemyProFired = true;
+			while (this.toManage != null)
+			{
+				synchronized (toManage)
+				{
+					toManage.movePro();
+				}
+
+				try
+				{
+					Thread.sleep(30);
+				}
+				catch (InterruptedException e)
+				{
+					System.out.println("Pro manage sleep");
+				}
+			}
+		}
+	}
+
+	/**
+	 * Simple extra thread that just adds to score based on survival time
+	 * @author Iain/Gavin
+	 * @version 10/1/16
+	 */
+	private class SecondsScore implements Runnable
+	{
+		public void run()
+		{
+			while (!gameOver)
+			{
+				try
+				{
+					Thread.sleep(1000);
+				}
+				catch (InterruptedException e)
+				{
+					System.out.println("How could u screw up a sleep u turd");
+				}
+				score += 10;
+			}
+		}
+	}
+
 }
