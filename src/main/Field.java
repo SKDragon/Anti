@@ -7,7 +7,6 @@ import javax.swing.ImageIcon;
 
 import levels.*;
 import projectiles.*;
-import characters.*;
 import enemies.*;
 
 /**
@@ -50,13 +49,10 @@ public class Field
 	 * Constructor, only needs player's choice of character
 	 * @param charChoice the character to use
 	 */
-	public Field(int charChoice)
+	public Field()
 	{
 		// Creates the player according to the player's choice of character
-		if (charChoice == 1)
-			player = new WindowsDefender();
-		if (charChoice == 2)
-			player = new ACGFree();
+		player = new Player();
 
 		// Creates references to the player variables
 		playerLoc = player.getLoc();

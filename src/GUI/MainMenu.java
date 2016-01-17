@@ -475,7 +475,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 
 	class FieldManager implements Runnable {
 		public void run() {
-			field = new Field(1);
+			field = new Field();
 			playerIcon = field.getPlayer().getIcon();
 			playerProIcon = field.getPlayer().getProIcon();
 			field.manageField(1);

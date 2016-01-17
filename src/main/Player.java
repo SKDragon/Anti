@@ -1,7 +1,9 @@
-package characters;
+package main;
 
 import java.awt.Image;
 import java.awt.Point;
+
+import javax.swing.ImageIcon;
 
 import projectiles.*;
 
@@ -13,24 +15,42 @@ import projectiles.*;
 public class Player
 {
 	// Image to be used when displaying the character
-	protected Image icon;
-	protected Image proIcon;
+	private final static Image PLAYER_IMAGE = new ImageIcon(
+			"Pictures/Player/Player.png").getImage();
+	private final static Image PLAYER_PRO = new ImageIcon(
+			"Pictures/Projectiles/Projectile_1.png").getImage();
+
+	// Left or right barrel
+	private int barrel = 1;
+	final static int PRO_SPEED = -30;
+	final static int MOVE_SPEED = 10;
 
 	// Location of the player
 	protected Point location;
 
 	// Dimensions of the character icon
-	protected int dim;
+	protected int dim = 50;
 
 	protected int moveSpeed;
 
+	public Player()
+	{
+		this.location = new Point(290,700);
+	}
+	
 	/**
 	 * Overwritten in all character classes
 	 * @return A generated standard LinearPro object
 	 */
 	public LinearPro firePro()
 	{
-		return null;
+		barrel *= -1;
+		if (barrel == 1)
+			return new LinearPro(new Point((int) this.location.getX() + 5,
+					(int) this.location.getY() - 5), null, 50, 0, PRO_SPEED);
+		else
+			return new LinearPro(new Point((int) this.location.getX() + 35,
+					(int) this.location.getY() - 5), null, 50, 0, PRO_SPEED);
 	}
 
 	/**
@@ -58,14 +78,14 @@ public class Player
 
 	public Image getIcon()
 	{
-		return this.icon;
+		return PLAYER_IMAGE;
 	}
-	
+
 	public Image getProIcon()
 	{
-		return this.proIcon;
+		return PLAYER_PRO;
 	}
-	
+
 	public void resetLoc()
 	{
 		this.location = new Point(290, 700);
