@@ -19,7 +19,7 @@ public class LevelOne extends Level
 	{
 		// TODO fill out enemy spawning info
 		this.enemies = new ArrayList<Enemy>();
-		this.enemies.add(new MovingEnemy(1, 2, 2, 1, 1, new Point(10, 9), 10, 1000));
+		//this.enemies.add(new MovingEnemy(1, 2, 2, 1, 1, new Point(10, 9), 10, 1000));
 		
 		//Starts timer after all enemies have been spawned
 		this.startTime = System.currentTimeMillis();

@@ -48,6 +48,21 @@ public class Enemy
 		yChange += yIn;
 	}
 
+	public boolean firedPro()
+	{
+		return false;
+	}
+
+	public Projectile firePro()
+	{
+		return null;
+	}
+
+	public void destroyed()
+	{
+		this.destroyed = true;
+	}
+
 	/**
 	 * Gets the location of the enemy
 	 * @return location
@@ -84,23 +99,13 @@ public class Enemy
 		return this.spawnTime;
 	}
 
-	public boolean firedPro()
-	{
-		return false;
-	}
-
-	public Projectile firePro()
-	{
-		return null;
-	}
-
-	public void destroyed()
-	{
-		this.destroyed = true;
-	}
-
 	public boolean isDestroyed()
 	{
 		return this.destroyed;
+	}
+
+	public Image getIcon()
+	{
+		return this.icon;
 	}
 }

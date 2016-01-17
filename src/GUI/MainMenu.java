@@ -272,8 +272,10 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 		// System.out.println(field);
 
 		// Arrays
-		if (field.started)
+		if (field.proFired)
 			charProjectiles = field.getCharProjectiles();
+		if (field.enemySpawned)
+			enemies = field.getEnemies();
 	}
 
 	void borderLoad()
@@ -342,6 +344,23 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 						g.drawImage(playerProIcon, x, y, null);
 						// System.out.println(charPro.getLocation().getY());
 						// g.fillRect(x, y, 10, 10);
+					}
+				}
+			}
+		}
+
+		if (enemies != null && enemies.size() > 0)
+		{
+			synchronized (enemies)
+			{
+				for (Enemy toDraw : enemies)
+				{
+					synchronized (toDraw)
+					{
+						Point pp = toDraw.getLocation();
+						int x = (int) pp.getX();
+						int y = (int) pp.getY();
+						g.drawImage(toDraw.getIcon(), x, y, null);
 					}
 				}
 			}
