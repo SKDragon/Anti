@@ -264,6 +264,7 @@ public class Field
 			{
 				playerPro.add(player.firePro());
 				started = true;
+				System.out.println("fired" + playerPro.size());
 			}
 			timeElapsed = System.currentTimeMillis();
 		}
@@ -317,6 +318,15 @@ public class Field
 		return player;
 	}
 
+	private class ProjectileManager implements Runnable
+	{
+		public void run()
+		{
+			// TODO Auto-generated method stub
+
+		}
+	}
+
 	/**
 	 * Simple extra thread that just adds to score based on survival time
 	 * @author Iain/Gavin
@@ -359,21 +369,24 @@ public class Field
 
 		public void run()
 		{
+			// enemies.add(new MovingEnemy(1, 2, 2, 1, 1, new Point(10, 9), 10,
+			// 1000));
+
 			// Manages enemies while ones still need to spawn
 			while (this.level.getEnemies().size() > 0 && !gameOver)
 			{
 				// Determines if any enemies must be spawned, if so then adds
 				// them to the list of enemies on screen to be managed
-				ArrayList<Enemy> toSpawn = this.level.checkSpawn();
+				//ArrayList<Enemy> toSpawn = this.level.checkSpawn();
 
-				synchronized (enemies)
-				{
-					if (toSpawn.size() > 0)
-					{
-						enemies.addAll(toSpawn);
-						System.out.println("Enemy Spawned");
-					}
-				}
+//				synchronized (enemies)
+//				{
+//					if (toSpawn.size() > 0)
+//					{
+//						enemies.addAll(toSpawn);
+//						System.out.println("Enemy Spawned");
+//					}
+//				}
 
 				// Moves enemies and projectiles on screen
 				moveOnScreen();
@@ -387,27 +400,27 @@ public class Field
 					System.out.println("Error in enemy manager");
 				}
 			}
-
-			// Manages enemies while nothing else needs to spawn
-			// while (!gameOver)
-			// {
-			// if (enemies.size() == 0)
-			// {
-			// gameOver = true;
-			// levelWon = true;
-			// break;
-			// }
-			// moveOnScreen();
 			//
-			// try
-			// {
-			// Thread.sleep(30);
-			// }
-			// catch (InterruptedException e)
-			// {
-			// System.out.println("Error in enemy manager");
-			// }
-			// }
+			// // Manages enemies while nothing else needs to spawn
+			// // while (!gameOver)
+			// // {
+			// // if (enemies.size() == 0)
+			// // {
+			// // gameOver = true;
+			// // levelWon = true;
+			// // break;
+			// // }
+			// // moveOnScreen();
+			// //
+			// // try
+			// // {
+			// // Thread.sleep(30);
+			// // }
+			// // catch (InterruptedException e)
+			// // {
+			// // System.out.println("Error in enemy manager");
+			// // }
+			// // }
 		}
 
 		/**

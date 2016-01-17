@@ -1,8 +1,9 @@
 package levels;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
-import enemies.*;
+import enemies.Enemy;
 
 /**
  * Parent Class for all levels
@@ -29,16 +30,28 @@ public class Level
 		// to be spawned
 		synchronized (enemies)
 		{
-			for (Enemy spawnCheck : enemies)
+			// for (Enemy spawnCheck : enemies)
+			// {
+			// synchronized (spawnCheck)
+			// {
+			// if (spawnCheck.getSpawn() <= System.currentTimeMillis()
+			// - startTime)
+			// {
+			// toSpawn.add(enemies.remove(0));
+			// System.out.println(spawnCheck.getSpawn() + "spawned");
+			// }
+			// }
+			// }
+
+			for (Iterator<Enemy> spawnChecker = enemies.iterator(); spawnChecker
+					.hasNext();)
 			{
-				synchronized (spawnCheck)
+				Enemy spawnCheck = spawnChecker.next();
+				if (spawnCheck.getSpawn() <= System.currentTimeMillis()
+						- startTime)
 				{
-					if (spawnCheck.getSpawn() <= System.currentTimeMillis()
-							- startTime)
-					{
-						toSpawn.add(enemies.remove(0));
-						System.out.println(spawnCheck.getSpawn() + "spawned");
-					}
+					toSpawn.add(enemies.remove(0));
+					System.out.println(spawnCheck.getSpawn() + "spawned");
 				}
 			}
 		}
