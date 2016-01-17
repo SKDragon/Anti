@@ -2,6 +2,7 @@ package GUI;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -263,16 +264,17 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 	}
 
 	// GameOver Render
-	public void renderGameOVerScreen(Graphics g) {
+	public void renderGameOverScreen(Graphics g) {
 		super.paintComponent(g);
 		setSize(1000, 800);
 		g.drawImage(gameOverBG, 0, 0, this);
 
 		playerScore = Integer.toString(field.getScore());
 		g.setColor(Color.MAGENTA);
-		System.out.println(playerScore);
-		g.drawString(playerScore, 0, 0);
+		g.setFont(new Font("Arial",Font.BOLD, 50));
+		g.drawString(playerScore, 345, 235);
 
+		//g.drawString("500", 100, 200);
 	}
 
 	// MainMenu Render
@@ -358,7 +360,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 		} else if (State == STATE.HIGHSCORES) {
 			renderHighScoresScreen(g);
 		} else if (State == STATE.GAMEOVER) {
-			renderGameOVerScreen(g);
+			renderGameOverScreen(g);
 		}
 		// repaint();
 	}
