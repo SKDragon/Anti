@@ -85,9 +85,4 @@ public class Player
 	{
 		return PLAYER_PRO;
 	}
-
-	public void resetLoc()
-	{
-		this.location = new Point(290, 700);
-	}
 }
