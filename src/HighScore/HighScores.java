@@ -10,18 +10,19 @@ import java.util.StringTokenizer;
 public class HighScores {
 
 	private ArrayList<Score> scores;
-	String file = "HighScores.txt";
+	String file = "HighScores/HighScores.txt";
 	String lineBreak = "//";
 
 	public HighScores() {
 		scores = new ArrayList<Score>();
 	}
 
-	void addScore(String name, int score) {
+	public void addScore(String name, int score) {
 		scores.add(new Score(name, score));
+		sort();
 	}
 
-	void loadScoreFile() {
+	public void loadScoreFile() {
 		try {
 			Scanner reader = new Scanner(new File(file));
 			String nextLine = "";
@@ -42,7 +43,7 @@ public class HighScores {
 
 	}
 
-	void updateScoreFile() {
+	public void updateScoreFile() {
 		try {
 			PrintWriter fileOut = new PrintWriter(new File(file));
 			for (Score s : scores) {
