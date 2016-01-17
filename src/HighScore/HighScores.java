@@ -1,4 +1,5 @@
 package HighScore;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -24,13 +25,16 @@ public class HighScores {
 		try {
 			Scanner reader = new Scanner(new File(file));
 			String nextLine = "";
-			
+
 			while (reader.hasNextLine()) {
 				nextLine = reader.nextLine();
 				StringTokenizer st = new StringTokenizer(nextLine, lineBreak);
 				while (st.hasMoreElements()) {
-					System.out.println("Name"+ st.nextElement());
-					System.out.println("Score"+ st.nextElement());
+					String name = (String) st.nextElement();
+					int score = (int) st.nextElement();
+					// System.out.println("Name" + st.nextElement());
+					// System.out.println("Score" + st.nextElement());
+					scores.add(new Score(name, score));
 				}
 			}
 		} catch (FileNotFoundException e) {
