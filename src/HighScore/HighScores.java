@@ -32,8 +32,6 @@ public class HighScores {
 				while (st.hasMoreElements()) {
 					String name = (String) st.nextElement();
 					int score = (int) st.nextElement();
-					// System.out.println("Name" + st.nextElement());
-					// System.out.println("Score" + st.nextElement());
 					scores.add(new Score(name, score));
 				}
 			}
@@ -60,5 +58,17 @@ public class HighScores {
 		}
 
 	}
+	protected ArrayList<Score> sort() {
+			for (int i = 0; i < scores.size() - 1; i++) {
+				for (int j = 0; j < scores.size() - 1; j++) {
+					if (scores.get(j).getScore() < scores.get(j + 1).getScore()) {
+						Score temp = scores.get(j);
+						scores.set(j, scores.get(j + 1));
+						scores.set(j + 1, temp);
+					}
+				}
+			}
+			return scores;
+		}
 
 }
