@@ -20,7 +20,6 @@ public class Field
 	// Boolean to determine if the game is over, will stop all threads
 	private boolean playerAlive = true;
 	private static boolean gameOver = false;
-	private static boolean levelWon;
 	public static boolean proFired = false;
 	public static boolean enemySpawned = false;
 
@@ -31,10 +30,8 @@ public class Field
 	public static int playerDim = 0;
 
 	// Gameplay information
-	private int lives = 3;
 	private int score = 0;
 	public static long timeStart;
-	private ArrayList<Level> levels;
 
 	private static long timeElapsed = System.currentTimeMillis();
 
@@ -431,8 +428,7 @@ public class Field
 		{
 			Enemy thing = new MovingEnemy(new ImageIcon(
 					"Pictures/Enemies/50x50/enemy_1.png").getImage(), 1, 1, 0,
-					0, 0,
-					new Point(10, 9), 50, 1000);
+					0, 0, new Point(10, 9), 50, 1000);
 
 			synchronized (enemies)
 			{
@@ -460,7 +456,7 @@ public class Field
 				// }
 
 				// Moves enemies and projectiles on screen
-				moveOnScreen();
+				moveCharPro();
 
 				try
 				{
@@ -498,26 +494,8 @@ public class Field
 		 * Moves the enemies and projectiles on-screen Also handles player
 		 * projectiles to keep everything in this thread
 		 */
-		private synchronized void moveOnScreen()
+		private synchronized void moveCharPro()
 		{
-			// synchronized (enemies)
-			// {
-			// // Loops through all enemies and then move them
-			// for (Enemy enemy : enemies)
-			// {
-			// enemy.moveEnemy();
-			// System.out.println(enemy.getLocation().getX() + " "
-			// + enemy.getLocation().getX());
-			// }
-			// }
-			//
-			// synchronized (enemyPro)
-			// {
-			// // Loops through all enemy projectiles and moves them
-			// for (Projectile proj : enemyPro)
-			// proj.movePro();
-			// }
-
 			synchronized (playerPro)
 			{
 				// Loops through all player projectiles and moves them
