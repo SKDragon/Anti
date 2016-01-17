@@ -19,7 +19,7 @@ public class Field
 	// Boolean to determine if the game is still occurring or not
 	// Boolean to determine if the game is over, will stop all threads
 	private boolean playerAlive = true;
-	private static boolean gameOver = false;
+	public static boolean gameOver = false;
 	public static boolean proFired = false;
 	public static boolean enemySpawned = false;
 
