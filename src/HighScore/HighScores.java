@@ -22,6 +22,10 @@ public class HighScores {
 		sort();
 	}
 
+	public ArrayList<Score> getArray() {
+		return this.scores;
+	}
+
 	public void loadScoreFile() {
 		try {
 			Scanner reader = new Scanner(new File(file));
@@ -32,8 +36,10 @@ public class HighScores {
 				StringTokenizer st = new StringTokenizer(nextLine, lineBreak);
 				while (st.hasMoreElements()) {
 					String name = (String) st.nextElement();
-					int score = (int) st.nextElement();
-					scores.add(new Score(name, score));
+					String score = (String) st.nextElement();
+					int scr = Integer.parseInt(score);
+					//int score = (int) st.nextElement();
+					scores.add(new Score(name, scr));
 				}
 			}
 		} catch (FileNotFoundException e) {
@@ -59,17 +65,18 @@ public class HighScores {
 		}
 
 	}
+
 	protected ArrayList<Score> sort() {
-			for (int i = 0; i < scores.size() - 1; i++) {
-				for (int j = 0; j < scores.size() - 1; j++) {
-					if (scores.get(j).getScore() < scores.get(j + 1).getScore()) {
-						Score temp = scores.get(j);
-						scores.set(j, scores.get(j + 1));
-						scores.set(j + 1, temp);
-					}
+		for (int i = 0; i < scores.size() - 1; i++) {
+			for (int j = 0; j < scores.size() - 1; j++) {
+				if (scores.get(j).getScore() < scores.get(j + 1).getScore()) {
+					Score temp = scores.get(j);
+					scores.set(j, scores.get(j + 1));
+					scores.set(j + 1, temp);
 				}
 			}
-			return scores;
 		}
+		return scores;
+	}
 
 }

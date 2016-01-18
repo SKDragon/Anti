@@ -18,7 +18,7 @@ public class Score implements Serializable{
 		this.score = score;
 	}
 
-	String getName() {
+	public String getName() {
 		return name;
 	}
 
@@ -26,7 +26,7 @@ public class Score implements Serializable{
 		this.name = name;
 	}
 
-	protected int getScore() {
+	public int getScore() {
 		return score;
 	}
 
