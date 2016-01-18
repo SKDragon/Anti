@@ -423,7 +423,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 				fieldManage.start();
 				gameRepaint.start();
 				repaintThreadState = true;
-
+				nameFieldSetting = false; 
 				// gameLoop();
 			}
 			// gameLoop();
