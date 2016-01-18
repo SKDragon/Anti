@@ -1,5 +1,6 @@
 FIN//70
 RE//50
+FRR//30
 FRT//20
 FRC//20
 HIU//10

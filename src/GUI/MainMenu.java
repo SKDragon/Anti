@@ -76,6 +76,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 	// HighScores
 	private boolean gameOverCheck = false;
 	JTextField nameField = new JTextField();
+	GamePanel gamePanel = new GamePanel();
 
 	private HighScores hs = new HighScores();
 	String playerScore;
@@ -114,7 +115,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 		addKeyListener(this);
 		borderLoad();
 		loadImages();
-		alignments();
+		// alignments();
 		// nameFieldSet();
 
 	}
@@ -126,6 +127,11 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 
 	void alignments()
 	{
+
+	}
+
+	void nameFieldSet()
+	{
 		nameField.setFont(new Font("Arial", Font.BOLD, 100));
 		nameField.setForeground(Color.MAGENTA);
 		nameField.setBackground(Color.GRAY);
@@ -133,6 +139,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 		JTextFieldLimit lim = new JTextFieldLimit();
 		lim.setLimit(3);
 		nameField.setDocument(lim);
+		
 		// Alignments
 		GB.ipady = 100;
 		GB.weightx = 0.1;
@@ -143,12 +150,8 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 		GB.fill = GridBagConstraints.HORIZONTAL;
 		GB.insets = new Insets(280, 235, 0, 200);
 		add(nameField, GB);
-		nameField.setVisible(false);
-	}
-
-	void nameFieldSet()
-	{
-		nameField.setVisible(true);
+		// nameField.setVisible(false);
+		// nameField.setVisible(true);
 
 		// nameField.putClientProperty("Jcomponent.sizeVariant", "large");
 		// add(nameField);
@@ -417,6 +420,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 	public void renderGameOverScreen(Graphics g)
 	{
 		super.paintComponent(g);
+		gamePanel.setVisible(false);
 		setSize(1000, 800);
 		setLayout(new GridBagLayout());
 		setBorder(new EmptyBorder(0, 0, 0, 0));
@@ -435,7 +439,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 		{
 			hs.clear();
 			hs.loadScoreFile();
-			// nameField.setVisible(true);
+			nameField.setVisible(true);
 			nameFieldSet();
 			nameFieldSetting = true;
 		}
@@ -456,7 +460,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 	public void renderGameScreen(Graphics g)
 	{
 		super.paintComponent(g);
-		GamePanel gamePanel = new GamePanel();
+		gamePanel.setVisible(true);
 		setBackground(Color.black);
 		gamePanel.setSize(600, 800);
 		gamePanel.setBorder(compound);
@@ -491,7 +495,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 				fieldManage.start();
 				gameRepaint.start();
 				repaintThreadState = true;
-				//nameFieldSetting = false;
+				// nameFieldSetting = false;
 				// gameLoop();
 			}
 			// gameLoop();
@@ -507,7 +511,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 		}
 		else if (State == STATE.GAMEOVER)
 		{
-			//nameField.setVisible(true);
+			// nameField.setVisible(true);
 			renderGameOverScreen(g);
 		}
 		// repaint();
@@ -661,10 +665,10 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 			// Z = 90
 			// X = 88
 
-//			if (key == KeyEvent.VK_SPACE)
-//			{
-//				Field.gameOver = true;
-//			}
+			// if (key == KeyEvent.VK_SPACE)
+			// {
+			// Field.gameOver = true;
+			// }
 
 			// UP
 			if (key == 38)
