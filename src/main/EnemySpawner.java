@@ -33,9 +33,12 @@ public class EnemySpawner implements Runnable
 			int x = (int) (Math.random() * 200 + 200);
 
 			int enemyType = (int) Math.random() * 2;
-			int bulletImage = (int) Math.random() * 4 + 1;
+
 			if (enemyType == 0)
 			{
+				int bulletX =  -1 *(int) (Math.random() * 3 - 1);
+				int bulletY =  -2 *(int) (Math.random() * 3);
+				
 				spawned = new ProEnemy(new ImageIcon(
 						"Pictures/Enemies/50x50/enemy_1.png").getImage(),
 						enemyHealth,
@@ -44,7 +47,7 @@ public class EnemySpawner implements Runnable
 						new Point(x, 5), 40,
 						new LinearPro(new Point(2, 2), new ImageIcon(
 								"Pictures/Projectiles/Projectile_2.png")
-								.getImage(), 10, 1, 5), 3000);
+								.getImage(), 10, 1, 5), 200);
 			}
 
 			else
