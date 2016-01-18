@@ -31,7 +31,6 @@ public class EnemySpawner implements Runnable
 			}
 
 			int x = (int) (Math.random() * 200 + 200);
-
 			int enemyType = (int) Math.random() * 2;
 
 			if (enemyType == 0)
