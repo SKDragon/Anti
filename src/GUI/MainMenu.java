@@ -1,5 +1,6 @@
 package GUI;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -82,7 +83,6 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 	ArrayList<Enemy> enemies;
 	ArrayList<Projectile> enemyProjectiles;
 
-	
 	boolean nameFieldSetting = false;
 	// private long moveTimeDelay = System.currentTimeMillis();
 	// private long fireTimeDelay = System.currentTimeMillis();
@@ -111,8 +111,8 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 		addKeyListener(this);
 		borderLoad();
 		loadImages();
-		//nameFieldSet();
-		
+		// nameFieldSet();
+
 	}
 
 	public void repaint() {
@@ -120,7 +120,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 	}
 
 	void nameFieldSet() {
-		//nameField.setVisible(false);
+		// nameField.setVisible(false);
 		nameField.setFont(new Font("Arial", Font.BOLD, 100));
 		nameField.setForeground(Color.MAGENTA);
 		nameField.setBackground(Color.GRAY);
@@ -146,17 +146,17 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 		requestFocus();
 	}
 
-//	private void gameOverUpdate() {
-//		if (ENTER_Pressed) {
-//			System.out.println("ENTER");
-//			if (nameField.getText() != null) {
-//				System.out.println("not null");
-//				hs.addScore(nameField.getText(), field.getScore());
-//				hs.updateScoreFile();
-//				gameOverCheck = false;
-//			}
-//		}
-//	}
+	// private void gameOverUpdate() {
+	// if (ENTER_Pressed) {
+	// System.out.println("ENTER");
+	// if (nameField.getText() != null) {
+	// System.out.println("not null");
+	// hs.addScore(nameField.getText(), field.getScore());
+	// hs.updateScoreFile();
+	// gameOverCheck = false;
+	// }
+	// }
+	// }
 
 	private synchronized void update() {
 
@@ -363,14 +363,14 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 		g.drawString(playerScore, 345, 235);
 
 		// Name Field
-		if (!nameFieldSetting){
+		if (!nameFieldSetting) {
 			hs.clear();
 			hs.loadScoreFile();
 			nameField.setVisible(true);
 			nameFieldSet();
 			nameFieldSetting = true;
 		}
-		//add(nameField, GB);
+		// add(nameField, GB);
 		// hs.addScore("this", field.getScore());
 		// g.drawString("500", 100, 200);
 
@@ -385,68 +385,30 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 	// GameScreen Render
 	public void renderGameScreen(Graphics g) {
 		super.paintComponent(g);
-		setSize(600, 800);
-		setBorder(compound);
-		addKeyListener(this);
-		g.drawImage(gameScreenBG, gameBG_X1, gameBG_Y1, this);
-		if ((gameBG_Y1 >= -1200 && gameBG_Y1 <= 800)) {
-			g.drawImage(gameScreenBG, gameBG_X2, gameBG_Y2, this);
-		}
+		GamePanel gamePanel = new GamePanel();
+		setBackground(Color.black);
+		gamePanel.setSize(600, 800);
+		gamePanel.setBorder(compound);
+		gamePanel.addKeyListener(this);
+		add(gamePanel);
 
-		// Player
-		Point playerLoc = field.playerLoc;
-		int dim = field.playerDim;
-		g.setColor(Color.PINK);
-		// g.drawRect((int) playerLoc.getX(), (int) playerLoc.getY(), dim, dim);
+		String score = Integer.toString(field.getScore());
+		//String live = Integer.toString(field.getPlayer().get)
+		g.setColor(Color.YELLOW);
+		g.setFont(new Font("Arial", Font.BOLD, 50));
+		g.drawString("SCORE", 730, 50);
+		
+		
+		g.setColor(Color.MAGENTA);
+		g.drawString(score, 700, 100);
+		
+		
+		g.setColor(Color.CYAN);
+		g.drawString("LIVES", 730, 200);
+		
+		g.setColor(Color.RED);
+		g.drawString("LIVES", 700, 250);
 
-		g.drawImage(playerIcon, (int) playerLoc.getX(), (int) playerLoc.getY(), null);
-
-		// testing
-		// g.fillRect(x, y, 100, 100);
-
-		// Paint arrays
-
-		if (charProjectiles != null && charProjectiles.size() > 0) {
-			// System.out.println("main " + charProjectiles.size());
-			synchronized (charProjectiles) {
-				for (Projectile charPro : charProjectiles) {
-					synchronized (charPro) {
-						Point pp = charPro.getLocation();
-						int x = (int) pp.getX();
-						int y = (int) pp.getY();
-						g.drawImage(playerProIcon, x, y, null);
-						// System.out.println(charPro.getLocation().getY());
-						// g.fillRect(x, y, 10, 10);
-					}
-				}
-			}
-		}
-
-		if (enemies != null && enemies.size() > 0) {
-			synchronized (enemies) {
-				for (Enemy toDraw : enemies) {
-					synchronized (toDraw) {
-						Point pp = toDraw.getLocation();
-						int x = (int) pp.getX();
-						int y = (int) pp.getY();
-						g.drawImage(toDraw.getIcon(), x, y, null);
-					}
-				}
-			}
-		}
-
-		if (enemyProjectiles != null && enemyProjectiles.size() > 0) {
-			synchronized (enemyProjectiles) {
-				for (Projectile toDraw : enemyProjectiles) {
-					synchronized (toDraw) {
-						Point pp = toDraw.getLocation();
-						int x = (int) pp.getX();
-						int y = (int) pp.getY();
-						g.drawImage(toDraw.getImage(), x, y, null);
-					}
-				}
-			}
-		}
 	}
 
 	// Main Graphics Render
@@ -625,6 +587,76 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 
 	public void keyTyped(KeyEvent event) {
 		// TODO Auto-generated method stub
+	}
+
+	class GamePanel extends JPanel {
+
+		GamePanel() {
+			super();
+		}
+
+		protected void paintComponent(Graphics g) {
+			super.paintComponent(g);
+			g.drawImage(gameScreenBG, gameBG_X1, gameBG_Y1, this);
+			if ((gameBG_Y1 >= -1200 && gameBG_Y1 <= 800)) {
+				g.drawImage(gameScreenBG, gameBG_X2, gameBG_Y2, this);
+			}
+			// Player
+			Point playerLoc = field.playerLoc;
+			int dim = field.playerDim;
+			g.setColor(Color.PINK);
+			// g.drawRect((int) playerLoc.getX(), (int) playerLoc.getY(), dim,
+			// dim);
+
+			g.drawImage(playerIcon, (int) playerLoc.getX(), (int) playerLoc.getY(), null);
+
+			// testing
+			// g.fillRect(x, y, 100, 100);
+
+			// Paint arrays
+
+			if (charProjectiles != null && charProjectiles.size() > 0) {
+				// System.out.println("main " + charProjectiles.size());
+				synchronized (charProjectiles) {
+					for (Projectile charPro : charProjectiles) {
+						synchronized (charPro) {
+							Point pp = charPro.getLocation();
+							int x = (int) pp.getX();
+							int y = (int) pp.getY();
+							g.drawImage(playerProIcon, x, y, null);
+							// System.out.println(charPro.getLocation().getY());
+							// g.fillRect(x, y, 10, 10);
+						}
+					}
+				}
+			}
+
+			if (enemies != null && enemies.size() > 0) {
+				synchronized (enemies) {
+					for (Enemy toDraw : enemies) {
+						synchronized (toDraw) {
+							Point pp = toDraw.getLocation();
+							int x = (int) pp.getX();
+							int y = (int) pp.getY();
+							g.drawImage(toDraw.getIcon(), x, y, null);
+						}
+					}
+				}
+			}
+
+			if (enemyProjectiles != null && enemyProjectiles.size() > 0) {
+				synchronized (enemyProjectiles) {
+					for (Projectile toDraw : enemyProjectiles) {
+						synchronized (toDraw) {
+							Point pp = toDraw.getLocation();
+							int x = (int) pp.getX();
+							int y = (int) pp.getY();
+							g.drawImage(toDraw.getImage(), x, y, null);
+						}
+					}
+				}
+			}
+		}
 	}
 
 	class repaintThread implements Runnable {
