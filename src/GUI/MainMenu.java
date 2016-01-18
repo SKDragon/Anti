@@ -114,6 +114,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 		addKeyListener(this);
 		borderLoad();
 		loadImages();
+		alignments();
 		// nameFieldSet();
 
 	}
@@ -123,9 +124,8 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 		super.repaint();
 	}
 
-	void nameFieldSet()
+	void alignments()
 	{
-		nameField.setVisible(true);
 		nameField.setFont(new Font("Arial", Font.BOLD, 100));
 		nameField.setForeground(Color.MAGENTA);
 		nameField.setBackground(Color.GRAY);
@@ -133,7 +133,6 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 		JTextFieldLimit lim = new JTextFieldLimit();
 		lim.setLimit(3);
 		nameField.setDocument(lim);
-
 		// Alignments
 		GB.ipady = 100;
 		GB.weightx = 0.1;
@@ -144,6 +143,12 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 		GB.fill = GridBagConstraints.HORIZONTAL;
 		GB.insets = new Insets(280, 235, 0, 200);
 		add(nameField, GB);
+		nameField.setVisible(false);
+	}
+
+	void nameFieldSet()
+	{
+		nameField.setVisible(true);
 
 		// nameField.putClientProperty("Jcomponent.sizeVariant", "large");
 		// add(nameField);
@@ -357,7 +362,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 				.getImage();
 		instructionsBG = new ImageIcon(
 				"Pictures/Menu Backgrounds/InstructionsBGEdited.png")
-				.getImage();
+						.getImage();
 		gameScreenBG = new ImageIcon(
 				"Pictures/Game Backgrounds/GameScreenBG.png").getImage();
 		gameOverBG = new ImageIcon("Pictures/Menu Backgrounds/GameOverBG.png")
@@ -426,7 +431,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 		g.drawString(playerScore, 345, 235);
 
 		// Name Field
-		if (!nameFieldSetting)
+		if (nameFieldSetting == false)
 		{
 			hs.clear();
 			hs.loadScoreFile();
@@ -486,7 +491,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 				fieldManage.start();
 				gameRepaint.start();
 				repaintThreadState = true;
-				nameFieldSetting = false;
+				//nameFieldSetting = false;
 				// gameLoop();
 			}
 			// gameLoop();
@@ -502,7 +507,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 		}
 		else if (State == STATE.GAMEOVER)
 		{
-			nameField.setVisible(true);
+			//nameField.setVisible(true);
 			renderGameOverScreen(g);
 		}
 		// repaint();
@@ -656,10 +661,10 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 			// Z = 90
 			// X = 88
 
-			if (key == KeyEvent.VK_SPACE)
-			{
-				Field.gameOver = true;
-			}
+//			if (key == KeyEvent.VK_SPACE)
+//			{
+//				Field.gameOver = true;
+//			}
 
 			// UP
 			if (key == 38)
@@ -730,7 +735,8 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 				// System.out.println("main " + charProjectiles.size());
 				synchronized (charProjectiles)
 				{
-					for (int charPros = 0; charPros < charProjectiles.size(); charPros++)
+					for (int charPros = 0; charPros < charProjectiles
+							.size(); charPros++)
 					{
 						Projectile charPro = charProjectiles.get(charPros);
 						synchronized (charPro)
