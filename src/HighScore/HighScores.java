@@ -26,6 +26,10 @@ public class HighScores {
 		return this.scores;
 	}
 
+	public void clear(){
+		scores = new ArrayList<Score>();
+	}
+	
 	public void loadScoreFile() {
 		try {
 			Scanner reader = new Scanner(new File(file));

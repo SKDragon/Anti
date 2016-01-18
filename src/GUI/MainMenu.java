@@ -72,7 +72,8 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 
 	// HighScores
 	private boolean gameOverCheck = false;
-	JTextField nameField = new JTextField();;
+	JTextField nameField = new JTextField();
+
 	private HighScores hs = new HighScores();
 	String playerScore;
 
@@ -81,6 +82,8 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 	ArrayList<Enemy> enemies;
 	ArrayList<Projectile> enemyProjectiles;
 
+	
+	boolean nameFieldSetting = false;
 	// private long moveTimeDelay = System.currentTimeMillis();
 	// private long fireTimeDelay = System.currentTimeMillis();
 	// private long lastTime;
@@ -108,10 +111,34 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 		addKeyListener(this);
 		borderLoad();
 		loadImages();
+		//nameFieldSet();
+		
 	}
 
 	public void repaint() {
 		super.repaint();
+	}
+
+	void nameFieldSet() {
+		//nameField.setVisible(false);
+		nameField.setFont(new Font("Arial", Font.BOLD, 100));
+		nameField.setForeground(Color.MAGENTA);
+		nameField.setBackground(Color.GRAY);
+		nameField.setHorizontalAlignment(JTextField.CENTER);
+		JTextFieldLimit lim = new JTextFieldLimit();
+		lim.setLimit(3);
+		nameField.setDocument(lim);
+
+		// Alignments
+		GB.ipady = 100;
+		GB.weightx = 0.1;
+		GB.gridx = 0;
+		GB.gridy = 0;
+		GB.gridwidth = 2;
+		GB.gridheight = 2;
+		GB.fill = GridBagConstraints.HORIZONTAL;
+		GB.insets = new Insets(280, 235, 0, 200);
+		add(nameField, GB);
 	}
 
 	public void addNotify() {
@@ -119,17 +146,17 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 		requestFocus();
 	}
 
-	private void gameOverUpdate() {
-		if (ENTER_Pressed) {
-			System.out.println("ENTER");
-			if (nameField.getText() != null) {
-				System.out.println("not null");
-				hs.addScore(nameField.getText(), field.getScore());
-				hs.updateScoreFile();
-				gameOverCheck = false;
-			}
-		}
-	}
+//	private void gameOverUpdate() {
+//		if (ENTER_Pressed) {
+//			System.out.println("ENTER");
+//			if (nameField.getText() != null) {
+//				System.out.println("not null");
+//				hs.addScore(nameField.getText(), field.getScore());
+//				hs.updateScoreFile();
+//				gameOverCheck = false;
+//			}
+//		}
+//	}
 
 	private synchronized void update() {
 
@@ -291,6 +318,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 	// HighScores Render
 	public void renderHighScoresScreen(Graphics g) {
 		super.paintComponent(g);
+		hs.clear();
 		hs.loadScoreFile();
 		g.drawImage(highScoresBG, 0, 0, this);
 		g.setColor(Color.YELLOW);
@@ -328,7 +356,6 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 
 		// Grab variables
 		playerScore = Integer.toString(field.getScore());
-		hs.loadScoreFile();
 
 		// Display Score
 		g.setColor(Color.MAGENTA);
@@ -336,30 +363,17 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 		g.drawString(playerScore, 345, 235);
 
 		// Name Field
-		nameField.setFont(new Font("Arial", Font.BOLD, 100));
-		nameField.setForeground(Color.MAGENTA);
-		nameField.setBackground(Color.GRAY);
-		nameField.setHorizontalAlignment(JTextField.CENTER);
-		JTextFieldLimit lim = new JTextFieldLimit();
-		lim.setLimit(3);
-		// nameField.setDocument(lim);
-
-		// Alignments
-		GB.ipady = 100;
-		GB.weightx = 0.1;
-		GB.gridx = 0;
-		GB.gridy = 0;
-		GB.gridwidth = 2;
-		GB.gridheight = 2;
-		GB.fill = GridBagConstraints.HORIZONTAL;
-		GB.insets = new Insets(280, 235, 0, 200);
-		add(nameField, GB);
+		if (!nameFieldSetting){
+			hs.clear();
+			hs.loadScoreFile();
+			nameField.setVisible(true);
+			nameFieldSet();
+			nameFieldSetting = true;
+		}
+		//add(nameField, GB);
 		// hs.addScore("this", field.getScore());
 		// g.drawString("500", 100, 200);
 
-		if (ENTER_Pressed) {
-			System.out.println("MAYBE?");
-		}
 	}
 
 	// MainMenu Render
@@ -457,6 +471,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 		} else if (State == STATE.HIGHSCORES) {
 			renderHighScoresScreen(g);
 		} else if (State == STATE.GAMEOVER) {
+			nameField.setVisible(true);
 			renderGameOverScreen(g);
 		}
 		// repaint();
@@ -483,7 +498,6 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 			else if (mx >= 35 && mx <= 532 && my >= 604 && my <= 644) {
 				State = STATE.HIGHSCORES;
 				repaint();
-
 			}
 		} else if (State == STATE.INSTRUCTIONS) {
 			if (mx > 24 && mx < 127 && my > 730 && my < 779) {
@@ -503,8 +517,8 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 				System.out.println(name);
 				repaint();
 			}
-		} else if (State == STATE.HIGHSCORES){
-			if (mx>0&&mx<106&&my>751&&my<800){
+		} else if (State == STATE.HIGHSCORES) {
+			if (mx > 0 && mx < 106 && my > 751 && my < 800) {
 				State = STATE.MAIN_MENU;
 				repaint();
 			}
@@ -626,6 +640,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 			// Call for gameOver Screen
 			State = STATE.GAMEOVER;
 			repaint();
+			repaintThreadState = false;
 		}
 	}
 
