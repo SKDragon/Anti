@@ -198,36 +198,48 @@ public class Field
 
 						synchronized (playerPro)
 						{
-							for (Projectile charPro : playerPro)
+							for (int playerPros = 0; playerPros < playerPro
+									.size(); playerPros++)
 							{
-								synchronized (charPro)
+								Projectile charPro = playerPro
+										.get(playerPros);
+								if (charPro != null)
 								{
-									double proX = charPro.getLocation().getX();
-									double proY = charPro.getLocation().getY();
-
-									// If the projectile is very far away, do
-									// not
-									// bother checking it
-									if (Math.abs(checkX - proX) < 20
-											&& Math.abs(checkY - proY) < 20)
+									synchronized (charPro)
 									{
-										int checkDim = checking.getDimensions();
-										int proDim = charPro.getDimensions();
+										double proX = charPro.getLocation()
+												.getX();
+										double proY = charPro.getLocation()
+												.getY();
 
-										// If collision occurred, get rid of the
-										// enemy
-										if ((checkX - proX < proDim || proX
-												- checkX < checkDim)
-												&& (checkY - proY < proDim || proY
-														- checkY < checkDim))
+										// If the projectile is very far away,
+										// do
+										// not
+										// bother checking it
+										if (Math.abs(checkX - proX) < 20
+												&& Math.abs(checkY - proY) < 20)
 										{
-											checking.hit();
-											if (checking.getHealth() <= 0)
+											int checkDim = checking
+													.getDimensions();
+											int proDim = charPro
+													.getDimensions();
+
+											// If collision occurred, get rid of
+											// the
+											// enemy
+											if ((checkX - proX < proDim || proX
+													- checkX < checkDim)
+													&& (checkY - proY < proDim || proY
+															- checkY < checkDim))
 											{
-												enemies.remove(checking);
-												checking.destroyed();
-												enemy--;
-												score += 100;
+												checking.hit();
+												if (checking.getHealth() <= 0)
+												{
+													enemies.remove(checking);
+													checking.destroyed();
+													enemy--;
+													score += 100;
+												}
 											}
 										}
 									}
@@ -335,6 +347,35 @@ public class Field
 	{
 		public void run()
 		{
+			Enemy thing = new ProEnemy(new ImageIcon(
+					"Pictures/Enemies/50x50/enemy_1.png").getImage(), 1, 1, 0,
+					0, 0, new Point(10, 9), 40, new LinearPro(new Point(
+							2,
+							2),
+							new ImageIcon(
+									"Pictures/Projectiles/Projectile_2.png")
+									.getImage(), 10, 1, 5), 3000);
+			synchronized (enemies)
+			{
+				enemies.add(thing);
+				Thread manageEnemy = new Thread(new EnemyManager(thing));
+				manageEnemy.start();
+				enemySpawned = true;
+			}
+
+			Enemy thing2 = new MovingEnemy(new ImageIcon(
+					"Pictures/Enemies/50x50/enemy_1.png").getImage(), 100, 0,
+					0,
+					0, 0, new Point(100, 90), 40);
+
+			synchronized (enemies)
+			{
+				enemies.add(thing2);
+				Thread manageEnemy = new Thread(new EnemyManager(thing2));
+				manageEnemy.start();
+				enemySpawned = true;
+			}
+
 			// Creates the spawning thread
 			Thread spawner = new Thread(new EnemySpawner());
 			spawner.start();
@@ -384,7 +425,12 @@ public class Field
 			{
 				// Loops through all player projectiles and moves them
 				for (Projectile playerPro : playerPro)
-					playerPro.movePro();
+				{
+					synchronized (playerPro)
+					{
+						playerPro.movePro();
+					}
+				}
 			}
 
 			// Loops through things again to check if any objects have gone
@@ -443,20 +489,20 @@ public class Field
 					System.out.println("enemy manage sleep");
 				}
 
-//				// Checks to see if the enemy has gone off-screen
-//				synchronized (toManage)
-//				{
-//					Point currentLoc = toManage.getLocation();
-//					if (currentLoc.getX() > 600 || currentLoc.getX() < 0
-//							|| currentLoc.getY() > 800 || currentLoc.getY() < 0)
-//					{
-//						synchronized (enemies)
-//						{
-//							enemies.remove(toManage);
-//						}
-//						toManage.destroyed();
-//					}
-//				}
+				// // Checks to see if the enemy has gone off-screen
+				// synchronized (toManage)
+				// {
+				// Point currentLoc = toManage.getLocation();
+				// if (currentLoc.getX() > 600 || currentLoc.getX() < 0
+				// || currentLoc.getY() > 800 || currentLoc.getY() < 0)
+				// {
+				// synchronized (enemies)
+				// {
+				// enemies.remove(toManage);
+				// }
+				// toManage.destroyed();
+				// }
+				// }
 			}
 		}
 	}
