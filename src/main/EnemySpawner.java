@@ -47,7 +47,7 @@ public class EnemySpawner implements Runnable
 						new Point(x, 5), 40,
 						new LinearPro(new Point(2, 2), new ImageIcon(
 								"Pictures/Projectiles/Projectile_2.png")
-								.getImage(), 10, 1, 5), 200);
+								.getImage(), 10, bulletX, bulletY), 200);
 			}
 
 			else
