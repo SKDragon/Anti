@@ -814,7 +814,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 			field = new Field();
 			playerIcon = field.getPlayer().getIcon();
 			playerProIcon = field.getPlayer().getProIcon();
-			field.manageField(1);
+			field.manageField();
 		}
 	}
 

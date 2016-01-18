@@ -61,7 +61,7 @@ public class Field
 	/**
 	 * Runs while the game is still going
 	 */
-	public void manageField(int level)
+	public void manageField()
 	{
 		// Creates and starts enemy spawning
 		Thread enemySpawner = new Thread(new FieldManager());
@@ -326,34 +326,34 @@ public class Field
 	{
 		public void run()
 		{
-			// Enemy thing = new ProEnemy(new ImageIcon(
-			// "Pictures/Enemies/50x50/enemy_1.png").getImage(), 1, 1, 0,
-			// 0, 0, new Point(10, 9), 40, new LinearPro(new Point(
-			// 2,
-			// 2),
-			// new ImageIcon(
-			// "Pictures/Projectiles/Projectile_2.png")
-			// .getImage(), 10, 1, 5), 3000);
-			// synchronized (enemies)
-			// {
-			// enemies.add(thing);
-			// Thread manageEnemy = new Thread(new EnemyManager(thing));
-			// manageEnemy.start();
-			// enemySpawned = true;
-			// }
-			//
-			// Enemy thing2 = new MovingEnemy(new ImageIcon(
-			// "Pictures/Enemies/50x50/enemy_1.png").getImage(), 100, 0,
-			// 0,
-			// 0, 0, new Point(100, 90), 40);
-			//
-			// synchronized (enemies)
-			// {
-			// enemies.add(thing2);
-			// Thread manageEnemy = new Thread(new EnemyManager(thing2));
-			// manageEnemy.start();
-			// enemySpawned = true;
-			// }
+//			 Enemy thing = new ProEnemy(new ImageIcon(
+//			 "Pictures/Enemies/50x50/enemy_1.png").getImage(), 1, 1, 0,
+//			 0, 0, new Point(10, 9), 40, new LinearPro(new Point(
+//			 2,
+//			 2),
+//			 new ImageIcon(
+//			 "Pictures/Projectiles/Projectile_2.png")
+//			 .getImage(), 10, 1, 5), 3000);
+//			 synchronized (enemies)
+//			 {
+//			 enemies.add(thing);
+//			 Thread manageEnemy = new Thread(new EnemyManager(thing));
+//			 manageEnemy.start();
+//			 enemySpawned = true;
+//			 }
+//			
+//			 Enemy thing2 = new MovingEnemy(new ImageIcon(
+//			 "Pictures/Enemies/50x50/enemy_1.png").getImage(), 100, 0,
+//			 0,
+//			 0, 0, new Point(100, 90), 40);
+//			
+//			 synchronized (enemies)
+//			 {
+//			 enemies.add(thing2);
+//			 Thread manageEnemy = new Thread(new EnemyManager(thing2));
+//			 manageEnemy.start();
+//			 enemySpawned = true;
+//			 }
 
 			// Manages enemies while ones still need to spawn
 			while (!gameOver)
