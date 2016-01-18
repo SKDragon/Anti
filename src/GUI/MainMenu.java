@@ -144,10 +144,9 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 		GB.fill = GridBagConstraints.HORIZONTAL;
 		GB.insets = new Insets(280, 235, 0, 200);
 		add(nameField, GB);
-		
-		
-//		nameField.putClientProperty("Jcomponent.sizeVariant", "large");
-//		add(nameField);
+
+		// nameField.putClientProperty("Jcomponent.sizeVariant", "large");
+		// add(nameField);
 	}
 
 	public void addNotify()
@@ -358,7 +357,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 				.getImage();
 		instructionsBG = new ImageIcon(
 				"Pictures/Menu Backgrounds/InstructionsBGEdited.png")
-						.getImage();
+				.getImage();
 		gameScreenBG = new ImageIcon(
 				"Pictures/Game Backgrounds/GameScreenBG.png").getImage();
 		gameOverBG = new ImageIcon("Pictures/Menu Backgrounds/GameOverBG.png")
@@ -431,7 +430,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 		{
 			hs.clear();
 			hs.loadScoreFile();
-			//nameField.setVisible(true);
+			// nameField.setVisible(true);
 			nameFieldSet();
 			nameFieldSetting = true;
 		}
@@ -731,16 +730,15 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 				// System.out.println("main " + charProjectiles.size());
 				synchronized (charProjectiles)
 				{
-					for (Projectile charPro : charProjectiles)
+					for (int charPros = 0; charPros < charProjectiles.size(); charPros++)
 					{
+						Projectile charPro = charProjectiles.get(charPros);
 						synchronized (charPro)
 						{
 							Point pp = charPro.getLocation();
 							int x = (int) pp.getX();
 							int y = (int) pp.getY();
 							g.drawImage(playerProIcon, x, y, null);
-							// System.out.println(charPro.getLocation().getY());
-							// g.fillRect(x, y, 10, 10);
 						}
 					}
 				}
