@@ -13,6 +13,9 @@ public class EnemySpawner implements Runnable
 	protected static Enemy spawned;
 	private long enemiesSpawned = 0;
 	private long delay = 1000;
+	private long enemySpeedX = 1;
+	private long enemySpeedY = 1;
+	private int enemyHealth = 1;
 
 	public void run()
 	{
@@ -20,28 +23,55 @@ public class EnemySpawner implements Runnable
 		{
 			try
 			{
-				Thread.sleep(1000);
+				Thread.sleep(delay);
 			}
 			catch (InterruptedException e)
 			{
 				System.out.println("spawn error");
 			}
 
+			int x = (int) (Math.random() * 200 + 200);
+
+			int enemyType = (int) Math.random() * 2;
+			int bulletImage = (int) Math.random() * 4 + 1;
+			if (enemyType == 0)
+			{
+				spawned = new ProEnemy(new ImageIcon(
+						"Pictures/Enemies/50x50/enemy_1.png").getImage(),
+						enemyHealth,
+						(int) (enemySpeedX * (Math.random() * 3 - 1)),
+						(int) (enemySpeedY * (Math.random() * 2 + 1)), 0, 0,
+						new Point(x, 5), 40,
+						new LinearPro(new Point(2, 2), new ImageIcon(
+								"Pictures/Projectiles/Projectile_2.png")
+								.getImage(), 10, 1, 5), 3000);
+			}
+
+			else
+			{
+				spawned = new MovingEnemy(
+						new ImageIcon(
+								"Pictures/Enemies/50x50/enemy_1.png").getImage(),
+						enemyHealth,
+						(int) (enemySpeedX * (Math.random() * 3 - 1)),
+						(int) (enemySpeedX * (Math.random() * 3 - 1)),
+						0,
+						0,
+						new Point(x, 5),
+						40);
+			}
+
+			// Various checks to increase difficulty
 			if (enemiesSpawned % 10 == 0 && delay > 100)
 				delay -= 20;
-			enemiesSpawned ++;
+			if (enemiesSpawned % 5 == 0)
+				enemyHealth += 50;
+			if (enemiesSpawned % 15 == 0)
+				enemySpeedX++;
+			enemiesSpawned++;
 		}
 	}
 
-	
-	//spawned = new ProEnemy(new ImageIcon(
-//			"Pictures/Enemies/50x50/enemy_1.png").getImage(), 1, 0, 0,
-//			0, 0, new Point(10, 9), 40, new LinearPro(new Point(
-//					2,
-//					2),
-//					new ImageIcon(
-//							"Pictures/Projectiles/Projectile_2.png")
-//							.getImage(), 10, 1, 5), 3000);
 	public static Enemy getSpawned()
 	{
 		return spawned;
