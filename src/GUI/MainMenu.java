@@ -144,6 +144,10 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 		GB.fill = GridBagConstraints.HORIZONTAL;
 		GB.insets = new Insets(280, 235, 0, 200);
 		add(nameField, GB);
+		
+		
+//		nameField.putClientProperty("Jcomponent.sizeVariant", "large");
+//		add(nameField);
 	}
 
 	public void addNotify()
