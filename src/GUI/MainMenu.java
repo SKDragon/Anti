@@ -125,7 +125,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 
 	void nameFieldSet()
 	{
-		// nameField.setVisible(false);
+		nameField.setVisible(true);
 		nameField.setFont(new Font("Arial", Font.BOLD, 100));
 		nameField.setForeground(Color.MAGENTA);
 		nameField.setBackground(Color.GRAY);
@@ -427,7 +427,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 		{
 			hs.clear();
 			hs.loadScoreFile();
-			nameField.setVisible(true);
+			//nameField.setVisible(true);
 			nameFieldSet();
 			nameFieldSetting = true;
 		}
