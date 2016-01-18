@@ -464,12 +464,6 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener
 		g.setColor(Color.MAGENTA);
 		g.drawString(score, 700, 100);
 
-		g.setColor(Color.CYAN);
-		g.drawString("LIVES", 730, 200);
-
-		g.setColor(Color.RED);
-		g.drawString("LIVES", 700, 250);
-
 	}
 
 	// Main Graphics Render
