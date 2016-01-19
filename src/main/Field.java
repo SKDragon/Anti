@@ -3,40 +3,39 @@ package main;
 import java.awt.Point;
 import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
-
-import projectiles.LinearPro;
-import projectiles.Projectile;
-import enemies.Enemy;
-import enemies.MovingEnemy;
-import enemies.ProEnemy;
+import projectiles.*;
+import enemies.*;
 
 /**
  * Field class containing everything on the game screen
  * @author Iain/Gavin
- * @version 12/1/16
+ * @version 19/1/16
  */
 public class Field
 {
-	// Boolean to determine if the game is still occurring or not
-	// Boolean to determine if the game is over, will stop all threads
+	// If the game is still occurring or not
+	// If the game is over, will stop all threads
+	// If the player has fired a projectile
+	// If an enemy has been spawned
+	// If an enemy has fired a projectile
 	private boolean playerAlive = true;
 	public static boolean gameOver = false;
 	public static boolean proFired = false;
 	public static boolean enemySpawned = false;
 	public static boolean enemyProFired = false;
 
-	// Player object information
+	// Player object information,some are preset to avoid errors
 	private static Player player;
 	public static Point playerLoc = new Point(0, 0);
 	private static int playerMove;
 	public static int playerDim = 0;
 
-	// Gameplay information
+	// Player score
 	private int score = 0;
-	public static long timeStart;
 
-	private static long timeElapsed = System.currentTimeMillis();
+	// Time variables for moving and firing
+	private static long moveTimeElapsed = System.currentTimeMillis();
+	private static long fireTimeElapsed = System.currentTimeMillis();
 
 	// All player projectiles
 	private static ArrayList<Projectile> playerPro = new ArrayList<Projectile>();
@@ -46,8 +45,7 @@ public class Field
 	private static ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 
 	/**
-	 * Constructor, only needs player's choice of character
-	 * @param charChoice the character to use
+	 * Constructor, creates player object and makes quick references to them
 	 */
 	public Field()
 	{
@@ -58,9 +56,6 @@ public class Field
 		playerLoc = player.getLocation();
 		playerMove = player.getMoveSpeed();
 		playerDim = player.getDimensions();
-
-		// Set timing for firing, movement
-		timeStart = System.currentTimeMillis();
 	}
 
 	/**
@@ -76,7 +71,7 @@ public class Field
 		Thread timeScore = new Thread(new SecondsScore());
 		timeScore.start();
 
-		// While the player is still alive...
+		// Loops while the player is still alive
 		while (!gameOver)
 		{
 			// Checks for a player collision
@@ -97,8 +92,6 @@ public class Field
 			{
 			}
 		}
-		
-		System.out.println("game over");
 	}
 
 	/**
@@ -106,15 +99,15 @@ public class Field
 	 * player has come into contact with any of them
 	 * @return if the player has been hit
 	 */
-	private synchronized boolean isCharCollision()
+	private boolean isCharCollision()
 	{
-		// Ref to character location
+		// References to character location
 		double playerX = playerLoc.getX();
 		double playerY = playerLoc.getY();
 
-		// Loops through enemies to check for collisions
 		synchronized (enemies)
 		{
+			// Loops through enemies to check for collisions
 			for (Enemy checking : enemies)
 			{
 				synchronized (checking)
@@ -132,10 +125,11 @@ public class Field
 						int playerDim = player.getDimensions();
 						int checkDim = checking.getDimensions();
 
+						// Check for collisions using location and dimensions
 						if ((Math.abs(playerX - checkX) <= checkDim
 								|| Math.abs(checkX - playerX) <= playerDim)
-								&& (Math.abs(playerY - checkY) < checkDim
-								|| Math.abs(checkY - playerY) < playerDim))
+								&& (Math.abs(playerY - checkY) <= checkDim
+								|| Math.abs(checkY - playerY) <= playerDim))
 							return true;
 					}
 				}
@@ -144,7 +138,8 @@ public class Field
 
 		synchronized (enemyPro)
 		{
-			// Loops through projectiles to see if any collisions have occurred
+			// Loops through enemy projectiles to see if any collisions have
+			// occurred
 			for (Projectile checking : enemyPro)
 			{
 				synchronized (checking)
@@ -155,7 +150,7 @@ public class Field
 					double checkY = checking.getLocation().getY();
 
 					// If projectile is too far away to even be close to
-					// hitting, then don't bother checking it
+					// hitting,ignore it
 					if (Math.abs(playerY - checkY) < 70
 							&& Math.abs(playerX - checkX) < 70)
 					{
@@ -164,10 +159,12 @@ public class Field
 						int playerDim = player.getDimensions();
 						int checkDim = checking.getDimensions();
 
+						// Checks for player collisions with overlapping
+						// hitboxes
 						if ((Math.abs(playerX - checkX) <= checkDim || Math
 								.abs(checkX - playerX) <= playerDim)
-								&& (Math.abs(playerY - checkY) < checkDim || Math
-										.abs(checkY - playerY) < playerDim))
+								&& (Math.abs(playerY - checkY) <= checkDim || Math
+										.abs(checkY - playerY) <= playerDim))
 							return true;
 					}
 				}
@@ -181,29 +178,33 @@ public class Field
 	/**
 	 * Checks to see if any collisions with enemies have occurred
 	 */
-	private synchronized void isEnemyCollision()
+	private void isEnemyCollision()
 	{
-		// Loops through enemy ArrayList, determines if they were hit with any
-		// player projectiles
 		synchronized (enemies)
 		{
+			// Loops through enemy ArrayList, determines if they were hit with
+			// any player projectiles
 			for (int enemy = 0; enemy < enemies.size(); enemy++)
 			{
+				// To fix any possible index out of bounds errors
 				if (enemy > -1)
 				{
 					Enemy checking = enemies.get(enemy);
 					synchronized (checking)
 					{
+						// Makes references to the enemy location
 						double checkX = checking.getLocation().getX();
 						double checkY = checking.getLocation().getY();
 
 						synchronized (playerPro)
 						{
+							// Loops through all player projectiles
 							for (int playerPros = 0; playerPros < playerPro
 									.size(); playerPros++)
 							{
-								Projectile charPro = playerPro
-										.get(playerPros);
+								Projectile charPro = playerPro.get(playerPros);
+
+								// Makes sure the reference is not null
 								if (charPro != null)
 								{
 									synchronized (charPro)
@@ -214,11 +215,9 @@ public class Field
 												.getY();
 
 										// If the projectile is very far away,
-										// do
-										// not
-										// bother checking it
-										if (Math.abs(checkX - proX) < 20
-												&& Math.abs(checkY - proY) < 20)
+										// do not bother checking it
+										if (Math.abs(checkX - proX) < 30
+												&& Math.abs(checkY - proY) < 30)
 										{
 											int checkDim = checking
 													.getDimensions();
@@ -226,14 +225,16 @@ public class Field
 													.getDimensions();
 
 											// If collision occurred, get rid of
-											// the
-											// enemy
-											if ((checkX - proX < proDim || proX
-													- checkX < checkDim)
-													&& (checkY - proY < proDim || proY
-															- checkY < checkDim))
+											// the enemy
+											if ((Math.abs(checkX - proX) < proDim || Math
+													.abs(proX - checkX) < checkDim)
+													&& (Math.abs(checkY - proY) < proDim || Math
+															.abs(proY - checkY) < checkDim))
 											{
 												checking.hit();
+
+												// Checks to see if the enemy is
+												// dead
 												if (checking.getHealth() <= 0)
 												{
 													enemies.remove(checking);
@@ -257,12 +258,16 @@ public class Field
 	 * Moves the character(1 = up, 2 = down, 3 = left, 4 = right) Accessed only
 	 * by the GUI, field class does not use this method
 	 * @param direction the direction to move the character in
+	 * @param direction2 the secondary direction to move in
+	 * @param firing if the player is firing
 	 */
 	public static synchronized void moveChar(int direction, int direction2,
 			boolean firing)
 	{
-		if (System.currentTimeMillis() - timeElapsed > 30)
+		// Checks for movement delay first
+		if (System.currentTimeMillis() - moveTimeElapsed > 30)
 		{
+			// Moves player according to buttons pressed
 			if (direction == 1 && playerLoc.getY() > 10)
 				playerLoc.translate(0, -playerMove);
 			if (direction == 2 && playerLoc.getY() < 740)
@@ -281,22 +286,17 @@ public class Field
 			if (direction2 == 4 && playerLoc.getX() < 540)
 				playerLoc.translate(playerMove, 0);
 
-			if (firing)
-			{
-				playerPro.add(player.firePro());
-				proFired = true;
-			}
-			timeElapsed = System.currentTimeMillis();
+			// Resets movement delay
+			moveTimeElapsed = System.currentTimeMillis();
 		}
-	}
 
-	/**
-	 * Gets the score
-	 * @return score
-	 */
-	public int getScore()
-	{
-		return this.score;
+		// If the plyer is firing and the firing delay has passed
+		if (firing && System.currentTimeMillis() - fireTimeElapsed > 60)
+		{
+			playerPro.add(player.firePro());
+			proFired = true;
+			fireTimeElapsed = System.currentTimeMillis();
+		}
 	}
 
 	/**
@@ -312,21 +312,21 @@ public class Field
 	}
 
 	/**
-	 * Gets all on-screen enemy projectiles
-	 * @return enemyPro
-	 */
-	public ArrayList<Projectile> getEnemyProjectiles()
-	{
-		return enemyPro;
-	}
-
-	/**
 	 * Gets all on-screen enemies
 	 * @return enemies
 	 */
 	public ArrayList<Enemy> getEnemies()
 	{
 		return enemies;
+	}
+
+	/**
+	 * Gets all on-screen enemy projectiles
+	 * @return enemyPro
+	 */
+	public ArrayList<Projectile> getEnemyProjectiles()
+	{
+		return enemyPro;
 	}
 
 	/**
@@ -339,8 +339,16 @@ public class Field
 	}
 
 	/**
-	 * Based on time passed, spawns enemies according to a pre-coded level
-	 * script
+	 * Gets the score
+	 * @return score
+	 */
+	public int getScore()
+	{
+		return this.score;
+	}
+
+	/**
+	 *
 	 * @author Iain/Gavin
 	 * @version 10/1/16
 	 */
@@ -348,35 +356,6 @@ public class Field
 	{
 		public void run()
 		{
-			Enemy thing = new ProEnemy(new ImageIcon(
-					"Pictures/Enemies/50x50/enemy_1.png").getImage(), 1, 1, 0,
-					0, 0, new Point(10, 9), 40, new LinearPro(new Point(
-							2,
-							2),
-							new ImageIcon(
-									"Pictures/Projectiles/Projectile_2.png")
-									.getImage(), 10, 1, 5), 3000);
-			synchronized (enemies)
-			{
-				enemies.add(thing);
-				Thread manageEnemy = new Thread(new EnemyManager(thing));
-				manageEnemy.start();
-				enemySpawned = true;
-			}
-
-			Enemy thing2 = new MovingEnemy(new ImageIcon(
-					"Pictures/Enemies/50x50/enemy_1.png").getImage(), 100, 0,
-					0,
-					0, 0, new Point(100, 90), 40);
-
-			synchronized (enemies)
-			{
-				enemies.add(thing2);
-				Thread manageEnemy = new Thread(new EnemyManager(thing2));
-				manageEnemy.start();
-				enemySpawned = true;
-			}
-
 			// Creates the spawning thread
 			Thread spawner = new Thread(new EnemySpawner());
 			spawner.start();
@@ -478,7 +457,7 @@ public class Field
 									new ProjectileManager(this.toManage,
 											bullet, toManage.getDelay()));
 							manageBullet.start();
-							
+
 						}
 					}
 				}
