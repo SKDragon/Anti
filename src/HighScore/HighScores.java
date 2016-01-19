@@ -7,73 +7,124 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
-public class HighScores {
-
+/**
+ * Highscores System
+ * @author Gavin L/Iain
+ * @version January 19, 2016
+ */
+public class HighScores
+{
+	// Global Variables
 	private ArrayList<Score> scores;
-	String file = "HighScores/HighScores.txt";
-	String lineBreak = "//";
+	private String file = "HighScores/HighScores.txt";
+	private String lineBreak = "//";
 
-	public HighScores() {
+	/**
+	 * Main Constructor
+	 */
+	public HighScores()
+	{
 		scores = new ArrayList<Score>();
 	}
 
-	public void addScore(String name, int score) {
+	/**
+	 * Adds Score to ArrayList
+	 * @param name The name of player
+	 * @param score The score of player
+	 */
+	public void addScore(String name, int score)
+	{
 		scores.add(new Score(name, score));
 		sort();
 	}
 
-	public ArrayList<Score> getArray() {
+	/**
+	 * Gets the array of Scores
+	 * @return The current Array of scores
+	 */
+	public ArrayList<Score> getArray()
+	{
 		return this.scores;
 	}
 
-	public void clear(){
+	/**
+	 * Clears the current Array of scores
+	 */
+	public void clear()
+	{
 		scores = new ArrayList<Score>();
 	}
-	
-	public void loadScoreFile() {
-		try {
+
+	/**
+	 * Loads in scores from Highscore file
+	 */
+	public void loadScoreFile()
+	{
+		try
+		{
+			// Variables
 			Scanner reader = new Scanner(new File(file));
 			String nextLine = "";
 
-			while (reader.hasNextLine()) {
+			// Reads in each line from file
+			while (reader.hasNextLine())
+			{
 				nextLine = reader.nextLine();
+				// Separates name and score and adds to current array
 				StringTokenizer st = new StringTokenizer(nextLine, lineBreak);
-				while (st.hasMoreElements()) {
+				while (st.hasMoreElements())
+				{
 					String name = (String) st.nextElement();
 					String score = (String) st.nextElement();
 					int scr = Integer.parseInt(score);
-					//int score = (int) st.nextElement();
 					scores.add(new Score(name, scr));
 				}
 			}
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+			reader.close();
+		}
+		catch (FileNotFoundException e)
+		{
 			e.printStackTrace();
 		}
 
 	}
 
-	public void updateScoreFile() {
-		try {
+	/**
+	 * Updates the Highscores file with current array
+	 */
+	public void updateScoreFile()
+	{
+		try
+		{
+			// Variables
 			PrintWriter fileOut = new PrintWriter(new File(file));
-			for (Score s : scores) {
-				String all = s.getName() + lineBreak + Integer.toString(s.getScore());
-				// String scr = Integer.toString(s.getScore());
-				// String nm = s.getName();
+			// Prints to file
+			for (Score s : scores)
+			{
+				String all = s.getName() + lineBreak
+						+ Integer.toString(s.getScore());
 				fileOut.println(all);
 			}
 			fileOut.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+		}
+		catch (FileNotFoundException e)
+		{
 			e.printStackTrace();
 		}
-
 	}
 
-	protected ArrayList<Score> sort() {
-		for (int i = 0; i < scores.size() - 1; i++) {
-			for (int j = 0; j < scores.size() - 1; j++) {
-				if (scores.get(j).getScore() < scores.get(j + 1).getScore()) {
+	/**
+	 * Sort method that sorts the current array from highest to lowest score
+	 * @return THe new sorted array
+	 */
+	protected ArrayList<Score> sort()
+	{
+		for (int i = 0; i < scores.size() - 1; i++)
+		{
+			for (int j = 0; j < scores.size() - 1; j++)
+			{
+				if (scores.get(j).getScore() < scores.get(j + 1).getScore())
+				{
 					Score temp = scores.get(j);
 					scores.set(j, scores.get(j + 1));
 					scores.set(j + 1, temp);

@@ -1,37 +1,50 @@
 package HighScore;
 
-
 import java.io.Serializable;
 
 /**
- * 
- * @author Gawain Leung
- *
+ * Score Object
+ * @author Gavin L/Iain
+ * @version January 19, 2016
  */
-public class Score implements Serializable{
+public class Score implements Serializable
+{
 
-	String name;
-	int score;
+	/**
+	 * Default Serialization
+	 */
+	private static final long serialVersionUID = 1L;
+	// Variables
+	private String name;
+	private int score;
 
-	public Score(String name, int score) {
+	/**
+	 * Constructor that creates the Score Object
+	 * @param name The Name of player
+	 * @param score The Score the player Got
+	 */
+	public Score(String name, int score)
+	{
 		this.name = name;
 		this.score = score;
 	}
 
-	public String getName() {
+	/**
+	 * Gets the name from Score Object
+	 * @return The name of player
+	 */
+	public String getName()
+	{
 		return name;
 	}
 
-	private void setName(String name) {
-		this.name = name;
-	}
-
-	public int getScore() {
+	/**
+	 * Gets the score from Score Object
+	 * @return The score of player
+	 */
+	public int getScore()
+	{
 		return score;
 	}
 
-	private void setScore(int score) {
-		this.score = score;
-	}
-	
 }
