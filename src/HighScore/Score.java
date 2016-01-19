@@ -23,7 +23,7 @@ public class Score implements Serializable
 	 * @param name The Name of player
 	 * @param score The Score the player Got
 	 */
-	public Score(String name, int score)
+	protected Score(String name, int score)
 	{
 		this.name = name;
 		this.score = score;
