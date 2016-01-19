@@ -472,7 +472,7 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 				repaint();
 			}
 		} else if (State == STATE.GAMEOVER) {
-			if (mx > 0 && mx < 10 && my > 0 && my < 10) {
+			if (mx > 394 && mx < 694 && my > 700 && my < 800) {
 				String name = nameField.getText();
 				if (name == "") {
 					hs.addScore("AAA", field.getScore());

@@ -97,6 +97,7 @@ public class Field
 			{
 			}
 		}
+		
 		System.out.println("game over");
 	}
 
