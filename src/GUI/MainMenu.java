@@ -382,9 +382,6 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 			nameFieldSet();
 			nameFieldSetting = true;
 		}
-		// add(nameField, GB);
-		// hs.addScore("this", field.getScore());
-		// g.drawString("500", 100, 200);
 
 	}
 
@@ -402,7 +399,8 @@ public class MainMenu extends JPanel implements MouseListener, KeyListener {
 		gamePanel.setSize(600, 800);
 		gamePanel.setBorder(compound);
 		gamePanel.addKeyListener(this);
-		add(gamePanel);
+		GB.insets = new Insets(0,0,700,0);
+		add(gamePanel,GB);
 
 		String score = Integer.toString(field.getScore());
 		// String live = Integer.toString(field.getPlayer().get)
