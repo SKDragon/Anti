@@ -567,7 +567,6 @@ public class MainPanel extends JPanel implements MouseListener, KeyListener
 				hs.updateScoreFile();
 				State = STATE.MAIN_MENU;
 				nameField.setVisible(false);
-				System.out.println(name);
 				repaint();
 			}
 		}
