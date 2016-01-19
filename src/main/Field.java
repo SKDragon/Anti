@@ -290,7 +290,7 @@ public class Field
 			moveTimeElapsed = System.currentTimeMillis();
 		}
 
-		// If the plyer is firing and the firing delay has passed
+		// If the player is firing and the firing delay has passed
 		if (firing && System.currentTimeMillis() - fireTimeElapsed > 60)
 		{
 			playerPro.add(player.firePro());
@@ -348,12 +348,15 @@ public class Field
 	}
 
 	/**
-	 *
+	 * Creates the enemies and manages player projectiles
 	 * @author Iain/Gavin
-	 * @version 10/1/16
+	 * @version 19/1/16
 	 */
 	private class FieldManager implements Runnable
 	{
+		/**
+		 * Runs the field manager
+		 */
 		public void run()
 		{
 			// Creates the spawning thread
@@ -366,7 +369,7 @@ public class Field
 				// Moves character projectiles
 				moveCharPro();
 
-				// Checks if any enemies were spawned
+				// Checks if any enemies were spawned, then adds them
 				Enemy toSpawn = EnemySpawner.getSpawned();
 				if (toSpawn != null)
 				{
@@ -381,16 +384,13 @@ public class Field
 
 				}
 
-				// System.out.println(enemies.size());
-				// System.out.println(playerPro.size());
-				// System.out.println(enemyPro.size());
 				try
 				{
 					Thread.sleep(30);
 				}
 				catch (InterruptedException e)
 				{
-					System.out.println("Error in enemy manager");
+					System.out.println("Error in field manager sleep");
 				}
 			}
 		}
@@ -399,7 +399,7 @@ public class Field
 		 * Moves the enemies and projectiles on-screen Also handles player
 		 * projectiles to keep everything in this thread
 		 */
-		private synchronized void moveCharPro()
+		private void moveCharPro()
 		{
 			synchronized (playerPro)
 			{
@@ -413,52 +413,70 @@ public class Field
 				}
 			}
 
-			// Loops through things again to check if any objects have gone
-			// off-screen
 			synchronized (playerPro)
 			{
+				// Loops through things again to check if any objects have gone
+				// off-screen
 				for (int charPro = 0; charPro < playerPro.size(); charPro++)
 				{
-					Point checkLoc = playerPro.get(charPro).getLocation();
-					if (checkLoc.getX() > 600 || checkLoc.getX() < 0
-							|| checkLoc.getY() > 800 || checkLoc.getY() < 0)
+					// For error checking
+					if (charPro > -1)
 					{
-						playerPro.remove(charPro);
-						charPro--;
+						Point checkLoc = playerPro.get(charPro).getLocation();
+
+						// Checks if the projectile has gone offscreen
+						if (checkLoc.getX() > 600 || checkLoc.getX() < 0
+								|| checkLoc.getY() > 800 || checkLoc.getY() < 0)
+						{
+							playerPro.remove(charPro);
+							charPro--;
+						}
 					}
 				}
 			}
 		}
 	}
 
+	/**
+	 * Manages a given enemy
+	 * @author Iain/Gavin
+	 * @version 19/1/16
+	 */
 	private class EnemyManager implements Runnable
 	{
+		// The enmy the class will manage
 		private Enemy toManage;
 
+		/**
+		 * Constructor only needs the enemy
+		 * @param toManage the enemy to manage
+		 */
 		protected EnemyManager(Enemy toManage)
 		{
 			this.toManage = toManage;
 		}
 
+		/**
+		 * Runs the enemy manager
+		 */
 		public void run()
 		{
+			// Loops while the enemy is alive
 			while (!toManage.isDestroyed())
 			{
 				synchronized (toManage)
 				{
 					toManage.moveEnemy();
 
-					if (toManage.getType() == 2)
+					// If the enemy is a ProEnemy and has not fired its
+					// projectile, then fire it
+					if (toManage.getType() == 2 && !toManage.proFired())
 					{
-						if (!toManage.proFired())
-						{
-							Projectile bullet = toManage.firePro();
-							Thread manageBullet = new Thread(
-									new ProjectileManager(this.toManage,
-											bullet, toManage.getDelay()));
-							manageBullet.start();
-
-						}
+						Projectile bullet = toManage.firePro();
+						Thread manageBullet = new Thread(
+								new ProjectileManager(this.toManage,
+										bullet, toManage.getDelay()));
+						manageBullet.start();
 					}
 				}
 				try
@@ -470,36 +488,47 @@ public class Field
 					System.out.println("enemy manage sleep");
 				}
 
-				// // Checks to see if the enemy has gone off-screen
-				// synchronized (toManage)
-				// {
-				// Point currentLoc = toManage.getLocation();
-				// if (currentLoc.getX() > 600 || currentLoc.getX() < 0
-				// || currentLoc.getY() > 800 || currentLoc.getY() < 0)
-				// {
-				// synchronized (enemies)
-				// {
-				// enemies.remove(toManage);
-				// }
-				// toManage.destroyed();
-				// }
-				// }
+				// Checks to see if the enemy has gone off-screen
+				synchronized (toManage)
+				{
+					Point currentLoc = toManage.getLocation();
+					if (currentLoc.getX() > 600 || currentLoc.getX() < 0
+							|| currentLoc.getY() > 800 || currentLoc.getY() < 0)
+					{
+						// If the enemy has gone off-screen, get rid of it
+						synchronized (enemies)
+						{
+							enemies.remove(toManage);
+						}
+						toManage.destroyed();
+					}
+				}
 			}
 		}
 	}
 
+	/**
+	 * Manages a given projectile
+	 * @author Iain/Gavin
+	 * @version 19/1/16
+	 */
 	private class ProjectileManager implements Runnable
 	{
+		// Enemy that fired the projectile
 		private Enemy firedBy;
+
+		// Projectile to manage
 		private Projectile toManage;
+
+		// Delay before firing
 		private long delay = 0;
 
-		// protected ProjectileManager(Enemy firedBy, Projectile pro)
-		// {
-		// this.firedBy = firedBy;
-		// this.toManage = pro;
-		// }
-
+		/**
+		 * Constructor
+		 * @param firedBy enemy that fired the projectile
+		 * @param pro the projectile to track
+		 * @param delay the delay before spawning
+		 */
 		protected ProjectileManager(Enemy firedBy, Projectile pro, long delay)
 		{
 			this.firedBy = firedBy;
@@ -507,8 +536,12 @@ public class Field
 			this.delay = delay;
 		}
 
+		/**
+		 * Runs the projectile manager
+		 */
 		public void run()
 		{
+			// Delays until needs to be fired
 			try
 			{
 				Thread.sleep(this.delay);
@@ -518,12 +551,11 @@ public class Field
 				System.out.println("pro delay error");
 			}
 
+			// Only fires if the enemy has not been destroyed
 			if (!firedBy.isDestroyed())
 			{
-
 				toManage.setLocation(new Point((int) firedBy.getLocation()
-						.getX(),
-						(int) firedBy.getLocation().getY()));
+						.getX(), (int) firedBy.getLocation().getY()));
 				enemyPro.add(toManage);
 				enemyProFired = true;
 				while (!this.toManage.isGone())
@@ -550,6 +582,7 @@ public class Field
 								|| currentLoc.getY() > 800
 								|| currentLoc.getY() < 0)
 						{
+							// If the projectile has gone off-screen get rid of it
 							synchronized (enemyPro)
 							{
 								enemyPro.remove(toManage);
@@ -565,12 +598,16 @@ public class Field
 	/**
 	 * Simple extra thread that just adds to score based on survival time
 	 * @author Iain/Gavin
-	 * @version 10/1/16
+	 * @version 19/1/16
 	 */
 	private class SecondsScore implements Runnable
 	{
+		/**
+		 * Runs the score timer
+		 */
 		public void run()
 		{
+			// Loops while the game is still going
 			while (!gameOver)
 			{
 				try
@@ -579,11 +616,10 @@ public class Field
 				}
 				catch (InterruptedException e)
 				{
-					System.out.println("How could u screw up a sleep u turd");
+					System.out.println("sleep score error");
 				}
 				score += 10;
 			}
 		}
 	}
-
 }
