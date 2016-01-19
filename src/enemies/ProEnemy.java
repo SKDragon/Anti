@@ -8,7 +8,7 @@ import projectiles.*;
 /**
  * Class for enemies that shoot one projectile
  * @author Iain/Gavin
- * @version 12/1/16
+ * @version 19/1/16
  *
  */
 public class ProEnemy extends Enemy
