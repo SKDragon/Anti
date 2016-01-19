@@ -478,6 +478,7 @@ public class Field
 									new ProjectileManager(this.toManage,
 											bullet, toManage.getDelay()));
 							manageBullet.start();
+							
 						}
 					}
 				}
