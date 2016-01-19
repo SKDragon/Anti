@@ -9,6 +9,10 @@ import GUI.Frame;
  */
 public class AntivirusDefender
 {
+	/**
+	 * Main Method to run the Game
+	 * @param args The default param
+	 */
 	public static void main(String[] args)
 	{
 		// Gets rid of unsightly warning
