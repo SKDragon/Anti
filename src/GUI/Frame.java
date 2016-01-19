@@ -1,34 +1,28 @@
 package GUI;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 /**
- * 
- * @author Gavin L
- *
+ * The Main
+ * @author Gavin L/Iain
+ * @version January 19, 2016
  */
-public class Frame extends JFrame {
+public class Frame extends JFrame
+{
+	/**
+	 * Default Serialization
+	 */
+	private static final long serialVersionUID = 1L;
 	// Global Frame Variables
 	private Dimension mainFrameDim = new Dimension(1000, 830);
 	private MainPanel mainMenu = new MainPanel();
-	
 
-	public Frame() {
+	/**
+	 * Main Constructor
+	 */
+	public Frame()
+	{
 		super();
 		setTitle("Antivirus Defender");
 		setPreferredSize(mainFrameDim);
@@ -37,7 +31,6 @@ public class Frame extends JFrame {
 		pack();
 		setResizable(false);
 		add(mainMenu);
-		
 	}
-	
+
 }
