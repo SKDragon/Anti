@@ -6,7 +6,7 @@ import java.awt.Point;
 /**
  * Object for enemies that just move across the screen
  * @author Iain/Gavin
- * @version 12/1/16
+ * @version 19/1/16
  */
 public class MovingEnemy extends Enemy
 {
@@ -23,7 +23,6 @@ public class MovingEnemy extends Enemy
 	 * @param yIn used for parabolic movement
 	 * @param location location of the enemy
 	 * @param dim dimensions of the enemy
-	 * @param the time to spawn the enemy
 	 */
 	public MovingEnemy(Image icon, int health, int xChange, int yChange,
 			int xIn, int yIn, Point location, int dim)

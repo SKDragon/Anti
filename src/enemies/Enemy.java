@@ -8,22 +8,24 @@ import projectiles.*;
 /**
  * Parent class for all enemies
  * @author Iain/Gavin
- * @version 12/1/16
+ * @version 19/1/16
  */
 public class Enemy
 {
-	// Location of the enemy, movement
+	// Location of the enemy, movement variables
 	protected Point location;
 	protected int xChange;
 	protected int yChange;
 	protected int xIn;
 	protected int yIn;
+
+	// If the enemy has been destroyed or not
 	protected boolean destroyed;
 
 	// Icon image
 	protected Image icon;
 
-	// Type of enemy: 1=moving, 2=onePro, 3=odd, 4=boss
+	// Type of enemy: 1=moving, 2=pro
 	protected int enemyType;
 
 	// Health measurements
@@ -34,10 +36,10 @@ public class Enemy
 
 	// Projectile information
 	protected Projectile fire;
-	protected long fireDelay;
+	protected long fireDelay = 0;
 
 	/**
-	 * Moves the enemy
+	 * Moves the enemy based on movement variables
 	 */
 	public void moveEnemy()
 	{
@@ -46,24 +48,47 @@ public class Enemy
 		yChange += yIn;
 	}
 
+	/**
+	 * Overwritten in ProEnemy class
+	 * @return no projectile fired
+	 */
 	public boolean firedPro()
 	{
 		return false;
 	}
 
+	/**
+	 * Overwritten in ProEnemy class
+	 * @return no projectile to be fired
+	 */
 	public Projectile firePro()
 	{
 		return null;
 	}
 
+	/**
+	 * Enemy was hit by a player bullet
+	 */
 	public void hit()
 	{
 		this.health -= 10;
 	}
 
+	/**
+	 * The enemy has been destroyed
+	 */
 	public void destroyed()
 	{
 		this.destroyed = true;
+	}
+
+	/**
+	 * Checks if the enemy has been destroyed
+	 * @return destroyed
+	 */
+	public boolean isDestroyed()
+	{
+		return this.destroyed;
 	}
 
 	/**
@@ -93,26 +118,37 @@ public class Enemy
 		return this.enemyType;
 	}
 
-	public boolean isDestroyed()
-	{
-		return this.destroyed;
-	}
-
+	/**
+	 * Gets the image for the enemy
+	 * @return icon
+	 */
 	public Image getIcon()
 	{
 		return this.icon;
 	}
 
+	/**
+	 * Overwritten in ProEnemy class
+	 * @return fireDelay
+	 */
 	public long getDelay()
 	{
 		return this.fireDelay;
 	}
 
+	/**
+	 * Overwritten in ProEnemy class
+	 * @return true
+	 */
 	public boolean proFired()
 	{
 		return true;
 	}
 
+	/**
+	 * Gets the health of the enemy
+	 * @return health
+	 */
 	public int getHealth()
 	{
 		return this.health;

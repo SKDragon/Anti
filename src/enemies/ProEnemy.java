@@ -27,7 +27,6 @@ public class ProEnemy extends Enemy
 	 * @param yIn used for parabolic movement
 	 * @param location location of the enemy
 	 * @param dim dimensions of the enemy
-	 * @param spawn the time to spawn the enemy
 	 * @param proj the projectile to fire
 	 * @param timing time after spawn to fire projectile
 	 */
@@ -48,12 +47,20 @@ public class ProEnemy extends Enemy
 		this.fireDelay = timing;
 	}
 
+	/**
+	 * Fires a projectile
+	 * @return the bullet stored in the enemy
+	 */
 	public Projectile firePro()
 	{
 		this.fired = true;
 		return this.fire;
 	}
 
+	/**
+	 * Checks if a projectile has been fired
+	 * @return if a projectile has been fired
+	 */
 	public boolean proFired()
 	{
 		return this.fired;
