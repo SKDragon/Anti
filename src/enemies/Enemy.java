@@ -92,39 +92,12 @@ public class Enemy
 	}
 
 	/**
-	 * Gets the location of the enemy
-	 * @return location
+	 * Overwritten in ProEnemy class
+	 * @return true
 	 */
-	public Point getLocation()
+	public boolean proFired()
 	{
-		return this.location;
-	}
-
-	/**
-	 * Gets the dimensions of the enemy
-	 * @return dim
-	 */
-	public int getDimensions()
-	{
-		return this.dim;
-	}
-
-	/**
-	 * Gets the type of enemy
-	 * @return enemyType
-	 */
-	public int getType()
-	{
-		return this.enemyType;
-	}
-
-	/**
-	 * Gets the image for the enemy
-	 * @return icon
-	 */
-	public Image getIcon()
-	{
-		return this.icon;
+		return true;
 	}
 
 	/**
@@ -137,12 +110,12 @@ public class Enemy
 	}
 
 	/**
-	 * Overwritten in ProEnemy class
-	 * @return true
+	 * Gets the dimensions of the enemy
+	 * @return dim
 	 */
-	public boolean proFired()
+	public int getDimensions()
 	{
-		return true;
+		return this.dim;
 	}
 
 	/**
@@ -153,4 +126,32 @@ public class Enemy
 	{
 		return this.health;
 	}
+
+	/**
+	 * Gets the image for the enemy
+	 * @return icon
+	 */
+	public Image getIcon()
+	{
+		return this.icon;
+	}
+
+	/**
+	 * Gets the location of the enemy
+	 * @return location
+	 */
+	public Point getLocation()
+	{
+		return this.location;
+	}
+
+	/**
+	 * Gets the type of enemy
+	 * @return enemyType
+	 */
+	public int getType()
+	{
+		return this.enemyType;
+	}
+
 }
