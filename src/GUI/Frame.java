@@ -25,7 +25,7 @@ import javax.swing.JPanel;
 public class Frame extends JFrame {
 	// Global Frame Variables
 	private Dimension mainFrameDim = new Dimension(1000, 830);
-	private MainMenu mainMenu = new MainMenu();
+	private MainPanel mainMenu = new MainPanel();
 	
 
 	public Frame() {
