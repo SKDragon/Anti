@@ -1,26 +1,44 @@
 package main;
 
 import java.awt.Point;
-import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
 import projectiles.*;
 import enemies.*;
 
+/**
+ * Enemy spawning is handled by this class
+ * @author Iain/Gavin
+ * @version 19/1/16
+ */
 public class EnemySpawner implements Runnable
 {
+	// The enemy to spawn
 	protected static Enemy spawned;
+
+	// Amount of enemies spawned
 	private long enemiesSpawned = 0;
+
+	// Delay in between spawing of enemies
 	private long delay = 1000;
+
+	// Basic speed, to be randomly changed in spawning
 	private long enemySpeedX = 1;
 	private long enemySpeedY = 1;
+
+	// Health increase with amount of enemies spawned
 	private int enemyHealth = 1;
 
+	/**
+	 * Runs the spawner
+	 */
 	public void run()
 	{
+		// Loops while the game is still playing
 		while (!Field.gameOver)
 		{
+			// Delay during spawn
 			try
 			{
 				Thread.sleep(delay);
@@ -30,14 +48,18 @@ public class EnemySpawner implements Runnable
 				System.out.println("spawn error");
 			}
 
+			// Randomly generates place to spawn and enemy type
 			int x = (int) (Math.random() * 200 + 200);
 			int enemyType = (int) Math.random() * 2;
 
+			// Enemy type cases
 			if (enemyType == 0)
 			{
-				int bulletX =  -1 *(int) (Math.random() * 3 - 1);
-				int bulletY =  -2 *(int) (Math.random() * 3);
-				
+				// Makes bullet Speed
+				int bulletX = -1 * (int) (Math.random() * 3 - 1);
+				int bulletY = 2 * (int) (Math.random() * 3);
+
+				// Makes a new enemy
 				spawned = new ProEnemy(new ImageIcon(
 						"Pictures/Enemies/50x50/enemy_1.png").getImage(),
 						enemyHealth,
@@ -48,9 +70,9 @@ public class EnemySpawner implements Runnable
 								"Pictures/Projectiles/Projectile_2.png")
 								.getImage(), 10, bulletX, bulletY), 200);
 			}
-
 			else
 			{
+				// Makes a new enemy
 				spawned = new MovingEnemy(
 						new ImageIcon(
 								"Pictures/Enemies/50x50/enemy_1.png").getImage(),
@@ -70,10 +92,16 @@ public class EnemySpawner implements Runnable
 				enemyHealth += 50;
 			if (enemiesSpawned % 15 == 0)
 				enemySpeedX++;
+			
+			// This number makes enemies harder as time progresses
 			enemiesSpawned++;
 		}
 	}
 
+	/**
+	 * Gets the enemy to be spawned
+	 * @return spawned
+	 */
 	public static Enemy getSpawned()
 	{
 		return spawned;

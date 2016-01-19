@@ -10,18 +10,20 @@ import projectiles.*;
 /**
  * Player object template
  * @author Iain/Gavin
- * @version 10/1/16
+ * @version 19/1/16
  */
 public class Player
 {
-	// Image to be used when displaying the character
+	// Images to be used when displaying the character and projectiles
 	private final static Image PLAYER_IMAGE = new ImageIcon(
 			"Pictures/Player/Player.png").getImage();
 	private final static Image PLAYER_PRO = new ImageIcon(
 			"Pictures/Projectiles/Projectile_1.png").getImage();
 
-	// Left or right barrel
+	// Left or right barrel when firing
 	private int barrel = 1;
+
+	// Movement speeds
 	final static int PRO_SPEED = -30;
 	final static int MOVE_SPEED = 10;
 
@@ -31,16 +33,17 @@ public class Player
 	// Dimensions of the character icon
 	protected int dim = 10;
 
-	protected int moveSpeed;
-
+	/**
+	 * Constructor just sets location at start point
+	 */
 	public Player()
 	{
-		this.location = new Point(290,700);
+		this.location = new Point(290, 700);
 	}
-	
+
 	/**
-	 * Overwritten in all character classes
-	 * @return A generated standard LinearPro object
+	 * Fires a bullet
+	 * @return a projectile
 	 */
 	public LinearPro firePro()
 	{
@@ -54,33 +57,45 @@ public class Player
 	}
 
 	/**
+	 * Gets the dimensions of the player
+	 * @return dim
+	 */
+	public int getDimensions()
+	{
+		return this.dim;
+	}
+
+	/**
+	 * Gets the image for the player
+	 * @return PLAYER_IMAGE
+	 */
+	public Image getIcon()
+	{
+		return PLAYER_IMAGE;
+	}
+
+	/**
 	 * Gets the location of the player
 	 * @return the location of the player
 	 */
-	public Point getLoc()
+	public Point getLocation()
 	{
 		return this.location;
 	}
 
 	/**
 	 * Gets the move speed of the character
-	 * @return moveSpeed
+	 * @return MOVE_SPEED
 	 */
 	public int getMoveSpeed()
 	{
 		return MOVE_SPEED;
 	}
 
-	public int getDimensions()
-	{
-		return this.dim;
-	}
-
-	public Image getIcon()
-	{
-		return PLAYER_IMAGE;
-	}
-
+	/**
+	 * Gets the icon of the player
+	 * @return PLAYER_PRO
+	 */
 	public Image getProIcon()
 	{
 		return PLAYER_PRO;

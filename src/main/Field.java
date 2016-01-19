@@ -55,7 +55,7 @@ public class Field
 		player = new Player();
 
 		// Creates references to the player variables
-		playerLoc = player.getLoc();
+		playerLoc = player.getLocation();
 		playerMove = player.getMoveSpeed();
 		playerDim = player.getDimensions();
 
