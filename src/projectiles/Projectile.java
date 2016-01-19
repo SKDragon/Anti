@@ -6,32 +6,61 @@ import java.awt.Point;
 /**
  * Parent class for all Projectile objects
  * @author Iain/Gavin
- * @version 7/1/16
+ * @version 19/1/16
  */
 public class Projectile
 {
 	// The coordinates of the projectile
-	// Point is public to save a get/set method, faster processing
 	protected Point location;
+
+	// If the projectile has moved off-screen
 	protected boolean gone;
 
-	// Changes in position to be used in calculating position changes
+	// Movement variables
 	protected int xChange;
 	protected int yChange;
 
 	// Image representing the projectile
 	protected Image icon;
+
+	// Type of projectile
 	protected int proType;
 
 	// Integer representing the hit box dimensions
 	protected int hitBoxDim;
 
 	/**
-	 * Overwritten in curved pro class
+	 * Moves the projectile Overwritten in curved pro class
 	 */
 	public void movePro()
 	{
 		this.location.translate(xChange, yChange);
+	}
+
+	/**
+	 * The projectile has left the screen
+	 */
+	public void hit()
+	{
+		this.gone = true;
+	}
+
+	/**
+	 * Checks if the projectile is gone or not
+	 * @return gone
+	 */
+	public boolean isGone()
+	{
+		return this.gone;
+	}
+
+	/**
+	 * Gets the dimensions
+	 * @return {hitBoxX, hitBoxY}
+	 */
+	public int getDimensions()
+	{
+		return this.hitBoxDim;
 	}
 
 	/**
@@ -44,12 +73,21 @@ public class Projectile
 	}
 
 	/**
-	 * Gets the dimensions
-	 * @return {hitBoxX, hitBoxY}
+	 * Gets the location of the projectile
+	 * @return location
 	 */
-	public int getDimensions()
+	public Point getLocation()
 	{
-		return this.hitBoxDim;
+		return this.location;
+	}
+
+	/**
+	 * Gets the type of the bullet
+	 * @return proType
+	 */
+	public int getType()
+	{
+		return this.proType;
 	}
 
 	/**
@@ -71,31 +109,11 @@ public class Projectile
 	}
 
 	/**
-	 * Gets the location of the projectile
-	 * @return location
+	 * Sets the location
+	 * @param newLoc the new location
 	 */
-	public Point getLocation()
-	{
-		return this.location;
-	}
-
 	public void setLocation(Point newLoc)
 	{
 		this.location = newLoc;
-	}
-
-	public int getType()
-	{
-		return this.proType;
-	}
-
-	public void hit()
-	{
-		this.gone = true;
-	}
-
-	public boolean isGone()
-	{
-		return this.gone;
 	}
 }

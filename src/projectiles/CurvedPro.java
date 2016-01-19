@@ -6,7 +6,7 @@ import java.awt.Point;
 /**
  * Class for projectiles with a curved path
  * @author Iain/Gavin
- * @version 7/1/16
+ * @version 19/1/16
  */
 public class CurvedPro extends Projectile
 {
@@ -38,7 +38,7 @@ public class CurvedPro extends Projectile
 	}
 
 	/**
-	 * Applies parabolic arc in trajectory
+	 * Moves projectile while also curving path
 	 */
 	public void movePro()
 	{

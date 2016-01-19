@@ -6,14 +6,14 @@ import java.awt.Point;
 /**
  * Object class for a linear projectile
  * @author Iain/Gavin
- * @version 7/1/16
+ * @version 19/1/16
  */
 public class LinearPro extends Projectile
 {
-	// Integer denoting if the speed of the projectile changes at any point in
-	// time during its trajectory, also when it changes speed
+	// Changed speed acts as a multiplier for pro speed
+	// Time after firing to change speed
 	private int speedChange;
-	private int timeAfter;
+	private long timeAfter;
 
 	/**
 	 * Constructor for the linear projectile object
@@ -55,6 +55,15 @@ public class LinearPro extends Projectile
 	}
 
 	/**
+	 * Changes the x/y changes of the projectile, making it go faster or slower
+	 */
+	public void changeSpeed()
+	{
+		this.xChange += speedChange;
+		this.yChange += speedChange;
+	}
+
+	/**
 	 * Gets the change in speed
 	 * @return speedChange
 	 */
@@ -67,17 +76,8 @@ public class LinearPro extends Projectile
 	 * Gets the time after which the speed will change
 	 * @return timeAfter
 	 */
-	public int getTime()
+	public long getTime()
 	{
 		return this.timeAfter;
-	}
-
-	/**
-	 * Changes the x/y changes of the projectile, making it go faster or slower
-	 */
-	public void changeSpeed()
-	{
-		this.xChange += speedChange;
-		this.yChange += speedChange;
 	}
 }
