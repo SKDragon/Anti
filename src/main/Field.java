@@ -2,6 +2,7 @@ package main;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 
 import projectiles.*;
 import enemies.*;
@@ -404,12 +405,19 @@ public class Field
 			synchronized (playerPro)
 			{
 				// Loops through all player projectiles and moves them
-				for (Projectile playerPro : playerPro)
+				try
 				{
-					synchronized (playerPro)
+					for (Projectile playerPro : playerPro)
 					{
-						playerPro.movePro();
+						synchronized (playerPro)
+						{
+							playerPro.movePro();
+						}
 					}
+				}
+				catch (ConcurrentModificationException e)
+				{
+					System.out.println("charpro comod error");
 				}
 			}
 
@@ -582,7 +590,8 @@ public class Field
 								|| currentLoc.getY() > 800
 								|| currentLoc.getY() < 0)
 						{
-							// If the projectile has gone off-screen get rid of it
+							// If the projectile has gone off-screen get rid of
+							// it
 							synchronized (enemyPro)
 							{
 								enemyPro.remove(toManage);
