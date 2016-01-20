@@ -500,7 +500,7 @@ public class Field
 				synchronized (toManage)
 				{
 					Point currentLoc = toManage.getLocation();
-					if (currentLoc.getX() > 600 || currentLoc.getX() < 0
+					if (currentLoc.getX() > 600 || currentLoc.getX() < -50
 							|| currentLoc.getY() > 800 || currentLoc.getY() < 0)
 					{
 						// If the enemy has gone off-screen, get rid of it
